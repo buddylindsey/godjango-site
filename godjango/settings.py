@@ -128,7 +128,26 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'home',
     'episode',
+    'social_auth',
+    'accounts',
 )
+
+# Django Social Auth settings
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.contrib.github.GithubBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_ENABLED_BACKENDS = ('github',)
+SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
+
+GITHUB_APP_ID = os.environ['GITHUB_APP_ID']
+GITHUB_API_SECRET = os.environ['GITHUB_API_SECRET']
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/accounts/dashboard/'
+LOGIN_ERROR_URL = '/accounts/login-error/'
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

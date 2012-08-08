@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+I am a dashboard
+<hr />
+{% if user.is_authenticated %}
+    hello {{ user.username }}
+{% endif %}
+{% endblock %}

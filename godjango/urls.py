@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^', include('home.urls')),
 
     # Accounts
+    url('^accounts/', include('accounts.urls')),    
+
     # Episodes
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/$', DetailView.as_view(
             model=Video,
