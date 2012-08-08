@@ -7,6 +7,8 @@ TEMPLATE_DEBUG = DEBUG
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 path = lambda *a: os.path.join(ROOT, *a)
 
+VIDEO_ROOT = None
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -125,6 +127,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'home',
+    'episode',
 )
 
 # A sample logging configuration. The only tangible logging
