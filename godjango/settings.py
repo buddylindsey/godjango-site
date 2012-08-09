@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'episode',
     'social_auth',
     'accounts',
+    'favorite',
 )
 
 # Django Social Auth settings

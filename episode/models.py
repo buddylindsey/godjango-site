@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import User
 
 class Video(models.Model):
     title = models.CharField(max_length=200)
@@ -15,6 +16,7 @@ class Video(models.Model):
     episode = models.PositiveIntegerField(null=True, blank=True)
     publish_date = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    favorites = models.ManyToManyField(User, through='Favorite')
 
     @models.permalink
     def get_absolute_url(self):
@@ -40,3 +42,9 @@ class Video(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User)
+    video = models.ForeignKey(Video)
+
+
