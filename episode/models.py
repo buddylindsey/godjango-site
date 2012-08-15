@@ -40,6 +40,14 @@ class Video(models.Model):
         self.slug = slugify(self.title) 
         super(Video, self).save(*args, **kwargs)
 
+    def admin_thumbnail(self):
+        return "<img src='%s' height='41' width='66' />" % self.thumbnail_image
+    admin_thumbnail.allow_tags = True
+
+    def admin_link(self):
+        return "<a href='%s'>View Video</a>" % self.get_absolute_url()
+    admin_link.allow_tags = True
+
     def __unicode__(self):
         return self.title
 

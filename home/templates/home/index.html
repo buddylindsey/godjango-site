@@ -2,20 +2,20 @@
 
 {% block content %}
 {% for video in videos %}
-
 <div class="row">
-    <div class="span3">
+    <div class="span3 index-video-thumbnail">
         <img src="{{ video.thumbnail_image }}" /> 
     </div>
     <div class="span6">
-        <div>
-            {{ video.title }}
+        <div class="index-video-title">
+            <a href="{{ video.get_absolute_url }}">{{ video.title }}</a>
         </div>
-        <div>
-            {{ v.description }} <small>({{ v.length }} minutes)</small>
+        <div class="index-video-description">
+            {{ video.description }} <small>({{ video.length }} minutes)</small>
         </div>
     </div>
 </div>
+<hr />
 {% empty %}
 You have no content
 {% endfor %}
