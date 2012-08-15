@@ -1,0 +1,22 @@
+{% extends "sidebarbase.html" %}
+
+{% block content %}
+{% for video in videos %}
+
+<div class="row">
+    <div class="span3">
+        <img src="{{ video.thumbnail_image }}" /> 
+    </div>
+    <div class="span6">
+        <div>
+            {{ video.title }}
+        </div>
+        <div>
+            {{ v.description }} <small>({{ v.length }} minutes)</small>
+        </div>
+    </div>
+</div>
+{% empty %}
+You have no content
+{% endfor %}
+{% endblock %}

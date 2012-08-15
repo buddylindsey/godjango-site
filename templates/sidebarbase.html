@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block bigcontent %}
+    <div class="span9">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div class="span3">
+        <div class="row">
+            <ul>
+                <li><a href="#">RSS</a></li>
+                <li><a href="#">Facebook</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

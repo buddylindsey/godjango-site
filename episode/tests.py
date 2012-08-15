@@ -18,7 +18,6 @@ class VideoModelTest(TestCase):
         video.length = 12
         video.episode = 1
         video.publish_date = now()
-        #video.created_at = now()
         #video.is_premium = False
         #video.price = 105.00
 
