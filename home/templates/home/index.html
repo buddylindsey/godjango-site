@@ -2,18 +2,16 @@
 
 {% block content %}
 {% for video in videos %}
-<div class="row">
-    <div class="span3 index-video-thumbnail">
-        <img src="{{ video.thumbnail_image }}" /> 
-    </div>
-    <div class="span6">
-        <div class="index-video-title">
-            <a href="{{ video.get_absolute_url }}">{{ video.title }}</a>
-        </div>
-        <div class="index-video-description">
-            {{ video.description }} <small>({{ video.length }} minutes)</small>
-        </div>
-    </div>
+<div class="media">
+  <a class="pull-left" href="{{ video.get_absolute_url }}">
+    <img class="media-object" data-src="" src="{{ video.thumbnail_image }}" />
+  </a>
+  <div class="media-body">
+    <a href="{{ video.get_absolute_url }}">
+      <h4 class="media-header">{{ video.title }}</h4>
+    </a>
+    {{ video.description }} <small>({{ video.length }} minutes)</small>
+  </div>
 </div>
 <hr />
 {% empty %}

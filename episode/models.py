@@ -35,7 +35,7 @@ class Video(models.Model):
         else:
             return "%s/episode%s/%s" % (settings.VIDEO_ROOT, self.id, self.video_webm)
     webm = property(_webm)
-    
+
     def save(self, *args, **kwargs): 
         self.slug = slugify(self.title) 
         super(Video, self).save(*args, **kwargs)

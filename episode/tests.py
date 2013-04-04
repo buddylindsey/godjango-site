@@ -23,7 +23,7 @@ class VideoModelTest(TestCase):
 
         video.save()
         self.assertEqual(video, Video.objects.get(title__exact="The Title")) 
-    
+
     def test_video_slugify_on_save(self):
         video = Video()
         video.title = "I am an awesome title"
