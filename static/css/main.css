@@ -21,23 +21,13 @@ html, body{
     margin: 30px 0px 0px 0px;
 }
 
+.browse-videos .media .media-body h4.media-header {
+  margin: 0px;
+  padding: 0px;
+}
+
 .navbar-inner{
     border-radius: 0 0 0 0;
-}
-
-.index-video-thumbnail img{
-    border: 1px solid gray;
-} 
-
-.index-video-title{
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.index-video-title a{
-    color: green;
-    text-decoration: none;
-    padding: 2px;
 }
 
 footer{

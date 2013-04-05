@@ -1,20 +1,22 @@
 {% extends "sidebarbase.html" %}
 
 {% block content %}
-{% for video in videos %}
-<div class="media">
-  <a class="pull-left" href="{{ video.get_absolute_url }}">
-    <img class="media-object" data-src="" src="{{ video.thumbnail_image }}" />
-  </a>
-  <div class="media-body">
-    <a href="{{ video.get_absolute_url }}">
-      <h4 class="media-header">{{ video.title }}</h4>
+<div class="browse-videos">
+  {% for video in videos %}
+  <div class="media">
+    <a class="pull-left" href="{{ video.get_absolute_url }}">
+      <img class="media-object" data-src="" src="{{ video.thumbnail_image }}" />
     </a>
-    {{ video.description }} <small>({{ video.length }} minutes)</small>
+    <div class="media-body">
+      <a href="{{ video.get_absolute_url }}">
+        <h4 class="media-header">{{ video.title }}</h4>
+      </a>
+      {{ video.description }} <small>({{ video.length }} minutes)</small>
+    </div>
   </div>
+  <hr />
+  {% empty %}
+  You have no content
+  {% endfor %}
 </div>
-<hr />
-{% empty %}
-You have no content
-{% endfor %}
 {% endblock %}
