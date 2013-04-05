@@ -1,9 +1,4 @@
 $(document).ready(function() {
-
-  if(window.location.pathname === "/about/"){
-    $(".nav-about").addClass("active");
-  }
-
   switch (window.location.pathname) {
     case "/":
       $(".nav-home").addClass("active");
@@ -17,4 +12,9 @@ $(document).ready(function() {
   }
 
   $('#content-tabs a:first').tab('show');
+
+  $('.watch-video').click(function(){
+    $('.video-preview').toggle();
+    $('.video').toggle();
+  });
 });
