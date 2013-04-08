@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-hello
 <div id="account-menu">
     <ul class="nav nav-pills">
         <li class="account-dashboard"><a href="{% url "dashboard" %}"></a></li>
@@ -10,10 +9,4 @@ hello
         <li class="account-billing"><a href="{% url "billing" %}"></a></li>
     </ul>
 </div>
-<hr />
-I am a dashboard
-<hr />
-{% if user.is_authenticated %}
-    hello {{ user.username }}
-{% endif %}
 {% endblock %}
