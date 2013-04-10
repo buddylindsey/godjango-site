@@ -59,6 +59,10 @@ html, body{
     border-radius: 0 0 0 0;
 }
 
+#account-content {
+    margin: 0px 50px 0px 50px;
+}
+
 footer{
     margin: 10px 0px 0px 0px;
 }

@@ -20,7 +20,11 @@
         </div>
         <div class="span2 offset3">
           <div class="right-header-content">
-            <a href="#">Login with GitHub</a>
+            {% if user.is_authenticated %}
+                Hello <a href="{% url "dashboard" %}">{{ user.username }}</a>
+            {% else %}
+                <a href="#">Login with GitHub</a>
+            {% endif %}
           </div>
         </div>
         </header>

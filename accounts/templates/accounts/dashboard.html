@@ -1,19 +1,5 @@
-{% extends "base.html" %}
+{% extends "account_base.html" %}
 
 {% block content %}
-hello
-<div id="account-menu">
-    <ul class="nav nav-pills">
-        <li class="account-dashboard"><a href="{% url "dashboard" %}"></a></li>
-        <li class="account-favorites"><a href="{% url "favorites" %}"></a></li>
-        <li class="account-settings"><a href="{% url "settings" %}"></a></li>
-        <li class="account-billing"><a href="{% url "billing" %}"></a></li>
-    </ul>
-</div>
-<hr />
 I am a dashboard
-<hr />
-{% if user.is_authenticated %}
-    hello {{ user.username }}
-{% endif %}
 {% endblock %}
