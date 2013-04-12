@@ -18,8 +18,8 @@ class VideoModelTest(TestCase):
         video.length = 12
         video.episode = 1
         video.publish_date = now()
-        #video.is_premium = False
-        #video.price = 105.00
+        video.is_premium = False
+        video.price = 105.00
 
         video.save()
         self.assertEqual(video, Video.objects.get(title__exact="The Title")) 
@@ -44,6 +44,6 @@ class VideoModelTest(TestCase):
         video.video_h264 = "h264.mp4"
         video.video_webm = "webm.webm"
         video.save()
-        
+
         self.assertEqual("/episode%s/%s" % (video.id, "h264.mp4"), video.h264)
         self.assertEqual("/episode%s/%s" % (video.id, "webm.webm"), video.webm)

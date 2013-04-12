@@ -1,5 +1,13 @@
 {% extends "account_base.html" %}
 
 {% block content %}
-favorites
+
+<ul>
+{% for fav in favorites %}
+<li>fav.video.title</li>
+{% empty %}
+<li>You have no favorites. Start watcing some videos.</li>
+{% endfor %}
+</ul>
+
 {% endblock %}

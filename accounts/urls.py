@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
 from django.contrib.auth import logout as auth_logout

@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.views.generic import TemplateView, ListView
 
 from episode.models import Video

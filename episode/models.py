@@ -17,6 +17,8 @@ class Video(models.Model):
     publish_date = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     favorites = models.ManyToManyField(User, through='Favorite')
+    is_premium = models.BooleanField(default=False)
+    price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
 
     @models.permalink
     def get_absolute_url(self):
@@ -40,6 +42,8 @@ class Video(models.Model):
         self.slug = slugify(self.title) 
         super(Video, self).save(*args, **kwargs)
 
+
+    # Admin specific properties
     def admin_thumbnail(self):
         return "<img src='%s' height='41' width='66' />" % self.thumbnail_image
     admin_thumbnail.allow_tags = True

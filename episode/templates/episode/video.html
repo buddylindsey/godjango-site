@@ -39,8 +39,11 @@
   {% endif %}
   </video>
 </div>
-
 <div id="meta-content">
+    {% csrf_token %}
+    <div class="video-favorite" data-video="{{ video.id }}" data-user="{{ user.id }}">
+      Favorite
+  </div>
   <ul id="content-tabs" class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#show-notes">Show Notes</a></li>
     <li><a data-toggle="tab" href="#comments">Comments</a></li>
