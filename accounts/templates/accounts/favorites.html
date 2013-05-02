@@ -4,7 +4,7 @@
 
 <ul>
 {% for fav in favorites %}
-<li>fav.video.title</li>
+<li><a href="{{ fav.video.get_absolute_url }}">{{ fav.video.title }}</a></li>
 {% empty %}
 <li>You have no favorites. Start watcing some videos.</li>
 {% endfor %}

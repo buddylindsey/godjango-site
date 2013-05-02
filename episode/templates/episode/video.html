@@ -23,7 +23,11 @@
       <p>
       {{ video.description }}
       </p>
-      <button class="btn watch-video">Watch Video</button>
+    {% if not video.is_premium %}
+        <button class="btn watch-video">Watch Video</button>
+    {% else %}
+        other Fun stuff
+    {% endif %}
     </div>
   </div>
   <hr />
@@ -39,11 +43,14 @@
   {% endif %}
   </video>
 </div>
+
 <div id="meta-content">
-    {% csrf_token %}
-    <div class="video-favorite" data-video="{{ video.id }}" data-user="{{ user.id }}">
-      Favorite
-  </div>
+    {% if user.is_authenticated %}
+        {% csrf_token %}
+        <div class="video-favorite" data-video="{{ video.id }}" data-user="{{ user.id }}">
+            Favorite
+        </div>
+    {% endif %}
   <ul id="content-tabs" class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#show-notes">Show Notes</a></li>
     <li><a data-toggle="tab" href="#comments">Comments</a></li>
