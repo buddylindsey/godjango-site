@@ -1,9 +1,11 @@
+from django.dispatch import receiver
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 
 from episode.models import Favorite
+from payments.signals import WEBHOOK_SIGNALS
 
 def logout(request):
     auth_logout(request)
@@ -35,3 +37,6 @@ def billing(request):
         { },
         context_instance=RequestContext(request))
 
+@receiver(WEBHOOK_SIGNALS['charge.succeeded'])
+def charge_succeeded(sender, **kwargs):
+    print("charge_succeeded")

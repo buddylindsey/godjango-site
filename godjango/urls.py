@@ -14,7 +14,10 @@ urlpatterns = patterns('',
     url(r'^', include('home.urls')),
 
     # Accounts
-    url('^accounts/', include('accounts.urls')),    
+    url('^accounts/', include('accounts.urls')),
+
+    # Stripe
+    url('^stripe/', include('payments.urls')),
 
     # Episodes
     url(r'^favorite/', include('favorite.urls'), name="favorite"),

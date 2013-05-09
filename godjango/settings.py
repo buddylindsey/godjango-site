@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     'social_auth',
     'accounts',
     'favorite',
+    'payments',
 )
 
 # Django Social Auth settings
@@ -150,6 +151,8 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/dashboard/'
 LOGIN_ERROR_URL = '/accounts/login-error/'
 
+STRIPE_PUBLIC_KEY = os.environ['STRIPE_PUBLIC_KEY']
+STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET_KEY']
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
