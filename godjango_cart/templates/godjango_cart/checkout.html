@@ -1,0 +1,21 @@
+{% extends 'fullbase.html' %}
+
+{% block bigcontent %}
+<div class="cart">
+    <ul>
+        {% for item in cart %}
+        <li>{{ item.product.title }} - {{ item.total_price }}</li>
+        {% empty %}
+        <li>You don't have anything in your cart.</li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="checkout">
+    <form action="" method="POST">
+        <label for="name">Name</label><input type="text" id="name" class="large" />
+        <label for="card">Card</label><input type="text" id="card" class="large" />
+        <label for="ccv">ccv</label><input type="text" id="ccv" class="large" />
+        <input type="submit" value="Checkout" class="btn" />
+    </form>
+</div>
+{% endblock %}

@@ -133,6 +133,8 @@ INSTALLED_APPS = (
     'accounts',
     'favorite',
     'payments',
+    'cart',
+    'godjango_cart',
 )
 
 # Django Social Auth settings

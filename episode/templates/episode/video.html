@@ -26,7 +26,7 @@
     {% if not video.is_premium %}
         <button class="btn watch-video">Watch Video</button>
     {% else %}
-        other Fun stuff
+        <button class="btn add-to-cart" data-id="{{ video.id }}">Add to Cart</button>
     {% endif %}
     </div>
   </div>

@@ -17,7 +17,10 @@ urlpatterns = patterns('',
     url('^accounts/', include('accounts.urls')),
 
     # Stripe
-    url('^stripe/', include('payments.urls')),
+    url(r'^stripe/', include('payments.urls')),
+
+    # Cart
+    url(r'^cart/', include('godjango_cart.urls')),
 
     # Episodes
     url(r'^favorite/', include('favorite.urls'), name="favorite"),

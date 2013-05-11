@@ -1,3 +1,5 @@
 Django
 South
 django-social-auth
+django-stripe-payments
+django-cart
