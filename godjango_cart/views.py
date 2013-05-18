@@ -98,12 +98,3 @@ def subscribe(request):
     cart.add(sub, sub.price, 1)
 
     return redirect("checkout")
-
-@login_required()
-def unsubscribe(request):
-    if(request.user.customer.has_active_subscription):
-        request.user.customer.cancel()
-        return redirect("billing")
-    else:
-        return redirect("billing")
-

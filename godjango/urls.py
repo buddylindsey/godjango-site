@@ -25,7 +25,6 @@ urlpatterns = patterns('',
     # Subscription
     url(r'^subscribe/$', TemplateView.as_view(template_name="home/subscribe.html"), name="subscribe"),
     url(r'^subscribe/new/$', 'godjango_cart.views.subscribe', name="new_subscription"),
-    url(r'^unsubscribe/$', 'godjango_cart.views.unsubscribe', name='unsubscribe'),
 
     # Episodes
     url(r'^favorite/', include('favorite.urls'), name="favorite"),

@@ -1,12 +1,9 @@
 {% extends "account_base.html" %}
 
 {% block content %}
-{% if user.customer.has_active_subscription %}
-    <p>
-        If you would like to unsubscribe please click below:
-    </p>
-    <a href="{% url "unsubscribe" %}" class="btn">Unsubscribe</a>
-{% endif %}
+
+{% include "accounts/_subscription_status.html" %}
+
 <div>
 <h3>Billing History</h3>
 <table class="table table-striped">
@@ -28,4 +25,7 @@
 {% endfor %}
 </table>
 </div>
+
+{% include "accounts/_cancel_form.html" %}
+
 {% endblock %}

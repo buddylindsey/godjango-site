@@ -46,6 +46,7 @@ $(document).ready(function() {
         });
     });
 
+    /** AJAX CSRF Django Stuff **/
     function getCookie(name) {
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {
