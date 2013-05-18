@@ -24,9 +24,9 @@
       {{ video.description }}
       </p>
     {% if not video.is_premium %}
-        <button class="btn watch-video">Watch Video</button>
+      <button class="btn watch-video">Watch Video</button>
     {% else %}
-        <button class="btn add-to-cart" data-id="{{ video.id }}">Add to Cart</button>
+      <a class="btn btn-primary" href="{% url 'subscribe' %}">Subscribe to Watch</a>
     {% endif %}
     </div>
   </div>
@@ -58,9 +58,16 @@
   </ul>
   <div id="actual-data" class="tab-content">
     <div id="show-notes" class="tab-pane active">
+      {% if not video.is_premium %}
       <p>
       {{ video.show_notes|safe }}
       </p>
+      {% else %}
+        <p>
+          This is a premium video. To watch and get the show notes <a href="{% url 'subscribe' %}">subscribe</a>
+        </p>
+        <a class="btn btn-primary" href="{% url 'subscribe' %}">Subscribe to View Notes</a>
+      {% endif %}
     </div>
     <div id="comments" class="tab-pane">
       <div id="disqus_thread"></div>

@@ -11,6 +11,8 @@
         if (response.error) {
             // Show the errors on the form
             $form.find('.payment-errors').text(response.error.message);
+            $form.find('.payment-errors').addClass('alert');
+            $form.find('.payment-errors').addClass('alert-error');
             $form.find('button').prop('disabled', false);
         } else {
             // token contains id, last4, and card type
@@ -54,7 +56,7 @@
         {% if error %}
         <span>Error: {{ error }}</span>
         {% endif %}
-        <span class="payment-errors"></span>
+        <div class="payment-errors"></div>
         <div class="form-horizontal">
             <div class="control-group">
                 <label class="control-label" for="card">Card</label>
@@ -65,20 +67,20 @@
             <div class="control-group">
                 <label class="control-label" for="">Expiration (MM/YYYY)</label>
                 <div class="controls">
-                    <input type="text" size="2" data-stripe="exp-month" />
+                    <input type="text" size="2" data-stripe="exp-month" class="input-mini" />
                     <span> / </span>
-                    <input type="text" size="4" data-stripe="exp-year" />
+                    <input type="text" size="4" data-stripe="exp-year" class="input-mini" />
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="cvc">CVC</label>
                 <div class="controls">
-                    <input type="text" id="cvc" size="4" class="large" data-stripe="cvc" />
+                    <input type="text" id="cvc" size="4" class="input-mini" data-stripe="cvc" />
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls">
-                    <input type="submit" value="Checkout" class="btn" />
+                    <input type="submit" value="Checkout" class="btn btn-primary" />
                 </div>
             </div>
         </div>
