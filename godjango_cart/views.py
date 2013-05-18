@@ -11,8 +11,9 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from cart import Cart
 from payments.models import Customer
 
-from episode.models import Video
 from forms import CheckoutForm
+from models import Subscription
+from episode.models import Video
 
 def add(request):
     if(request.is_ajax() and request.POST):
@@ -52,7 +53,16 @@ def checkout(request):
                 except ObjectDoesNotExist:
                     customer = Customer.create(request.user)
                 customer.update_card(request.POST.get("stripeToken"))
-                customer.charge(cart.summary(), 'usd', request.user.username)
+
+                if(cart.count() == 1):
+                    item = cart.items()[0]
+
+                    if(type(item.product) is Subscription):
+                        customer.subscribe(item.plan)
+                    else:
+                        customer.charge(cart.summary(), 'usd', request.user.username)
+                else:
+                    customer.charge(cart.summary(), 'usd', request.user.username)
 
                 cart.clear()
                 return redirect("order_confirmation")
@@ -80,4 +90,20 @@ def checkout(request):
         return render_to_response('godjango_cart/checkout.html',
             { 'cart': Cart(request), 'publishable_key': settings.STRIPE_PUBLIC_KEY },
             context_instance=RequestContext(request))
+
+@login_required()
+def subscribe(request):
+    cart = Cart(request)
+    sub = Subscription.objects.get(plan="basic_plan")
+    cart.add(sub, sub.price, 1)
+
+    return redirect("checkout")
+
+@login_required()
+def unsubscribe(request):
+    if(request.user.customer.has_active_subscription):
+        request.user.customer.cancel()
+        return redirect("billing")
+    else:
+        return redirect("billing")
 

@@ -162,6 +162,18 @@ EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = True
 
+PAYMENTS_PLANS = {
+    "monthly": {
+        "stripe_plan_id": "basic_plan",
+        "name": "Pro",
+        "description": "The monthly subscription plan to GoDjango",
+        "price": 9,
+        "currency": "usd",
+        "interval": "month"
+    },
+}
+
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.

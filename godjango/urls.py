@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.views.generic import DetailView
 from django.conf.urls import patterns, include, url
+from django.views.generic import DetailView, TemplateView
 
 from episode.models import Video
 
@@ -21,6 +21,11 @@ urlpatterns = patterns('',
 
     # Cart
     url(r'^cart/', include('godjango_cart.urls')),
+
+    # Subscription
+    url(r'^subscribe/$', TemplateView.as_view(template_name="home/subscribe.html"), name="subscribe"),
+    url(r'^subscribe/new/$', 'godjango_cart.views.subscribe', name="new_subscription"),
+    url(r'^unsubscribe/$', 'godjango_cart.views.unsubscribe', name='unsubscribe'),
 
     # Episodes
     url(r'^favorite/', include('favorite.urls'), name="favorite"),

@@ -33,6 +33,7 @@ def settings(request):
 
 @login_required()
 def billing(request):
+    import pdb; pdb.set_trace()
     return render_to_response('accounts/billing.html',
         { },
         context_instance=RequestContext(request))
@@ -40,3 +41,12 @@ def billing(request):
 @receiver(WEBHOOK_SIGNALS['charge.succeeded'])
 def charge_succeeded(sender, **kwargs):
     print("charge_succeeded")
+
+@login_required()
+def unsubscribe(request):
+    if(request.user.customer.has_active_subscription):
+        request.user.customer.cancel()
+        return redirect("billing")
+    else:
+        return redirect("billing")
+

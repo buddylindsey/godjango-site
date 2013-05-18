@@ -1,5 +1,31 @@
 {% extends "account_base.html" %}
 
 {% block content %}
-billing
+{% if user.customer.has_active_subscription %}
+    <p>
+        If you would like to unsubscribe please click below:
+    </p>
+    <a href="{% url "unsubscribe" %}" class="btn">Unsubscribe</a>
+{% endif %}
+<div>
+<h3>Billing History</h3>
+<table class="table table-striped">
+    <thead>
+        <th>#</th>
+        <th>Purchase Date</th>
+        <th>Amount</th>
+        <th>Description</th>
+    </thead>
+{% for charge in user.customer.charges.all %}
+    {% if charge.paid %}
+    <tr>
+        <td>{{ charge.id }}</td>
+        <td>{{ charge.charge_created|date:"M d" }}</td>
+        <td>${{ charge.amount }}</td>
+        <td>{{ charge.description }}</td>
+    </tr>
+    {% endif %}
+{% endfor %}
+</table>
+</div>
 {% endblock %}
