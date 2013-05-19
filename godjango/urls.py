@@ -13,6 +13,9 @@ urlpatterns = patterns('',
     # Home
     url(r'^', include('home.urls')),
 
+    # Contact
+    url(r'^feedback/$', include('contact.urls')),
+
     # Accounts
     url('^accounts/', include('accounts.urls')),
 
