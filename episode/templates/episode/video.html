@@ -23,7 +23,7 @@
       <p>
       {{ video.description }}
       </p>
-    {% if not video.is_premium %}
+    {% if not video.is_premium or user.customer.has_active_subscription %}
       <button class="btn watch-video">Watch Video</button>
     {% else %}
       <a class="btn btn-primary" href="{% url 'subscribe' %}">Subscribe to Watch</a>
@@ -33,6 +33,7 @@
   <hr />
 </div>
 
+{% if not video.is_premium or user.customer.has_active_subscription %}
 <div class="video">
   <video class="sublime" width="800" height="600" poster="{{ video.preview_imgae }}">
   {% if video.video_mp4 %}
@@ -43,6 +44,7 @@
   {% endif %}
   </video>
 </div>
+{% endif %}
 
 <div id="meta-content">
     {% if user.is_authenticated %}
@@ -58,7 +60,7 @@
   </ul>
   <div id="actual-data" class="tab-content">
     <div id="show-notes" class="tab-pane active">
-      {% if not video.is_premium %}
+      {% if not video.is_premium or user.customer.has_active_subscription %}
       <p>
       {{ video.show_notes|safe }}
       </p>
