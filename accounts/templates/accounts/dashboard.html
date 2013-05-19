@@ -1,5 +1,13 @@
 {% extends "account_base.html" %}
 
 {% block content %}
-I am a dashboard
+<h3>Favorites</h3>
+<p>
+You currently have {{ user.favorite_set.count }} favorites.
+</p>
+
+<hr />
+{% include 'accounts/_subscription_status.html' %}
+
+
 {% endblock %}
