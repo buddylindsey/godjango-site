@@ -7,13 +7,13 @@ from django.contrib.auth.decorators import login_required
 from accounts.views import BillingView, SettingsView, DashboardView
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns('accounts.views',
     url(r'', include('social_auth.urls')),
     url(r'^dashboard/$', 
         login_required(DashboardView.as_view()), 
         name="dashboard"
     ),
-    url(r'^favorites/$', 'accounts.views.favorites', name="favorites"),
+    url(r'^favorites/$', 'favorites', name="favorites"),
     url(r'^settings/$',
         login_required(SettingsView.as_view()),
         name="settings"),
@@ -24,6 +24,6 @@ urlpatterns = patterns('',
     url(r'^login/$',
         RedirectView.as_view(url="/accounts/login/github")
     ),
-    url(r'^logout/$', auth_logout, name='logout'),
+    url(r'^logout/$', 'logout', name='logout'),
 
 )

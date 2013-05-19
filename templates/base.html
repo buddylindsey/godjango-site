@@ -22,9 +22,9 @@
         <div class="span2 offset3">
           <div class="right-header-content">
             {% if user.is_authenticated %}
-                Hello <a href="{% url "dashboard" %}">{{ user.username }}</a>
+              Hello <a href="{% url "dashboard" %}">{{ user.username }}</a> | <a href="{% url 'logout' %}">logout</a>
             {% else %}
-                <a href="#">Login with GitHub</a>
+            <a href="{% url 'socialauth_begin' 'github' %}">Login with GitHub</a>
             {% endif %}
           </div>
         </div>
@@ -40,6 +40,9 @@
                 </li>
                 <li class="nav-about"><a href="{% url "about" %}">About GoDjango</a></li>
                 <li class="nav-feedback"><a href="{% url "feedback" %}">Feedback</a></li>
+                {% if not user.customer.has_active_subscription %}
+                <li class="nav-pro"><a href="{% url "subscribe" %}">Go Pro</a></li>
+                {% endif %}
               </ul>
             </div>
           </div>

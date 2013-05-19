@@ -4,7 +4,7 @@ from django.core.mail import EmailMessage
 from django.template import RequestContext
 from django.contrib.sites.models import Site
 from django.views.generic import TemplateView
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.template.loader import render_to_string
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
@@ -15,7 +15,7 @@ from payments.settings import INVOICE_FROM_EMAIL
 
 def logout(request):
     auth_logout(request)
-    return HttpResponseRedirect('/')
+    return redirect('index')
 
 class AccountsContextMixin(object):
     pass

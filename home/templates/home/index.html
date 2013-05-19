@@ -9,7 +9,11 @@
     </a>
     <div class="media-body">
       <a href="{{ video.get_absolute_url }}">
+        {% if video.is_premium %}
+        <h4 class="media-header">[Pro] {{ video.title }}</h4>
+        {% else %}
         <h4 class="media-header">{{ video.title }}</h4>
+        {% endif %}
       </a>
       {{ video.description }} <small>({{ video.length }} minutes)</small>
     </div>
