@@ -18,7 +18,7 @@
     <tr>
         <td>{{ charge.id }}</td>
         <td>{{ charge.charge_created|date:"M d" }}</td>
-        <td>${{ charge.amount }}</td>
+        <td>${{ charge.amount|floatformat:2 }} USD</td>
         <td>{{ charge.description }}</td>
     </tr>
     {% endif %}
