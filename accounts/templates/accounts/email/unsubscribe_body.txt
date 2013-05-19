@@ -1,0 +1,10 @@
+Dear, {{ customer.user.username }}
+
+We are sorry to see that you have stopped your subscription to {{ site.name }}. If you could please reply to this email with why you have decided to stop your subscription so we can, hopefully, improve {{ site.name }} moving forward.
+
+Please also note that even though you have unsubscribed you can still access the premium content until: {{ customer.current_subscription.current_period_end }}.
+
+Finally, remember you can still watch all the free videos we offer, and we welcome any feedback or video ideas as well.
+
+Thank You,
+Buddy
