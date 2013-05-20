@@ -34,14 +34,14 @@ $(document).ready(function() {
     });
 
     $(".video-favorite").click(function(){
-        console.log($(".video-favorite").data('video'));
         $.ajax({
             type: "POST",
             url: "/favorite/add/",
             data: { video_pk: $(".video-favorite").data('video'), user_pk: $(".video-favorite").data('user') },
             dataType: "json",
             success: function() {
-                $(".video-favorite").html("Favorited");
+              console.log("I am a success");
+                $(".video-favorite").html("<i class='icon-star'></i>");
             }
         });
     });

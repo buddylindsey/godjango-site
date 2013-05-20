@@ -30,7 +30,6 @@
     {% endif %}
     </div>
   </div>
-  <hr />
 </div>
 
 {% if not video.is_premium or user.customer.has_active_subscription %}
@@ -47,12 +46,19 @@
 {% endif %}
 
 <div id="meta-content">
-    {% if user.is_authenticated %}
-        {% csrf_token %}
-        <div class="video-favorite" data-video="{{ video.id }}" data-user="{{ user.id }}">
-            Favorite
-        </div>
+  <div id="meta-data">
+    <div class="episode-title">
+      <span class="meta-number">{{ video.episode }}</span>. <span class="meta-title">{{ video.title }}</span>
+    </div>
+    <div class="pubdate-length">
+    {{ video.publish_date|date:"M d, Y" }} - {{ video.length }} minutes
+    </div>
+    {% if not video.is_premium or user.customer.has_active_subscription %}
+    <div class="meta-download">
+      Download: {% if video.video_mp4 %}<a href="{{ video.video_mp4 }}">mp4</a> {% endif %}{% if video.video_vp8 %}| <a href="{{ video.video_vp8 }}">webm</a>{% endif %}
+    </div>
     {% endif %}
+  </div>
   <ul id="content-tabs" class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#show-notes">Show Notes</a></li>
     <li><a data-toggle="tab" href="#comments">Comments</a></li>

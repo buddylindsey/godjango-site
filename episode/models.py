@@ -42,6 +42,9 @@ class Video(models.Model):
         self.slug = slugify(self.title) 
         super(Video, self).save(*args, **kwargs)
 
+    def user_favorited(self, user_id, video_id):
+        u = Favorite.object.filter(user_id=user_id).filter(video_id=video_id)
+        return True
 
     # Admin specific properties
     def admin_thumbnail(self):
@@ -58,5 +61,3 @@ class Video(models.Model):
 class Favorite(models.Model):
     user = models.ForeignKey(User)
     video = models.ForeignKey(Video)
-
-

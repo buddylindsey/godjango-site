@@ -18,7 +18,7 @@ html, body{
 }
 
 .right-header-content{
-    margin: 30px 0px 0px 0px;
+    margin: 35px 0px 0px 0px;
 }
 
 #video-container {
@@ -61,6 +61,32 @@ html, body{
 
 #account-content {
     margin: 0px 50px 0px 50px;
+}
+
+#meta-data{
+  border: 1px solid lightgray;
+  padding: 10px 15px;
+  margin: 20px 0px;
+  border-radius: 5px;
+}
+
+.episode-title {
+  line-height: 1.5em;
+}
+
+.episode-title .meta-number {
+  font-size: 1.25em;
+  color: gray;
+}
+.episode-title .meta-title {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+.pubdate-length {
+  line-height: 1.25em;
+  font-size: .85em;
+  color: gray;
 }
 
 footer{

@@ -1,5 +1,5 @@
 from django.conf.urls import *
 
-urlpatterns = patterns('',
-    url(r'^add/$', 'favorite.ajax.add_favorite', name='favorite'),
+urlpatterns = patterns('favorite.ajax',
+    url(r'^add/$', 'add_favorite', name='favorite'),
 )

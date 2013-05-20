@@ -14,15 +14,15 @@
     <div class="container">
       <div class="row header-content">
         <header>
-        <div class="span6">
+        <div class="span8">
           <div class="page-header">
             <h1>GoDjango <small>Going Through Django Screencasts</small></h1>
           </div>
         </div>
-        <div class="span2 offset3">
+        <div class="span3 offset1">
           <div class="right-header-content">
             {% if user.is_authenticated %}
-              Hello <a href="{% url "dashboard" %}">{{ user.username }}</a> | <a href="{% url 'logout' %}">logout</a>
+              Hello <a href="{% url "dashboard" %}">{{ user.username }}</a>, <a href="{% url 'logout' %}">logout</a>
             {% else %}
             <a href="{% url 'socialauth_begin' 'github' %}">Login with GitHub</a>
             {% endif %}
