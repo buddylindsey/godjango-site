@@ -89,6 +89,31 @@ html, body{
   color: gray;
 }
 
+.main-subscribe-copy-header {
+  margin: 10px 100px 10px 100px;
+  line-height: 1.65em;
+  font-size: 1.5em;
+}
+
+.main-subscribe-copy {
+  margin: 20px;
+}
+
+.subscribe-note {
+  text-align: center;
+  margin: 0px 200px 0px 200px;
+}
+
+.subscribe-button {
+  margin: 20px;
+  text-align: center;
+}
+
+.button-banner {
+  font-size: 1.35em;
+  font-weight: bold;
+}
+
 footer{
     margin: 10px 0px 0px 0px;
 }

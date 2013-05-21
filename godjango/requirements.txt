@@ -1,5 +1,12 @@
-Django
-South
-django-social-auth
-django-stripe-payments
-django-cart
+Django==1.5.1
+South==0.7.6
+django-jsonfield==0.9.4
+django-social-auth==0.7.2
+git+git://github.com/eldarion/django-stripe-payments.git#egg=payments
+git+git://github.com/buddylindsey/django-cart.git#egg=cart
+httplib2==0.7.4
+oauth2==1.5.211
+python-openid==2.2.5
+requests==1.2.0
+stripe==1.7.9
+wsgiref==0.1.2

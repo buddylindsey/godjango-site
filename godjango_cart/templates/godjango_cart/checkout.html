@@ -44,7 +44,7 @@
 <div class="cart">
     <ul>
         {% for item in cart %}
-        <li>{{ item.product.title }} - {{ item.total_price }}</li>
+        <li>{{ item.product.title }} - ${{ item.total_price|floatformat:2 }}</li>
         {% empty %}
         <li>You don't have anything in your cart.</li>
         {% endfor %}
@@ -76,6 +76,15 @@
                 <label class="control-label" for="cvc">CVC</label>
                 <div class="controls">
                     <input type="text" id="cvc" size="4" class="input-mini" data-stripe="cvc" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Accepted Cards</label>
+                <div class="controls">
+                  <img class="credit-card" src="{{ STATIC_URL }}img/visa.png" />
+                  <img class="credit-card" src="{{ STATIC_URL }}img/mastercard.png" />
+                  <img class="credit-card" src="{{ STATIC_URL }}img/discover.png" />
+                  <img class="credit-card" src="{{ STATIC_URL }}img/american_express.png" />
                 </div>
             </div>
             <div class="control-group">
