@@ -25,17 +25,20 @@ class Video(models.Model):
         return ('episode', (), {'pk':self.id , 'slug': self.slug})
 
     def _h264(self):
-        if not settings.VIDEO_ROOT:
-            return "/episode%s/%s" % (self.id, self.video_h264)
-        else:
-            return "%s/episode%s/%s" % (settings.VIDEO_ROOT, self.id, self.video_h264)
+        return "%sepisode-%s/%s" % (
+            settings.MEDIA_URL,
+            self.id, 
+            self.video_h264
+        )
     h264 = property(_h264)
 
     def _webm(self):
-        if not settings.VIDEO_ROOT:
-            return "/episode%s/%s" % (self.id, self.video_webm)
-        else:
-            return "%s/episode%s/%s" % (settings.VIDEO_ROOT, self.id, self.video_webm)
+        return "%sepisode-%s/%s" % (
+            settings.MEDIA_URL,
+            self.id,
+            self.video_webm
+        )
+
     webm = property(_webm)
 
     def save(self, *args, **kwargs): 

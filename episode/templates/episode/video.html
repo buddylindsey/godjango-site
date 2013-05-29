@@ -35,11 +35,11 @@
 {% if not video.is_premium or user.customer.has_active_subscription %}
 <div class="video">
   <video class="sublime" width="800" height="600" poster="{{ video.preview_imgae }}">
-  {% if video.video_mp4 %}
-  <source src="{{ video.video_mp4 }}" />
+  {% if video.h264 %}
+  <source src="{{ video.h264 }}" />
   {% endif %}
-  {% if video.video_vp8 %}
-  <source src="{{ video.video_vp8 }}" />
+  {% if video.webm %}
+  <source src="{{ video.webm }}" />
   {% endif %}
   </video>
 </div>
@@ -55,7 +55,7 @@
     </div>
     {% if not video.is_premium or user.customer.has_active_subscription %}
     <div class="meta-download">
-      Download: {% if video.video_mp4 %}<a href="{{ video.video_mp4 }}">mp4</a> {% endif %}{% if video.video_vp8 %}| <a href="{{ video.video_vp8 }}">webm</a>{% endif %}
+      Download: {% if video.h264 %}<a href="{{ video.h264 }}">mp4</a> {% endif %}{% if video.webm %}| <a href="{{ video.webm }}">webm</a>{% endif %}
     </div>
     {% endif %}
   </div>

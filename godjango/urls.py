@@ -23,11 +23,11 @@ urlpatterns = patterns('',
     url(r'^stripe/', include('payments.urls')),
 
     # Cart
-    #url(r'^cart/', include('godjango_cart.urls')),
+    url(r'^cart/', include('godjango_cart.urls')),
 
     # Subscription
-    #url(r'^subscribe/$', TemplateView.as_view(template_name="home/subscribe.html"), name="subscribe"),
-    #url(r'^subscribe/new/$', 'godjango_cart.views.subscribe', name="new_subscription"),
+    url(r'^subscribe/$', TemplateView.as_view(template_name="home/subscribe.html"), name="subscribe"),
+    url(r'^subscribe/new/$', 'godjango_cart.views.subscribe', name="new_subscription"),
 
     # Episodes
     url(r'^favorite/', include('favorite.urls'), name="favorite"),
