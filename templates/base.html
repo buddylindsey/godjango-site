@@ -40,9 +40,6 @@
                 </li>
                 <li class="nav-about"><a href="{% url "about" %}">About GoDjango</a></li>
                 <li class="nav-feedback"><a href="{% url "feedback" %}">Feedback</a></li>
-                {% if not user.customer.has_active_subscription %}
-                <li class="nav-pro"><a href="{% url "subscribe" %}">Go Pro</a></li>
-                {% endif %}
               </ul>
             </div>
           </div>
