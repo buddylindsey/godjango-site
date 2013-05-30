@@ -60,24 +60,12 @@
     {% endif %}
   </div>
   <ul id="content-tabs" class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#show-notes">Show Notes</a></li>
-    <li><a data-toggle="tab" href="#comments">Comments</a></li>
+    <li class="active"><a data-toggle="tab" href="#comments">Comments</a></li>
+    <li><a data-toggle="tab" href="#show-notes">Show Notes</a></li>
     <li><a data-toggle="tab" href="#description">Description</a></li>
   </ul>
   <div id="actual-data" class="tab-content">
-    <div id="show-notes" class="tab-pane active">
-      {% if not video.is_premium or user.customer.has_active_subscription %}
-      <p>
-      {{ video.show_notes|safe }}
-      </p>
-      {% else %}
-        <p>
-          This is a premium video. To watch and get the show notes <a href="{% url 'subscribe' %}">subscribe</a>
-        </p>
-        <a class="btn btn-primary" href="{% url 'subscribe' %}">Subscribe to View Notes</a>
-      {% endif %}
-    </div>
-    <div id="comments" class="tab-pane">
+    <div id="comments" class="tab-pane active">
       <div id="disqus_thread"></div>
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -92,6 +80,18 @@
       </script>
       <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
       <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+    <div id="show-notes" class="tab-pane">
+      {% if not video.is_premium or user.customer.has_active_subscription %}
+      <p>
+      {{ video.show_notes|safe }}
+      </p>
+      {% else %}
+        <p>
+          This is a premium video. To watch and get the show notes <a href="{% url 'subscribe' %}">subscribe</a>
+        </p>
+        <a class="btn btn-primary" href="{% url 'subscribe' %}">Subscribe to View Notes</a>
+      {% endif %}
     </div>
     <div id="description" class="tab-pane">
       {{ video.description }}
