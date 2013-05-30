@@ -16,7 +16,7 @@ class LatestVideos(Feed):
             return item.title
 
         def item_description(self, item):
-            return item.description + ("<br /><a href='%s/%s-%s'>Watch Now...</a>" % (item.get_absolute_url(), item.id, item.slug))
+            return item.description + ("<br /><a href='http://godjango.com%s'>Watch Now...</a>" % (item.get_absolute_url()))
 
         def item_link(self, item):
             return item.get_absolute_url()
