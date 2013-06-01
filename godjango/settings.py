@@ -35,6 +35,9 @@ path = lambda *a: os.path.join(ROOT, *a)
 
 VIDEO_ROOT = "http://assets.godjango.com"
 
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
