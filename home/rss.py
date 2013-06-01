@@ -6,7 +6,7 @@ from episode.models import Video
 
 class LatestVideos(Feed):
         title = "GoDjango Screencasts"
-        link = "http://godjango.com"
+        link = "https://godjango.com"
         description = "Screencast covering some topic about Django."
 
         def items(self):
@@ -16,7 +16,7 @@ class LatestVideos(Feed):
             return item.title
 
         def item_description(self, item):
-            return item.description + ("<br /><a href='http://godjango.com%s'>Watch Now...</a>" % (item.get_absolute_url()))
+            return item.description + ("<br /><a href='https://godjango.com%s'>Watch Now...</a>" % (item.get_absolute_url()))
 
         def item_link(self, item):
             return item.get_absolute_url()
