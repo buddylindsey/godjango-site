@@ -55,7 +55,7 @@
     </div>
     {% if not video.is_premium or user.customer.has_active_subscription %}
     <div class="meta-download">
-      Download: {% if video.h264 %}<a href="{{ video.h264 }}">mp4</a> {% endif %}{% if video.webm %}| <a href="{{ video.webm }}">webm</a>{% endif %}
+      Download: {% if video.video_h264 %}<a href="{{ video.h264 }}">mp4</a> {% endif %}{% if video.video_webm %}| <a href="{{ video.webm }}">webm</a>{% endif %}
     </div>
     {% endif %}
   </div>
