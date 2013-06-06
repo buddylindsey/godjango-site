@@ -36,6 +36,12 @@ class CartUrlsTest(TestCase):
         video = self._create_video()
 
         response = self.client.post(
+            reverse('add_to_cart'), 
+            {'video_pk':video.id,}, 
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
+
+        response = self.client.post(
             reverse('remove_from_cart'),
             {'video_pk':video.id,}, 
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
