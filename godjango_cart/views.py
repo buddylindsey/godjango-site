@@ -39,13 +39,16 @@ def cart(request):
             { 'cart': Cart(request) },
             context_instance=RequestContext(request))
 
-
 @login_required
 def checkout(request):
-    if request.POST:
+    print('I was called')
+    if request['REQUEST_METHOD']:
+        print('i was a post')
+        raise
         cart = Cart(request)
 
         form = CheckoutForm(request.POST)
+        print form.is_valid()
         if form.is_valid():
             try:
                 try:
@@ -53,6 +56,9 @@ def checkout(request):
                 except ObjectDoesNotExist:
                     customer = Customer.create(request.user)
                 customer.update_card(request.POST.get("stripeToken"))
+
+                if not customer:
+                    raise
 
                 if(cart.count() == 1):
                     item = cart.items()[0]
