@@ -51,23 +51,11 @@ def checkout(request):
             try:
                 customer = get_customer(request.user)
 
-                print('hello')
-                raise
-
                 customer.update_card(request.POST.get("stripeToken"))
 
-                print('hello')
-                raise
-
-                if(cart.count() == 1):
-                    item = cart.items()[0]
-
-                    if(type(item.product) is Subscription):
-                        customer.subscribe(item.plan)
-                    else:
-                        customer.charge(cart.summary(), 'usd', request.user.username)
-                else:
-                    customer.charge(cart.summary(), 'usd', request.user.username)
+                product = cart.items()[0].product
+                customer.subscribe(product.plan)
+                customer.charge(cart.summary(), 'usd', product.plan)
 
                 cart.clear()
                 return redirect("order_confirmation")
@@ -92,8 +80,10 @@ def checkout(request):
                 },
                 context_instance=RequestContext(request))
     else:
-        return render_to_response('godjango_cart/checkout.html',
-            { 'cart': Cart(request), 'publishable_key': settings.STRIPE_PUBLIC_KEY },
+        return render_to_response('godjango_cart/checkout.html', {
+                'cart': Cart(request),
+                'publishable_key': settings.STRIPE_PUBLIC_KEY
+            },
             context_instance=RequestContext(request))
 
 @login_required()
