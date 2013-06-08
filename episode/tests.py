@@ -45,5 +45,5 @@ class VideoModelTest(TestCase):
         video.video_webm = "webm.webm"
         video.save()
 
-        self.assertEqual("/episode%s/%s" % (video.id, "h264.mp4"), video.h264)
-        self.assertEqual("/episode%s/%s" % (video.id, "webm.webm"), video.webm)
+        self.assertEqual("/media/episode-%s/%s" % (video.id, "h264.mp4"), video.h264)
+        self.assertEqual("/media/episode-%s/%s" % (video.id, "webm.webm"), video.webm)
