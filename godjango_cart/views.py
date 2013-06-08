@@ -54,15 +54,8 @@ def checkout(request):
                     customer = Customer.create(request.user)
                 customer.update_card(request.POST.get("stripeToken"))
 
-                if(cart.count() == 1):
-                    item = cart.items()[0]
-
-                    if(type(item.product) is Subscription):
-                        customer.subscribe(item.plan)
-                    else:
-                        customer.charge(cart.summary(), 'usd', request.user.username)
-                else:
-                    customer.charge(cart.summary(), 'usd', request.user.username)
+                item = cart.items()[0]
+                customer.subscribe(item.plan)
 
                 cart.clear()
                 return redirect("order_confirmation")
