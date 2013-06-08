@@ -1,9 +1,18 @@
-from django.test import TestCase
-from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+import views
 
-from episode.models import Video
+from django.test import TestCase
+from django.contrib.auth.models import User, AnonymousUser
+from django.core.urlresolvers import reverse
+from django.test.client import RequestFactory
+
+from mock import patch
+from cart import Cart as TheCart
 from cart.models import Cart
+from payments.models import Customer
+
+from .utils import get_customer
+from .models import Subscription
+from episode.models import Video
 
 class CartUrlsTest(TestCase):
     def _create_user(self):
@@ -34,6 +43,12 @@ class CartUrlsTest(TestCase):
 
     def test_remove_url(self):
         video = self._create_video()
+
+        response = self.client.post(
+            reverse('add_to_cart'), 
+            {'video_pk':video.id,}, 
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+        )
 
         response = self.client.post(
             reverse('remove_from_cart'),
@@ -111,10 +126,92 @@ class CartCartTest(TestCase):
         cart = Cart.objects.all()[0]
         self.assertEqual(0, cart.item_set.count())
 
+def fakefunc():
+    return True
 
+class CheckoutTest(TestCase):
+    def _create_user(self):
+        return User.objects.create_user('buddy', 'buddy@buddylindsey.com', 'mypass')
 
+    def _create_video(self):
+        video = Video()
+        video.title = "I are title"
+        video.description = "I am a lonely description"
+        video.price = 9.99
+        video.save()
+        return video
 
+    def setUp(self):
+        self.user = self._create_user()
+        self.video = self._create_video()
+        self.factory = RequestFactory()
+        sub = Subscription()
+        sub.price = 9.00
+        sub.plan = 'monthly'
+        sub.title = 'Pro'
+        sub.save()
 
+    def test_login_required_checkout_url(self):
+        request = self.factory.get('/cart/checkout/')
+        request.user = AnonymousUser()
+        response = views.checkout(request)
+        self.assertEqual(response.status_code, 302)
 
+    def test_checkout_url_logged_in(self):
+        request = self.factory.get('/cart/checkout/')
+        request.user = self.user
+        request.session = {}
+        response = views.checkout(request)
+        self.assertEqual(response.status_code, 200)
 
+    def test_invalid_form(self):
+        request = self.factory.post(
+            '/cart/checkout/', 
+            {'stripeToke':'xxxxxxxxxx'}
+        )
+        request.user = self.user
+        request.session = {}
 
+        response = views.checkout(request)
+        self.assertContains(
+            response, 
+            'Problem with your card please try again'
+        )
+
+    @patch('payments.models.Customer.update_card')
+    @patch('payments.models.Customer.subscribe')
+    @patch('payments.models.Customer.charge')
+    def test_valid_form(self, UpdateMock, SubscribeMock, ChargeMock):
+        Customer.objects.create(
+            user=self.user,
+            stripe_id=1
+        )
+
+        request = self.factory.post(
+            '/cart/checkout/', 
+            {'stripeToken':'xxxxxxxxxx'}
+        )
+        request.user = self.user
+        request.session = {}
+
+        cart = TheCart(request)
+        sub = Subscription.objects.get(plan='monthly')
+        cart.add(sub, sub.price, 1)
+
+        response = views.checkout(request)
+        self.assertEqual(response.status_code, 302)
+
+    @patch('payments.models.Customer.create')
+    def test_get_customer(self, CreateMock):
+        CreateMock.return_value = Customer()
+        customer = get_customer(self.user)
+        self.assertEqual(type(Customer()), type(customer))
+
+    def test_get_customer_attached_to_user(self):
+        customer = Customer.objects.create(
+            user=self.user,
+            stripe_id=1
+        )
+
+        customer = get_customer(self.user)
+        self.assertEqual(1, self.user.customer.stripe_id)

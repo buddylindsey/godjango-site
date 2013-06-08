@@ -11,6 +11,8 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from cart import Cart
 from payments.models import Customer
 
+from .utils import get_customer
+
 from forms import CheckoutForm
 from models import Subscription
 from episode.models import Video
@@ -39,23 +41,21 @@ def cart(request):
             { 'cart': Cart(request) },
             context_instance=RequestContext(request))
 
-
 @login_required
 def checkout(request):
-    if request.POST:
+    if request.method == 'POST':
         cart = Cart(request)
 
         form = CheckoutForm(request.POST)
         if form.is_valid():
             try:
-                try:
-                    customer = request.user.customer
-                except ObjectDoesNotExist:
-                    customer = Customer.create(request.user)
+                customer = get_customer(request.user)
+
                 customer.update_card(request.POST.get("stripeToken"))
 
-                item = cart.items()[0]
-                customer.subscribe(item.plan)
+                product = cart.items()[0].product
+                customer.subscribe(product.plan)
+                customer.charge(cart.summary(), 'usd', product.plan)
 
                 cart.clear()
                 return redirect("order_confirmation")
@@ -80,8 +80,10 @@ def checkout(request):
                 },
                 context_instance=RequestContext(request))
     else:
-        return render_to_response('godjango_cart/checkout.html',
-            { 'cart': Cart(request), 'publishable_key': settings.STRIPE_PUBLIC_KEY },
+        return render_to_response('godjango_cart/checkout.html', {
+                'cart': Cart(request),
+                'publishable_key': settings.STRIPE_PUBLIC_KEY
+            },
             context_instance=RequestContext(request))
 
 @login_required()
