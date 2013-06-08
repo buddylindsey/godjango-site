@@ -11,3 +11,4 @@ requests==1.2.0
 stripe==1.7.9
 wsgiref==0.1.2
 psycopg2
+mock
