@@ -11,6 +11,8 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from cart import Cart
 from payments.models import Customer
 
+from .utils import get_customer
+
 from forms import CheckoutForm
 from models import Subscription
 from episode.models import Video
@@ -41,24 +43,21 @@ def cart(request):
 
 @login_required
 def checkout(request):
-    print('I was called')
-    if request['REQUEST_METHOD']:
-        print('i was a post')
-        raise
+    if request.method == 'POST':
         cart = Cart(request)
 
         form = CheckoutForm(request.POST)
-        print form.is_valid()
         if form.is_valid():
             try:
-                try:
-                    customer = request.user.customer
-                except ObjectDoesNotExist:
-                    customer = Customer.create(request.user)
+                customer = get_customer(request.user)
+
+                print('hello')
+                raise
+
                 customer.update_card(request.POST.get("stripeToken"))
 
-                if not customer:
-                    raise
+                print('hello')
+                raise
 
                 if(cart.count() == 1):
                     item = cart.items()[0]

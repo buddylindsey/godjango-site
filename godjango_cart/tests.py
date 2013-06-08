@@ -3,11 +3,13 @@ from django.contrib.auth.models import User, AnonymousUser
 from django.core.urlresolvers import reverse
 from django.test.client import RequestFactory
 
-import mock
+from mock import patch
 
 from episode.models import Video
 from cart.models import Cart
+from payments.models import Customer
 import views
+from .utils import get_customer
 
 class CartUrlsTest(TestCase):
     def _create_user(self):
@@ -153,18 +155,29 @@ class CheckoutTest(TestCase):
         response = views.checkout(request)
         self.assertEqual(response.status_code, 200)
 
-
-    #@mock.patch('payments.models.Customer.create')
     def test_invalid_form(self):
-        print('start me')
-        #Mock.return_value = False
-        request = self.factory.post('/cart/checkout/', {})
+        request = self.factory.post('/cart/checkout/', {'stripeToke':'xxxxxxxxxx'})
         request.user = self.user
         request.session = {}
 
         response = views.checkout(request)
+        self.assertContains(response, 'Problem with your card please try again')
+
+    @patch('payments.models.Customer.create')
+    def test_valid_form(self, CreateMock):
+        CreateMock.return_value = True
+        request = self.factory.post('/cart/checkout/', {'stripeToken':'xxxxxxxxxx'})
+        request.user = self.user
+        request.session = {}
+
+        resposne = views.checkout(request)
         self.assertEqual(response.status_code, 200)
 
+    @patch('payments.models.Customer.create')
+    def test_get_customer(self, CreateMock):
+        CreateMock.return_value = Customer()
+        customer = get_customer(self.user)
+        self.assertEqual(Customer(), type(customer))
 
 
 
