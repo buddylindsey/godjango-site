@@ -126,9 +126,6 @@ class CartCartTest(TestCase):
         cart = Cart.objects.all()[0]
         self.assertEqual(0, cart.item_set.count())
 
-def fakefunc():
-    return True
-
 class CheckoutTest(TestCase):
     def _create_user(self):
         return User.objects.create_user('buddy', 'buddy@buddylindsey.com', 'mypass')
@@ -200,6 +197,35 @@ class CheckoutTest(TestCase):
 
         response = views.checkout(request)
         self.assertEqual(response.status_code, 302)
+
+    @patch('payments.models.Customer.update_card')
+    @patch('payments.models.Customer.subscribe')
+    @patch('payments.models.Customer.charge')
+    def test_email_change_while_checkingout(self, UpdateMock, SubscribeMock, ChargeMock):
+        Customer.objects.create(
+            user=self.user,
+            stripe_id=1
+        )
+
+        request = self.factory.post(
+            '/cart/checkout/', 
+            {
+                'stripeToken':'xxxxxxxxxx',
+                'email': 'other@other.com'
+            }
+        )
+        request.user = self.user
+        request.session = {}
+
+        cart = TheCart(request)
+        sub = Subscription.objects.get(plan='monthly')
+        cart.add(sub, sub.price, 1)
+
+        self.assertEqual(request.user.email, 'buddy@buddylindsey.com')
+        response = views.checkout(request)
+        self.assertEqual(response.status_code, 302)
+        user = User.objects.get(pk=1)
+        self.assertEqual(request.user.email, 'other@other.com')
 
     @patch('payments.models.Customer.create')
     def test_get_customer(self, CreateMock):
