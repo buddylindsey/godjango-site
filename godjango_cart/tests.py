@@ -10,7 +10,7 @@ from cart import Cart as TheCart
 from cart.models import Cart
 from payments.models import Customer
 
-from .utils import get_customer
+from .utils import get_customer, update_email
 from .models import Subscription
 from episode.models import Video
 
@@ -215,3 +215,20 @@ class CheckoutTest(TestCase):
 
         customer = get_customer(self.user)
         self.assertEqual(1, self.user.customer.stripe_id)
+
+class UtilTest(TestCase):
+    def _create_user(self):
+        return User.objects.create_user('buddy', 'buddy@buddylindsey.com', 'mypass')
+
+    def setUp(self):
+        self.user = self._create_user()
+
+    @patch('payments.models.Customer.create')
+    def test_get_customer(self, CreateMock):
+        CreateMock.return_value = Customer()
+        customer = get_customer(self.user)
+        self.assertEqual(type(Customer()), type(customer))
+
+    def test_update_email(self):
+        update = update_email(self.user, 'other@other.com')
+        self.assertEqual(update, 'other@other.com')

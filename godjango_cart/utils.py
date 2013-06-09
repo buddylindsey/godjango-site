@@ -6,4 +6,12 @@ def get_customer(user):
     except:
         return Customer.create(user)
 
+def update_email(user, email):
+    if user.email == email:
+        return email
+    else:
+        user.email = email
+        user.save()
+
+    return user.email
 

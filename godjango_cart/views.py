@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404, render_to_response, redirect
 from cart import Cart
 from payments.models import Customer
 
-from .utils import get_customer
+from .utils import get_customer, update_email
 
 from forms import CheckoutForm
 from models import Subscription
@@ -49,6 +49,9 @@ def checkout(request):
         form = CheckoutForm(request.POST)
         if form.is_valid():
             try:
+                if 'email' in request.POST:
+                    update_email(request.user, request.POST.get('email'))
+
                 customer = get_customer(request.user)
 
                 customer.update_card(request.POST.get("stripeToken"))
