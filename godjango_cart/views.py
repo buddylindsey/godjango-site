@@ -92,7 +92,8 @@ def checkout(request):
 @login_required()
 def subscribe(request):
     cart = Cart(request)
-    sub = Subscription.objects.get(plan="monthly")
-    cart.add(sub, sub.price, 1)
+    if cart.count() < 1:
+        sub = Subscription.objects.get(plan="monthly")
+        cart.add(sub, sub.price, 1)
 
     return redirect("checkout")
