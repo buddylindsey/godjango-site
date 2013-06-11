@@ -185,7 +185,7 @@ EMAIL_USE_TLS = True
 PAYMENTS_INVOICE_FROM_EMAIL="buddy@buddylindsey.com"
 PAYMENTS_PLANS = {
     "monthly": {
-        "stripe_plan_id": "basic_plan",
+        "stripe_plan_id": "pro",
         "name": "Pro",
         "description": "The monthly subscription plan to GoDjango",
         "price": 9,
