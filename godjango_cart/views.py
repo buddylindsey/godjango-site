@@ -58,7 +58,6 @@ def checkout(request):
 
                 product = cart.items()[0].product
                 customer.subscribe(product.plan)
-                customer.charge(cart.summary(), 'usd', product.plan)
 
                 cart.clear()
                 return redirect("order_confirmation")
