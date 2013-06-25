@@ -26,6 +26,8 @@
 </table>
 </div>
 
+{% if user.customer %}
 {% include "accounts/_cancel_form.html" %}
+{% endif %}
 
 {% endblock %}
