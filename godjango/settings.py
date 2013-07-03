@@ -156,6 +156,7 @@ INSTALLED_APPS = (
     'contact',
     'south',
     'django.contrib.sitemaps',
+    'robots',
 )
 
 # Django Social Auth settings

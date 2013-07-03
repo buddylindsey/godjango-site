@@ -20,6 +20,7 @@ urlpatterns = patterns('',
 
     # SEO
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
+    url(r'^robots\.txt$', include('robots.urls')),
 
     # Contact
     url(r'^feedback/$', include('contact.urls')),

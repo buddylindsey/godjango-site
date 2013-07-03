@@ -12,3 +12,4 @@ stripe==1.7.9
 wsgiref==0.1.2
 psycopg2
 mock
+django-robots==0.9.2
