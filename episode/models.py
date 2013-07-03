@@ -19,6 +19,7 @@ class Video(models.Model):
     favorites = models.ManyToManyField(User, through='Favorite')
     is_premium = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    meta_keywords = models.TextField(null=True, blank=True)
 
     @models.permalink
     def get_absolute_url(self):
