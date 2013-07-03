@@ -1,5 +1,9 @@
 {% extends "fullbase.html" %}
 
+{% block metadescription %}
+{{ video.description|safe }}
+{% endblock %}
+
 {% block title %}
 {{ video.title }} - GoDjango.com
 {% endblock %}
