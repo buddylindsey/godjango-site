@@ -155,6 +155,7 @@ INSTALLED_APPS = (
     'godjango_cart',
     'contact',
     'south',
+    'django.contrib.sitemaps',
 )
 
 # Django Social Auth settings

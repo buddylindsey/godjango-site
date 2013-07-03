@@ -2,9 +2,14 @@ from django.contrib import admin
 from django.conf.urls import patterns, include, url
 from django.views.generic import DetailView, TemplateView
 
+from home.sitemap import VideoSitemap
 from episode.models import Video
 
 admin.autodiscover()
+
+sitemaps = {
+    'videos': VideoSitemap()
+}
 
 urlpatterns = patterns('',
     # Admin
@@ -12,6 +17,9 @@ urlpatterns = patterns('',
 
     # Home
     url(r'^', include('home.urls')),
+
+    # SEO
+    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 
     # Contact
     url(r'^feedback/$', include('contact.urls')),
