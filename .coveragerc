@@ -1,0 +1,6 @@
+[run]
+source = accounts,contact,episode,favorite,godjango_cart,home
+branch = 1
+
+[report]
+omit = accounts/*tests*
