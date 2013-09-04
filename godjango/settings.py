@@ -1,8 +1,10 @@
 # Django settings for godjango project.
 import os
 
-if(os.environ['DJANGO_ENV'] == "production"):
-    DEBUG = False 
+DJANGO_ENV = getattr(os.environ, 'DJANGO_ENV', 'development')
+
+if(DJANGO_ENV == "production"):
+    DEBUG = False
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -19,18 +21,18 @@ else:
     DEBUG = True
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'db.sqlite3',                      # Or path to database file if using sqlite3.
-            'USER': '',                      # Not used with sqlite3.
-            'PASSWORD': '',                  # Not used with sqlite3.
-            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'db.sqlite3',
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
         }
     }
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS']
+ALLOWED_HOSTS = getattr(os.environ, 'ALLOWED_HOSTS', [])
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 path = lambda *a: os.path.join(ROOT, *a)
@@ -76,40 +78,27 @@ MEDIA_ROOT = '/var/www/assets/godjango/'
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = "%s/static_final/" % path('.')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
-# Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     "%s/static/" % path('.'),
 )
 
-# List of finder classes that know how to find static files in
-# various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Make this unique, and don't share it with anybody.
 SECRET_KEY = 'l$f@dvrc!!+afw$-a-w(^vv889^%5%cl%+1)h+0!8@i0eq=sv2'
 
-# List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -118,19 +107,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'godjango.urls'
 
-# Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'godjango.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     "%s/templates" % path('.'),
 )
 
@@ -168,23 +152,24 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_ENABLED_BACKENDS = ('github',)
 SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
 
-GITHUB_APP_ID = os.environ['GITHUB_APP_ID']
-GITHUB_API_SECRET = os.environ['GITHUB_API_SECRET']
+GITHUB_APP_ID = getattr(os.environ, 'GITHUB_APP_ID', '')
+GITHUB_API_SECRET = getattr(os.environ, 'GITHUB_API_SECRET', '')
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/dashboard/'
 LOGIN_ERROR_URL = '/accounts/login-error/'
 
-STRIPE_PUBLIC_KEY = os.environ['STRIPE_PUBLIC_KEY']
-STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET_KEY']
+STRIPE_PUBLIC_KEY = getattr(os.environ, 'STRIPE_PUBLIC_KEY', '')
+STRIPE_SECRET_KEY = getattr(os.environ, 'STRIPE_SECRET_KEY', '')
 
-EMAIL_HOST = os.environ['EMAIL_HOST']
-EMAIL_PORT = os.environ['EMAIL_PORT']
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_HOST = getattr(os.environ, 'EMAIL_HOST', '')
+EMAIL_PORT = getattr(os.environ, 'EMAIL_PORT', '')
+EMAIL_HOST_USER = getattr(os.environ, 'EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = getattr(os.environ, 'EMAIL_HOST_PASSWORD', '')
+
 EMAIL_USE_TLS = True
 
-PAYMENTS_INVOICE_FROM_EMAIL="buddy@buddylindsey.com"
+PAYMENTS_INVOICE_FROM_EMAIL = "buddy@buddylindsey.com"
 PAYMENTS_PLANS = {
     "monthly": {
         "stripe_plan_id": "pro",
