@@ -2,9 +2,13 @@
 
 {% block content %}
 <h3>Favorites</h3>
-<p>
-Feature coming very soon...
-</p>
+<div>
+    <ul>
+    {% for video in user.favorites.all %}
+        <li><a href="{{ video.get_absolute_url }}">{{ video.title }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
 
 <hr />
 {% include 'accounts/_subscription_status.html' %}

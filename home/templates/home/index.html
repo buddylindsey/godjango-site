@@ -1,4 +1,5 @@
 {% extends "sidebarbase.html" %}
+{% load video_util %}
 
 {% block content %}
 <div class="browse-videos">
@@ -15,7 +16,14 @@
         <h4 class="media-header">{{ video.title }}</h4>
         {% endif %}
       </a>
-      {{ video.description }} <small>({{ video.length }} minutes)</small>
+      {{ video.description }} <small><strong>({{ video.length }} minutes)</strong></small>
+      {% if user.is_authenticated %}
+        {% if video|is_favorited:user.id %}
+          <img class="video-favorite" data-favorite="true" data-video="{{ video.id }}" src="{{ STATIC_URL }}img/favorite.png" height="15px" width="15px" />
+        {% else %}
+          <img class="video-favorite" data-favorite="false" data-video="{{ video.id }}" src="{{ STATIC_URL }}img/nofav.png" height="15px" width="15px" />
+        {% endif %}
+      {% endif %}
     </div>
   </div>
   <hr />

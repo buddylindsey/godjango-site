@@ -34,14 +34,26 @@ $(document).ready(function() {
     });
 
     $(".video-favorite").click(function(){
+        var el = $(this);
         $.ajax({
             type: "POST",
             url: "/favorite/add/",
-            data: { video_pk: $(".video-favorite").data('video'), user_pk: $(".video-favorite").data('user') },
+            data: {
+              video_pk: el.data('video'), 
+              is_favorite: el.data('favorite')
+            },
             dataType: "json",
             success: function() {
-              console.log("I am a success");
-                $(".video-favorite").html("<i class='icon-star'></i>");
+              console.log(el.data('favorite'));
+              if(el.data('favorite')){
+                console.log('hello');
+                el.attr('src', '/static/img/nofav.png');
+                el.attr('data-favorite', 'false');
+              } else {
+                console.log('world');
+                el.attr('data-favorite', 'true');
+                el.attr('src', '/static/img/favorite.png');
+              }
             }
         });
     });

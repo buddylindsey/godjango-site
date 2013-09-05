@@ -3,6 +3,7 @@ from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
+
 class Video(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
@@ -16,9 +17,11 @@ class Video(models.Model):
     episode = models.PositiveIntegerField(null=True, blank=True)
     publish_date = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    favorites = models.ManyToManyField(User, through='Favorite')
+    favorites = models.ManyToManyField(
+        User, blank=True, related_name='favorites')
     is_premium = models.BooleanField(default=False)
-    price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    price = models.DecimalField(
+        max_digits=6, decimal_places=2, null=True, blank=True)
     meta_keywords = models.TextField(null=True, blank=True)
 
     @models.permalink
@@ -46,10 +49,6 @@ class Video(models.Model):
         self.slug = slugify(self.title) 
         super(Video, self).save(*args, **kwargs)
 
-    def user_favorited(self, user_id, video_id):
-        u = Favorite.object.filter(user_id=user_id).filter(video_id=video_id)
-        return True
-
     # Admin specific properties
     def admin_thumbnail(self):
         return "<img src='%s' height='41' width='66' />" % self.thumbnail_image
@@ -61,7 +60,3 @@ class Video(models.Model):
 
     def __unicode__(self):
         return self.title
-
-class Favorite(models.Model):
-    user = models.ForeignKey(User)
-    video = models.ForeignKey(Video)
