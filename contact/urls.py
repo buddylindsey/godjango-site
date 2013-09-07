@@ -1,5 +1,7 @@
 from django.conf.urls import *
 
-urlpatterns = patterns('contact.views',
-    url('^', 'feedback', name='feedback'),
+from contact.views import FeedbackView
+
+urlpatterns = patterns('',
+    url('^', FeedbackView.as_view(), name='feedback'),
 )

@@ -1,16 +1,18 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
+from django.core import mail
 from django.test import TestCase
 
+from contact.forms import FeedbackForm
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+
+class FeedbackFormTest(TestCase):
+
+    def test_send_email(self):
+        form = FeedbackForm(
+            data={'email': 'buddy@buddy.com', 'body': 'test email'})
+
+        if form.is_valid():
+            form.send_email()
+        else:
+            self.assertFail()
+
+        self.assertEqual(len(mail.outbox), 1)

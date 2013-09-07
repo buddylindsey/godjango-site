@@ -141,6 +141,7 @@ INSTALLED_APPS = (
     'south',
     'django.contrib.sitemaps',
     'robots',
+    'crispy_forms',
 )
 
 # Django Social Auth settings
@@ -181,6 +182,7 @@ PAYMENTS_PLANS = {
     },
 }
 
+CRISPY_TEMPLATE_PACK = 'bootstrap'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

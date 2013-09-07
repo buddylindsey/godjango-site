@@ -1,25 +1,10 @@
 {% extends "fullbase.html" %}
+{% load crispy_forms_tags %}
 
 {% block bigcontent %}
-<form action="/feedback/" method="post">{% csrf_token %}
-    <fieldset>
-        {% for field in form %}
-        <div class="clearfix">
-            {{ field.label_tag }}
-            <div class="input">
-                {{ field }}
-                {% if field.errors %}
-                <div class="alert alert-error">{{ field.errors }}</div>
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
-        <div class="actions">
-            <input type="submit" name="submit" class="btn btn-primary" value="Send Feeback"/>
-            {% if message %}
-            <div class="alert">{{ message }}</div>
-            {% endif %}
-        </div>
-    </fieldset>
-</form>
+<div class="content">
+    <div class="offset1 span8">
+        {% crispy form %}
+    </div>
+</div>
 {% endblock %}
