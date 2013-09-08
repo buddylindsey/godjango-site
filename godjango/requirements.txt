@@ -1,9 +1,9 @@
-Django==1.5.1
+Django==1.5.2
 South==0.7.6
 django-crispy-forms==1.4.0
 django-jsonfield==0.9.4
 django-social-auth==0.7.2
-git+git://github.com/eldarion/django-stripe-payments.git#egg=payments
+django-stripe-payments==2.0b22
 git+git://github.com/buddylindsey/django-cart.git#egg=cart
 httplib2==0.7.4
 oauth2==1.5.211
