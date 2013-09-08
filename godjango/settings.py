@@ -1,18 +1,18 @@
 # Django settings for godjango project.
 import os
 
-DJANGO_ENV = os.environ['DJANGO_ENV']
+DJANGO_ENV = os.environ.get('DJANGO_ENV', '')
 
 if(DJANGO_ENV == "production"):
     DEBUG = False
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['DATABASE_NAME'],
-            'USER': os.environ['DATABASE_USER'],
-            'PASSWORD': os.environ['DATABASE_PASSWORD'],
-            'HOST': os.environ['DATABASE_HOST'],
-            'PORT': os.environ['DATABASE_PORT'],
+            'NAME': os.environ.get('DATABASE_NAME', ''),
+            'USER': os.environ.get('DATABASE_USER', ''),
+            'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
+            'HOST': os.environ.get('DATABASE_HOST', ''),
+            'PORT': os.environ.get('DATABASE_PORT', ''),
         }
     }
     SESSION_COOKIE_SECURE = True
@@ -32,7 +32,7 @@ else:
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*')
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 path = lambda *a: os.path.join(ROOT, *a)
@@ -153,20 +153,20 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_ENABLED_BACKENDS = ('github',)
 SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
 
-GITHUB_APP_ID = os.environ['GITHUB_APP_ID']
-GITHUB_API_SECRET = os.environ['GITHUB_API_SECRET']
+GITHUB_APP_ID = os.environ.get('GITHUB_APP_ID', '')
+GITHUB_API_SECRET = os.environ.get('GITHUB_API_SECRET', '')
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/dashboard/'
 LOGIN_ERROR_URL = '/accounts/login-error/'
 
-STRIPE_PUBLIC_KEY = os.environ['STRIPE_PUBLIC_KEY']
-STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET_KEY']
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', '')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
 
-EMAIL_HOST = os.environ['EMAIL_HOST']
-EMAIL_PORT = os.environ['EMAIL_PORT']
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
+EMAIL_PORT = os.environ.get('EMAIL_PORT', '')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 EMAIL_USE_TLS = True
 
