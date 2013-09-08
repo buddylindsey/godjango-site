@@ -1,0 +1,18 @@
+{% extends "fullbase.html" %}
+
+{% block bigcontent %}
+<div class="content">
+    <div class="offset1 span8">
+      <h1>Thank you for your feedback.</h1>
+      <hr />
+      <h3>Give These Videos a Try</h3>
+      <div>
+        {% for video in videos %}
+          <a href="{{ video.get_absolute_url }}">
+            <h4 class="media-header">{{ video.title }}</h4>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+</div>
+{% endblock %}

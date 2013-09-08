@@ -11,7 +11,8 @@ sitemaps = {
     'videos': VideoSitemap()
 }
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     # Admin
     url(r'^admin/', include(admin.site.urls)),
 
@@ -19,11 +20,12 @@ urlpatterns = patterns('',
     url(r'^', include('home.urls')),
 
     # SEO
-    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
+    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
+        {'sitemaps': sitemaps}),
     url(r'^robots\.txt$', include('robots.urls')),
 
     # Contact
-    url(r'^feedback/$', include('contact.urls')),
+    url(r'^feedback/', include('contact.urls')),
 
     # Accounts
     url('^accounts/', include('accounts.urls')),
@@ -35,14 +37,15 @@ urlpatterns = patterns('',
     url(r'^cart/', include('godjango_cart.urls')),
 
     # Subscription
-    url(r'^subscribe/$', TemplateView.as_view(template_name="home/subscribe.html"), name="subscribe"),
-    url(r'^subscribe/new/$', 'godjango_cart.views.subscribe', name="new_subscription"),
+    url(r'^subscribe/$',
+        TemplateView.as_view(template_name="home/subscribe.html"),
+        name="subscribe"),
+    url(r'^subscribe/new/$', 'godjango_cart.views.subscribe',
+        name="new_subscription"),
 
     # Episodes
     url(r'^favorite/', include('favorite.urls'), name="favorite"),
-    url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/$', DetailView.as_view(
-            model=Video,
-            template_name="episode/video.html"
-        ), name="episode"),
-
+    url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/$',
+        DetailView.as_view(
+            model=Video, template_name="episode/video.html"), name="episode"),
 )
