@@ -4,8 +4,6 @@ python:
 install:
   - pip install -r godjango/requirements.txt --use-mirrors
   - pip install coveralls
-env:
-  - GITHUB_APP_ID=asdf GITHUB_API_SECRET=asdf STRIPE_PUBLIC_KEY=asdf STRIPE_SECRET_KEY=asdf EMAIL_HOST=asdf EMAIL_PORT=432 EMAIL_HOST_USER=jfjf EMAIL_HOST_PASSWORD=kiej DJANGO_ENV=test ALLOWED_HOSTS=localhost
 script: 
   - python manage.py test accounts favorite godjango_cart contact episode home
   - coverage run --source=accounts,favorite,episode,contact,home,godjang_cart manage.py test
