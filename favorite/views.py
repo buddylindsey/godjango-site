@@ -9,14 +9,16 @@ from episode.models import Video
 def toggle_favorite(request):
     video = Video.objects.get(pk=request.POST['video_pk'])
 
-    if request.POST['is_favorite'] == 'true':
+    if video.favorites.filter(id=request.user.id).count() > 0:
         request.user.favorites.remove(video)
         return HttpResponse(
-            json.dumps({"success": True}), content_type="application/json")
+            json.dumps({"success": True, "status": "removed"}),
+            content_type="application/json")
     else:
         request.user.favorites.add(video)
         return HttpResponse(
-            json.dumps({"success": True}), content_type="application/json")
+            json.dumps({"success": True, "status": "added"}),
+            content_type="application/json")
 
     return HttpResponse(
         json.dumps({"success": False}), content_type="application/json")

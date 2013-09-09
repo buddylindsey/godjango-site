@@ -39,19 +39,14 @@ $(document).ready(function() {
             type: "POST",
             url: "/favorite/add/",
             data: {
-              video_pk: el.data('video'), 
+              video_pk: el.data('video'),
               is_favorite: el.data('favorite')
             },
             dataType: "json",
-            success: function() {
-              console.log(el.data('favorite'));
-              if(el.data('favorite')){
-                console.log('hello');
+            success: function(data) {
+              if(data.status == 'removed'){
                 el.attr('src', '/static/img/nofav.png');
-                el.attr('data-favorite', 'false');
               } else {
-                console.log('world');
-                el.attr('data-favorite', 'true');
                 el.attr('src', '/static/img/favorite.png');
               }
             }
