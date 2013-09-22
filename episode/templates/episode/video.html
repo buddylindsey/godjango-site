@@ -1,5 +1,7 @@
 {% extends "fullbase.html" %}
 
+{% load sitemap_util %}
+
 {% block metadescription %}
 {{ video.description|safe }}
 {% endblock %}
@@ -58,7 +60,7 @@
       <span class="meta-number">{{ video.episode }}</span>. <span class="meta-title">{{ video.title }}</span>
     </div>
     <div class="pubdate-length">
-    {{ video.publish_date|date:"M d, Y" }} - {{ video.length }} minutes
+    {{ video.publish_date|date:"M d, Y" }} - {{ video.length|sec_to_min }} minutes
     </div>
     {% if not video.is_premium or user.customer.has_active_subscription %}
     <div class="meta-download">

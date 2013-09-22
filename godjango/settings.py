@@ -142,6 +142,7 @@ INSTALLED_APPS = (
     'django.contrib.sitemaps',
     'robots',
     'crispy_forms',
+    'videositemap',
 )
 
 # Django Social Auth settings

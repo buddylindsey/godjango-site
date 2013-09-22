@@ -1,0 +1,30 @@
+{% load sitemap_util %}
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"> 
+   {% for video in videos %}
+   <url> 
+     <loc>https://godjango.com{{ video.get_absolute_url }}</loc>
+     <video:video>
+       <video:thumbnail_loc>https://godjango.com{{ video.thumbnail_image }}</video:thumbnail_loc>
+       <video:title>{{ video.title }}</video:title>
+       <video:description>{{ video.description }}</video:description>
+       {% if video.is_premium %}
+       {% else %}
+       <video:content_loc>https://godjango.com{{ video.h264 }}</video:content_loc>
+       {% endif %}
+       <video:duration>{{ video.length|sec_to_min }}</video:duration>
+       <video:publication_date>{{ video.publish_date|date:"c" }}</video:publication_date>
+       <video:family_friendly>yes</video:family_friendly>
+       {% if video.is_premium %}
+       <video:price currency="USD">{{ video.price }}</video:price>
+       <video:requires_subscription>yes</video:requires_subscription>
+       {% else %}
+       <video:requires_subscription>no</video:requires_subscription>
+       {% endif %}
+       <video:uploader info="https://buddylindsey.com">Buddy Lindsey</video:uploader>
+       <video:live>no</video:live>
+     </video:video> 
+   </url> 
+   {% endfor %}
+</urlset>

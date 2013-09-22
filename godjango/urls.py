@@ -6,7 +6,6 @@ from home.sitemap import VideoSitemap
 from episode.models import Video
 
 admin.autodiscover()
-
 sitemaps = {
     'videos': VideoSitemap()
 }
@@ -22,6 +21,9 @@ urlpatterns = patterns(
     # SEO
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
         {'sitemaps': sitemaps}),
+    url(
+        r'^videositemap\.xml$', 'videositemap.views.video_sitemap',
+        name='video_sitemap'),
     url(r'^robots\.txt$', include('robots.urls')),
 
     # Contact

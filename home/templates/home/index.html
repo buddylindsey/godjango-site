@@ -1,5 +1,7 @@
 {% extends "sidebarbase.html" %}
 
+{% load sitemap_util %}
+
 {% block content %}
 <div class="browse-videos">
   {% for video in videos %}
@@ -15,7 +17,7 @@
         <h4 class="media-header">{{ video.title }}</h4>
         {% endif %}
       </a>
-      {{ video.description }} <small>({{ video.length }} minutes)</small>
+      {{ video.description }} <small>({{ video.length|sec_to_min }} minutes)</small>
     </div>
   </div>
   <hr />
