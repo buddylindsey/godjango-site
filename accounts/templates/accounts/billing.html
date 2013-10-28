@@ -4,6 +4,30 @@
 
 {% include "accounts/_subscription_status.html" %}
 
+{% if user.customer %}
+<div>
+    <h3>Credit Card Information</h3>
+    {% if user.customer.can_charge %}
+        {% if user.customer.card_type %}
+        <div>
+            Card Type: <strong>{{ user.customer.card_type }}<strong>
+        </div>
+        {% endif %}
+        <div>
+            Last 4 digits of Card: <strong>{{ user.customer.card_last_4 }}</strong>
+        </div>
+    {% else %}
+    <p>
+        You don't have a valid card on file.
+    </p>
+    {% endif %}
+    <hr />
+    <p>
+    <a href="{% url "update_card"  %}">Update or Add Card</a>
+    </p>
+</div>
+{% endif %}
+
 <div>
 <h3>Billing History</h3>
 <table class="table table-striped">
