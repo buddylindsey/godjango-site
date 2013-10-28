@@ -13,7 +13,7 @@
        {% else %}
        <video:content_loc>https://godjango.com{{ video.h264 }}</video:content_loc>
        {% endif %}
-       <video:duration>{{ video.length|sec_to_min }}</video:duration>
+       <video:duration>{{ video.length }}</video:duration>
        <video:publication_date>{{ video.publish_date|date:"c" }}</video:publication_date>
        <video:family_friendly>yes</video:family_friendly>
        {% if video.is_premium %}
