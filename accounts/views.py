@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response, redirect
 from django.template.loader import render_to_string
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from episode.models import Favorite
 from payments.signals import WEBHOOK_SIGNALS
@@ -46,11 +47,20 @@ class DashboardView(AccountsContextMixin, TemplateView):
 class UpdateBillingView(StripeContenxtMixin, FormView):
     form_class = CheckoutForm
     template_name = 'accounts/update_card.html'
-    success_url = '/'
+    success_url = '/accounts/billing/'
 
     def form_valid(self, form):
         token = self.get_form_kwargs().get('data')['stripeToken']
-        self.request.user.customer.update_card(token)
+
+        try:
+            self.request.user.customer.update_card(token)
+            messages.add_message(
+                self.request, messages.SUCCESS,
+                'You have successfully updated your card')
+        except:
+            messages.add_message(
+                self.request, messages.ERROR,
+                'Something went wrong updating your card, please try again.')
 
         return super(UpdateBillingView, self).form_valid(form)
 

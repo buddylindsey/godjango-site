@@ -21,11 +21,12 @@
         You don't have a valid card on file.
     </p>
     {% endif %}
-    <hr />
+    <br />
     <p>
     <a href="{% url "update_card"  %}">Update or Add Card</a>
     </p>
 </div>
+<hr />
 {% endif %}
 
 <div>
@@ -51,6 +52,7 @@
 </div>
 
 {% if user.customer %}
+<hr />
 {% include "accounts/_cancel_form.html" %}
 {% endif %}
 

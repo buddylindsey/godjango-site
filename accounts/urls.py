@@ -16,7 +16,9 @@ urlpatterns = patterns(
         r'^settings/$', login_required(SettingsView.as_view()),
         name="settings"),
     url(r'^billing/$', login_required(BillingView.as_view()), name="billing"),
-    url(r'^update_card/$', UpdateBillingView.as_view(), name='update_card'),
+    url(
+        r'^billing/update_card/$', login_required(UpdateBillingView.as_view()),
+        name='update_card'),
     url(r'^login/$', RedirectView.as_view(url="/accounts/login/github")),
     url(r'^logout/$', 'logout', name='logout'),
 )
