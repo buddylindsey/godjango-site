@@ -11,7 +11,16 @@
         </ul>
     </div>
     <hr />
-    <div id="acount-body">
+    <div id="account-body">
+        {% if messages %}
+        <div id="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% block content %}
         {% endblock %}
     </div>

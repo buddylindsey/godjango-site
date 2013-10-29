@@ -41,7 +41,7 @@ VIDEO_ROOT = "http://assets.godjango.com"
 
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Buddy Lindsey', 'buddy@buddylindsey.com'),
 )
 
 MANAGERS = ADMINS
