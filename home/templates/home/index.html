@@ -1,4 +1,5 @@
 {% extends "sidebarbase.html" %}
+{% load video_util %}
 
 {% load sitemap_util %}
 
@@ -18,6 +19,13 @@
         {% endif %}
       </a>
       {{ video.description }} <small>({{ video.length|sec_to_min }} minutes)</small>
+      {% if user.is_authenticated %}
+        {% if video|is_favorited:user.id %}
+          <img class="video-favorite" data-video="{{ video.id }}" src="{{ STATIC_URL }}img/favorite.png" height="15px" width="15px" />
+        {% else %}
+          <img class="video-favorite" data-video="{{ video.id }}" src="{{ STATIC_URL }}img/nofav.png" height="15px" width="15px" />
+        {% endif %}
+      {% endif %}
     </div>
   </div>
   <hr />

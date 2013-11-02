@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.dispatch import receiver
 from django.core.mail import EmailMessage
-from django.template import RequestContext
 from django.contrib.sites.models import Site
 from django.views.generic import TemplateView, FormView
 from django.shortcuts import render_to_response, redirect
@@ -10,10 +9,10 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from episode.models import Favorite
 from payments.signals import WEBHOOK_SIGNALS
 from payments.settings import INVOICE_FROM_EMAIL
 from godjango_cart.forms import CheckoutForm
+
 
 
 def logout(request):
@@ -71,6 +70,10 @@ def favorites(request):
     return render_to_response(
         'accounts/favorites.html', {'favorites': favorites},
         context_instance=RequestContext(request))
+
+
+class FavoriteView(AccountsContextMixin, TemplateView):
+    template_name = 'accounts/favorites.html'
 
 
 @receiver(WEBHOOK_SIGNALS['customer.subscription.deleted'])

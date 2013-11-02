@@ -2,8 +2,12 @@
 
 {% block content %}
 
-<p>
-Coming Very Soon...
-</p>
+<div>
+    <ul>
+    {% for video in user.favorites.all %}
+        <li><a href="{{ video.get_absolute_url }}">{{ video.title }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}
