@@ -28,7 +28,20 @@ $(document).ready(function() {
 
     $('#content-tabs a:first').tab('show');
 
+    $('#video-comments').on('click', function(event){
+        window._gaq.push(['_trackEvent', 'Video-Meta', 'comments', null, null, false])
+    });
+
+    $('#video-show-notes').on('click', function(event){
+        window._gaq.push(['_trackEvent', 'Video-Meta', 'show-notes', null, null, false])
+    });
+
+    $('#video-description').on('click', function(event){
+        window._gaq.push(['_trackEvent', 'Video-Meta', 'description', null, null, false])
+    });
+
     $('.watch-video').click(function(){
+        window._gaq.push(['_trackEvent', 'Video', 'watch-video', null, null, false])
         $('.video-preview').toggle();
         $('.video').toggle();
     });
@@ -46,8 +59,10 @@ $(document).ready(function() {
             success: function(data) {
               if(data.status == 'removed'){
                 el.attr('src', '/static/img/nofav.png');
+                window._gaq.push(['_trackEvent', 'Video-Meta', 'favorite', 'unfavorite', null, false])
               } else {
                 el.attr('src', '/static/img/favorite.png');
+                window._gaq.push(['_trackEvent', 'Video-Meta', 'favorite', 'favorite', null, false])
               }
             }
         });
@@ -105,9 +120,7 @@ $(document).ready(function() {
             type: 'POST',
             data: {'video_pk': $(".add-to-cart").data("id")},
             dataType: "json",
-            success: function(){
-                console.log("All is done well");
-            }
+            success: function(){}
         });
     });
 
