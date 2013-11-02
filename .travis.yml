@@ -3,8 +3,5 @@ python:
   - "2.7"
 install:
   - pip install -r godjango/requirements.txt --use-mirrors
-  - pip install coveralls
 script: 
   - python manage.py test accounts favorite godjango_cart contact episode home
-  - coverage run --source=accounts,favorite,episode,contact,home,godjang_cart manage.py test
-after_success: coveralls 
