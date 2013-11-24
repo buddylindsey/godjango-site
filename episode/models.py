@@ -2,13 +2,15 @@ from django.db import models
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django_extensions.db.models import (
+    TimeStampedModel, TitleSlugDescriptionModel)
 
 
 class Video(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
-    thumbnail_image = models.CharField(max_length=200,null=True, blank=True)
-    preview_image = models.CharField(max_length=200,null=True, blank=True)
+    thumbnail_image = models.CharField(max_length=200, null=True, blank=True)
+    preview_image = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField()
     show_notes = models.TextField(null=True, blank=True)
     video_h264 = models.CharField(max_length=1000, null=True, blank=True)
@@ -26,12 +28,12 @@ class Video(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('episode', (), {'pk':self.id , 'slug': self.slug})
+        return ('episode', (), {'pk': self.id, 'slug': self.slug})
 
     def _h264(self):
         return "%sepisode-%s/%s" % (
             settings.MEDIA_URL,
-            self.id, 
+            self.id,
             self.video_h264
         )
     h264 = property(_h264)
@@ -45,8 +47,8 @@ class Video(models.Model):
 
     webm = property(_webm)
 
-    def save(self, *args, **kwargs): 
-        self.slug = slugify(self.title) 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
         super(Video, self).save(*args, **kwargs)
 
     # Admin specific properties
@@ -60,3 +62,8 @@ class Video(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class Category(TimeStampedModel, TitleSlugDescriptionModel):
+    image = models.CharField(max_length=255, blank=True)
+    videos = models.ManyToManyField(Video, related_name='categories')
