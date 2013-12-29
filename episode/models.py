@@ -1,11 +1,29 @@
+from datetime import datetime
 from django.db import models
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django_extensions.db.models import (
     TimeStampedModel, TitleSlugDescriptionModel)
+from django.utils.encoding import python_2_unicode_compatible
 
 
+class VideoQuerySet(models.query.QuerySet):
+    def published(self):
+        return self.filter(
+            publish_date__lte=datetime.now()).order_by('-publish_date')
+
+
+class VideoManager(models.Manager):
+    def published(self):
+        return self.get_query_set().published()
+
+    def get_query_set(self):
+        return VideoQuerySet(self.model, using=self._db)
+
+
+@python_2_unicode_compatible
 class Video(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
@@ -25,6 +43,8 @@ class Video(models.Model):
     price = models.DecimalField(
         max_digits=6, decimal_places=2, null=True, blank=True)
     meta_keywords = models.TextField(null=True, blank=True)
+
+    objects = VideoManager()
 
     @models.permalink
     def get_absolute_url(self):
@@ -60,10 +80,21 @@ class Video(models.Model):
         return "<a href='%s'>View Video</a>" % self.get_absolute_url()
     admin_link.allow_tags = True
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
+@python_2_unicode_compatible
 class Category(TimeStampedModel, TitleSlugDescriptionModel):
     image = models.CharField(max_length=255, blank=True)
-    videos = models.ManyToManyField(Video, related_name='categories')
+    videos = models.ManyToManyField(
+        Video, related_name='categories', blank=True)
+
+    def get_absolute_url(self):
+        return reverse('category', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['title']
+
+    def __str__(self):
+        return self.title

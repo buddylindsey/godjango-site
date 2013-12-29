@@ -3,13 +3,19 @@ from models import Video, Category
 
 
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('admin_thumbnail', 'title', 'admin_link', 'publish_date')
+    list_display = (
+        'admin_thumbnail', 'title', 'admin_link', 'publish_date', 'is_premium')
     list_display_links = ('admin_thumbnail', 'title')
     exclude = ('favorites',)
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'total_videos',)
+    raw_id_fields = ('videos',)
+
+    def total_videos(self, obj):
+        return obj.videos.count()
+    total_videos.short_description = 'Total Videos in Category'
 
 
 admin.site.register(Video, VideoAdmin)

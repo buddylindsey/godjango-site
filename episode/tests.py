@@ -1,10 +1,23 @@
+from datetime import datetime
+from model_mommy import mommy
 from django.test import TestCase
-from django.conf import settings
 from django.utils.timezone import now
 
 from models import Video
 
-class VideoModelTest(TestCase): 
+
+class VideoReviewManagerTest(TestCase):
+    def setUp(self):
+        mommy.make(Video, publish_date=datetime.now())
+        mommy.make(Video, publish_date=datetime.now())
+        mommy.make(Video, publish_date=datetime.now())
+
+    def test_published_reviews(self):
+        videos = Video.objects.published()
+        self.assertEqual(3, len(videos))
+
+
+class VideoModelTest(TestCase):
     def test_model_fields(self):
         video = Video()
         video.title = "The Title"
@@ -22,7 +35,7 @@ class VideoModelTest(TestCase):
         video.price = 105.00
 
         video.save()
-        self.assertEqual(video, Video.objects.get(title__exact="The Title")) 
+        self.assertEqual(video, Video.objects.get(title__exact="The Title"))
 
     def test_video_slugify_on_save(self):
         video = Video()
@@ -34,16 +47,19 @@ class VideoModelTest(TestCase):
         self.assertEqual("i-am-an-awesome-title", video.slug)
 
     def test_model_get_absolute_url(self):
-        video = Video(title="I is title",description="i is desc")
+        video = Video(title="I is title", description="i is desc")
         video.save()
 
-        self.assertEqual("/%s-%s/" % (video.id, video.slug), video.get_absolute_url())
+        self.assertEqual(
+            "/%s-%s/" % (video.id, video.slug), video.get_absolute_url())
 
     def test_model_video_url(self):
-        video = Video(title="I is title",description="i is desc")
+        video = Video(title="I is title", description="i is desc")
         video.video_h264 = "h264.mp4"
         video.video_webm = "webm.webm"
         video.save()
 
-        self.assertEqual("/media/episode-%s/%s" % (video.id, "h264.mp4"), video.h264)
-        self.assertEqual("/media/episode-%s/%s" % (video.id, "webm.webm"), video.webm)
+        self.assertEqual(
+            "/media/episode-%s/%s" % (video.id, "h264.mp4"), video.h264)
+        self.assertEqual(
+            "/media/episode-%s/%s" % (video.id, "webm.webm"), video.webm)
