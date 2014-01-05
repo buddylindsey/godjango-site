@@ -7,6 +7,7 @@ class VideoAdmin(admin.ModelAdmin):
         'admin_thumbnail', 'title', 'admin_link', 'publish_date', 'is_premium')
     list_display_links = ('admin_thumbnail', 'title')
     exclude = ('favorites',)
+    list_filter = ('is_premium',)
 
 
 class CategoryAdmin(admin.ModelAdmin):
