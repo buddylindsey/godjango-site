@@ -1,6 +1,8 @@
 import views
+import mox
 
-from django.http import HttpRequest, Http404
+#from django.http import HttpRequest, Http404
+from django.conf import settings
 from django.test import TestCase
 from django.contrib.auth.models import User, AnonymousUser
 from django.core.urlresolvers import reverse
@@ -14,6 +16,7 @@ from model_mommy import mommy
 
 from .utils import get_customer, update_email
 from .models import Subscription
+from .forms import CheckoutForm
 from episode.models import Video
 
 
@@ -21,7 +24,6 @@ class CartViewTest(TestCase):
     def setUp(self):
         factory = RequestFactory()
         request = factory.get(reverse('cart'))
-        #request.user = mommy.make('auth.User')
         request.user = AnonymousUser()
         request.session = {}
 
@@ -93,87 +95,95 @@ class CartCartTest(TestCase):
         self.assertEqual(0, cart.item_set.count())
 
 
-class CheckoutTest(TestCase):
-    def _create_user(self):
-        return User.objects.create_user(
-            'buddy', 'buddy@buddylindsey.com', 'mypass')
-
+class CheckoutViewTest(TestCase):
     def setUp(self):
-        self.user = self._create_user()
-        self.video = mommy.make(Video, title='awesome', price=9.99)
+        self.view = views.CheckoutView()
+        self.mock = mox.Mox()
+
         self.factory = RequestFactory()
-        self.subscription = mommy.make(
-            Subscription, price=9.00, plan='monthly', title='Pro')
+        self.request = self.factory.post(reverse('checkout'))
+        self.request.user = mommy.make('auth.User', email='test@example.com')
+        self.request.session = {}
+        self.request.POST = {'stripeToken': 'xxxxxxxxxx'}
 
-    def test_login_required_checkout_url(self):
-        request = self.factory.get(reverse('checkout'))
-        request.user = AnonymousUser()
-        response = views.checkout(request)
+    def tearDown(self):
+        self.mock.UnsetStubs()
+
+    def test_attrs(self):
+        self.assertEqual(self.view.form_class, CheckoutForm)
+        self.assertEqual(
+            self.view.template_name, 'godjango_cart/checkout.html')
+        self.assertEqual(self.view.success_url, reverse('order_confirmation'))
+
+    def test_get_context_data(self):
+        self.mock.StubOutWithMock(views.CartMixin, 'get_cart')
+        views.CartMixin.get_cart().AndReturn('hello')
+
+        self.mock.ReplayAll()
+        context = self.view.get_context_data()
+        self.mock.VerifyAll()
+
+        self.assertEqual(
+            context['publishable_key'], settings.STRIPE_PUBLIC_KEY)
+        self.assertEqual(context['cart'], 'hello')
+
+    def test_successful_purchase(self):
+        customer = mommy.make('payments.Customer')
+
+        form = CheckoutForm(self.request.POST)
+        self.assertTrue(form.is_valid())
+
+        subscription = mommy.make('godjango_cart.Subscription', plan="monthly")
+        cart = TheCart(self.request)
+        cart.add(subscription, 9.00, 1)
+
+        self.mock.StubOutWithMock(self.view, 'get_form_kwargs')
+        self.mock.StubOutWithMock(views.CartMixin, 'get_cart')
+        self.mock.StubOutWithMock(views.CustomerMixin, 'get_customer')
+        self.mock.StubOutWithMock(customer, 'can_charge')
+        self.mock.StubOutWithMock(customer, 'subscribe')
+
+        self.view.get_form_kwargs().AndReturn({'data': {}})
+        views.CartMixin.get_cart().AndReturn(cart)
+        views.CustomerMixin.get_customer().AndReturn(customer)
+        customer.can_charge().AndReturn(True)
+        customer.subscribe('monthly')
+
+        self.mock.ReplayAll()
+        response = self.view.form_valid(form)
+        self.mock.VerifyAll()
 
         self.assertEqual(response.status_code, 302)
 
-    def test_checkout_url_logged_in(self):
-        request = self.factory.get(reverse('checkout'))
-        request.user = self.user
-        request.session = {}
-        response = views.checkout(request)
+    def test_successful_purchase_with_coupon(self):
+        customer = mommy.make('payments.Customer')
+        self.request.POST.update({'coupon': 'allthethings'})
 
-        self.assertEqual(response.status_code, 200)
+        form = CheckoutForm(self.request.POST)
+        self.assertTrue(form.is_valid())
 
-    def test_invalid_form(self):
-        request = self.factory.post(
-            reverse('checkout'), {'stripeToke': 'xxxxxxxxxx'})
-        request.user = self.user
-        request.session = {}
+        subscription = mommy.make('godjango_cart.Subscription', plan="monthly")
+        cart = TheCart(self.request)
+        cart.add(subscription, 9.00, 1)
 
-        response = views.checkout(request)
-        self.assertContains(
-            response, 'Problem with your card please try again')
+        self.mock.StubOutWithMock(self.view, 'get_form_kwargs')
+        self.mock.StubOutWithMock(views.CartMixin, 'get_cart')
+        self.mock.StubOutWithMock(views.CustomerMixin, 'get_customer')
+        self.mock.StubOutWithMock(customer, 'can_charge')
+        self.mock.StubOutWithMock(customer, 'subscribe')
 
-    @patch('payments.models.Customer.update_card')
-    @patch('payments.models.Customer.subscribe')
-    @patch('payments.models.Customer.charge')
-    def test_valid_form(self, UpdateMock, SubscribeMock, ChargeMock):
-        mommy.make(Customer, user=self.user, stripe_id=1)
+        self.view.get_form_kwargs().AndReturn(
+            {'data': {'coupon': 'allthethings'}})
+        views.CartMixin.get_cart().AndReturn(cart)
+        views.CustomerMixin.get_customer().AndReturn(customer)
+        customer.can_charge().AndReturn(True)
+        customer.subscribe('monthly', coupon='allthethings')
 
-        request = self.factory.post(
-            '/cart/checkout/', {'stripeToken': 'xxxxxxxxxx'})
-        request.user = self.user
-        request.session = {}
+        self.mock.ReplayAll()
+        response = self.view.form_valid(form)
+        self.mock.VerifyAll()
 
-        cart = TheCart(request)
-        cart.add(self.subscription, self.subscription.price, 1)
-
-        response = views.checkout(request)
         self.assertEqual(response.status_code, 302)
-
-    @patch('payments.models.Customer.update_card')
-    @patch('payments.models.Customer.subscribe')
-    @patch('payments.models.Customer.charge')
-    def test_email_change_while_checkingout(
-        self, UpdateMock, SubscribeMock, ChargeMock):
-
-        mommy.make(Customer, user=self.user, stripe_id=1)
-
-        request = self.factory.post(
-            reverse('checkout'),
-            {'stripeToken': 'xxxxxxxxxx', 'email': 'other@other.com'}
-        )
-        request.user = self.user
-        request.session = {}
-
-        cart = TheCart(request)
-        cart.add(self.subscription, self.subscription.price, 1)
-
-        self.assertEqual(request.user.email, 'buddy@buddylindsey.com')
-        response = views.checkout(request)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(request.user.email, 'other@other.com')
-
-    def test_get_customer_attached_to_user(self):
-        Customer.objects.create(user=self.user, stripe_id=1)
-
-        self.assertEqual(1, self.user.customer.stripe_id)
 
 
 class UtilTest(TestCase):

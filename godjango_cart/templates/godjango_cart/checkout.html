@@ -67,8 +67,12 @@
   <div class="checkout">
       <form action="{% url "checkout" %}" method="POST" id="checkout-form">
           {% csrf_token %}
-          {% if error %}
-            <span>Error: {{ error }}</span>
+          {% if errors %}
+            <ul>
+                {% for error in errors%}
+                <li class="alert alert-error">{{ error }}</li>
+                {% endfor %}
+            </ul>
           {% endif %}
           <div class="payment-errors"></div>
           <div class="form-horizontal">
