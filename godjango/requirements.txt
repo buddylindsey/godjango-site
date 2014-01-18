@@ -16,3 +16,4 @@ mock
 django-robots==0.9.2
 django-extensions==1.2.5
 model-mommy==1.2
+mox==0.5.3
