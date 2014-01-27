@@ -17,6 +17,12 @@ class HomeView(CategoryMixin, ListView):
     context_object_name = "videos"
     template_name = 'home/index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['page'] = context['paginator'].page(
+            self.request.GET.get('page', '1'))
+        return context
+
 
 class CategoryView(CategoryMixin, DetailView):
     model = Category
