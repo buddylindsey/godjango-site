@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>{% block title %}Django Screencasts - GoDjango.com{% endblock %}</title>
-    <meta name="description" content="{% block metadescription %}Learn something new about Django you didn't know before with short easy to understand, weekly, screencasts.{% endblock %}">
+    <meta name="description" content="{% block metadescription %}Learn something new about Django you didn't know before with short easy to understand screencasts and tutorials.{% endblock %}">
     <meta name="keywords" content="{% block metakeywords %}django screencasts, django, django videos, django weekly, django tutorials{% endblock %}">
     <meta http-equiv="content-language" content="en">
     <meta charset='utf-8'> 
@@ -53,6 +53,7 @@
                 <li class="nav-home">
                 <a href="{% url "index"  %}">Browse Videos</a>
                 </li>
+                <li class="nav-blog"><a href="{% url "djblog:index" %}">Blog</a></li>
                 <li class="nav-about"><a href="{% url "about" %}">About GoDjango</a></li>
                 <li class="nav-feedback"><a href="{% url "feedback" %}">Feedback</a></li>
                 {% if not user.customer.has_active_subscription %}

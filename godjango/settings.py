@@ -144,6 +144,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'videositemap',
     'django_extensions',
+    'djblog',
 )
 
 # Django Social Auth settings

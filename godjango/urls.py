@@ -38,6 +38,8 @@ urlpatterns = patterns(
     # Cart
     url(r'^cart/', include('godjango_cart.urls')),
 
+    url(r'^blog/', include('djblog.urls', namespace='djblog')),
+
     # Subscription
     url(r'^subscribe/$',
         TemplateView.as_view(template_name="home/subscribe.html"),

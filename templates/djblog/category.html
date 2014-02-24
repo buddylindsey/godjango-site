@@ -1,0 +1,34 @@
+{% extends "blogbase.html" %}
+
+{% block content %}
+<div>
+    {% for article in articles %}
+    <h2><a href="{% url "djblog:article" article.slug %}">{{ article.title }}</a></h2>
+    <div class="article-meta">
+        {{ article.publish_date|date:"F j, Y" }}
+    </div>
+    <div class="article-body">
+        {{ article.published_body|safe }}
+    </div>
+    {% empty %}
+    No articles
+    {% endfor %}
+</div>
+<div class="pagination">
+    <ul>
+        {% if page.has_previous %}
+        <li><a rel="prev" href="?page={{ page.previous_page_number }}">Previous</a></li>
+        {% endif %}
+        {% for pg in paginator.page_range %}
+        {% if page.number == pg %}
+        <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
+        {% else %}
+        <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if page.has_next %}
+        <li><a rel="next" href="?page={{ page.next_page_number }}">Next</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}

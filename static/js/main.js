@@ -10,6 +10,9 @@ $(document).ready(function() {
         case "/feedback/":
             $(".nav-feedback").addClass("active");
             break;
+        case "/blog/":
+            $(".nav-blog").addClass("active");
+            break;
 
             // Used for sub nav on accounts
         case "/accounts/dashboard/":
