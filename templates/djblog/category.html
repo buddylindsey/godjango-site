@@ -16,18 +16,18 @@
 </div>
 <div class="pagination">
     <ul>
-        {% if page.has_previous %}
-        <li><a rel="prev" href="?page={{ page.previous_page_number }}">Previous</a></li>
+        {% if page_obj.has_previous %}
+        <li><a rel="prev" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
         {% endif %}
         {% for pg in paginator.page_range %}
-        {% if page.number == pg %}
+        {% if page_obj.number == pg %}
         <li class="active"><a href="?page={{ pg }}">{{ pg }}</a></li>
         {% else %}
         <li><a href="?page={{ pg }}">{{ pg }}</a></li>
         {% endif %}
         {% endfor %}
-        {% if page.has_next %}
-        <li><a rel="next" href="?page={{ page.next_page_number }}">Next</a></li>
+        {% if page_obj.has_next %}
+        <li><a rel="next" href="?page={{ page_obj.next_page_number }}">Next</a></li>
         {% endif %}
     </ul>
 </div>
