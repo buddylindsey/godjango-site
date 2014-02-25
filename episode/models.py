@@ -14,10 +14,22 @@ class VideoQuerySet(models.query.QuerySet):
         return self.filter(
             publish_date__lte=datetime.now()).order_by('-publish_date')
 
+    def premium(self):
+        return self.filter(is_premium=True)
+
+    def not_premium(self):
+        return self.filter(is_premium=False)
+
 
 class VideoManager(models.Manager):
     def published(self):
         return self.get_query_set().published()
+
+    def premium(self):
+        return self.get_query_set().premium()
+
+    def not_premium(self):
+        return self.get_query_set().not_premium()
 
     def get_query_set(self):
         return VideoQuerySet(self.model, using=self._db)

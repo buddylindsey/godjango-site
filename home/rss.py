@@ -1,22 +1,34 @@
-from datetime import datetime
+from itertools import chain
+from operator import attrgetter
 
 from django.contrib.syndication.views import Feed
 
+from djblog.models import Article
+
 from episode.models import Video
 
+
 class LatestVideos(Feed):
-        title = "GoDjango Screencasts"
+        title = "GoDjango Screencasts and Tutorials"
         link = "https://godjango.com"
-        description = "Screencast covering some topic about Django."
+        description = "Tutorials covering some topic about Django."
 
         def items(self):
-            return Video.objects.filter(publish_date__lte=datetime.now()).filter(is_premium__exact=False).order_by('-publish_date')[:20]
+            videos = Video.objects.published().not_premium()
+            articles = Article.objects.published()
+            objects = list(chain(videos, articles))
+
+            return sorted(
+                objects, key=attrgetter('publish_date'), reverse=True)
 
         def item_title(self, item):
             return item.title
 
         def item_description(self, item):
-            return item.description + ("<br /><a href='https://godjango.com%s'>Watch Now...</a>" % (item.get_absolute_url()))
+            if type(item) is Article:
+                return item.published_body()
+            elif type(item) is Video:
+                return item.description + ("<br /><a href='https://godjango.com%s'>Watch Now...</a>" % (item.get_absolute_url()))
 
         def item_link(self, item):
             return item.get_absolute_url()

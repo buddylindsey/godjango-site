@@ -2,12 +2,15 @@ from django.contrib import admin
 from django.conf.urls import patterns, include, url
 from django.views.generic import DetailView, TemplateView
 
+from djblog.sitemaps import ArticleSitemap
+
 from home.sitemap import VideoSitemap
 from episode.models import Video
 
 admin.autodiscover()
 sitemaps = {
-    'videos': VideoSitemap()
+    'videos': VideoSitemap(),
+    'articles': ArticleSitemap()
 }
 
 urlpatterns = patterns(

@@ -17,15 +17,7 @@ class CategoryListMixin(object):
         return context
 
 
-class PagedViewMixin(object):
-    def get_context_data(self, **kwargs):
-        context = super(PagedViewMixin, self).get_context_data(**kwargs)
-        context['page'] = context['paginator'].page(
-            self.request.GET.get('page', '1'))
-        return context
-
-
-class HomeView(CategoryListMixin, PagedViewMixin, ListView):
+class HomeView(CategoryListMixin, ListView):
     model = Video
     paginate_by = 10
     queryset = Video.objects.published()
@@ -33,7 +25,7 @@ class HomeView(CategoryListMixin, PagedViewMixin, ListView):
     template_name = 'home/index.html'
 
 
-class CategoryView(CategoryListMixin, PagedViewMixin, ListView):
+class CategoryView(CategoryListMixin, ListView):
     model = Video
     paginate_by = 10
     context_object_name = 'videos'
