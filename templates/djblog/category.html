@@ -5,7 +5,10 @@
     {% for article in articles %}
     <h2><a href="{% url "djblog:article" article.slug %}">{{ article.title }}</a></h2>
     <div class="article-meta">
-        {{ article.publish_date|date:"F j, Y" }}
+      <i class="icon-calendar"></i>{{ article.publish_date|date:"F j, Y" }}
+      {% with category=article.primary_category %}
+      <i class="icon-folder-open"></i><a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+      {% endwith %}
     </div>
     <div class="article-body">
         {{ article.published_body|safe }}
