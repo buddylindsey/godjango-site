@@ -1,6 +1,10 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 
 from episode.models import Video, Category
+
+
+class AboutView(TemplateView):
+    template_name = 'home/about.html'
 
 
 class CategoryMixin(object):

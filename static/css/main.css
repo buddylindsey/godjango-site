@@ -5,6 +5,7 @@ html, body{
     background-color: #FFFFFF;
     border-radius: 0 0 6px 6px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    padding: 0px 0px 15px 0px;
 }
 
 .header-content{
@@ -13,7 +14,15 @@ html, body{
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
-.category-hero {
+img.about-profile{
+    width: 125px;
+    float: right;
+    padding: 5px;
+    border: lightgray 1px solid;
+    margin: 0px 10px 0px 10px;
+}
+
+.category-hero{
     margin: 0px 0px 20px 0px;
 }
 
