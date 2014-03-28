@@ -9,6 +9,34 @@
   <strong>Guided videos</strong> and <strong>user requested videos</strong> will be produced every month. <em>Guided</em> videos will be more indepth than the free videos giving you a broader base of understanding. <em>User requested</em> videos will be topics GoDjango users have specifically asked about, and can generally help everyone by being a video.
 </div>
 
+<hr />
+
+<div class="row testimonial-container">
+    <div class="span12 testimonial-header">
+        What People are Saying...
+    </div>
+    <div class="span4 offset1 testimonial-box">
+        <img class="testimonial-image" src="/static/img/kenneth-love.jpeg">
+        <div>
+            <a href="https://twitter.com/kennethlove">@kennethlove</a>
+        </div>
+        <div class="testimonial-text">
+            The best django video person I know.
+        </div>
+    </div>
+    <div class="span4 offset1 testimonial-box">
+        <img class="testimonial-image" src="/static/img/luke-crouch.jpeg">
+        <div>
+            <a href="https://twitter.com/groovecoder">@groovecoder</a>
+        </div>
+        <div class="testimonial-text">
+            GoDjango gives great, concise overviews for a broad variety of Django topics and libraries.
+        </div>
+    </div>
+</div>
+
+<hr />
+
 {% if not user.is_authenticated %}
 <div class="subscribe-note alert">
   You need to <a href="{% url 'socialauth_begin' 'github' %}">login with github</a> in order to subscribe.

@@ -22,6 +22,32 @@ img.about-profile{
     margin: 0px 10px 0px 10px;
 }
 
+.testimonial-container{
+    margin: 0px 0px 20px 0px;
+}
+
+.testimonial-header{
+    font-size: 35px;
+    text-align: center;
+    margin: 10px 0px 30px 0px;
+    font-weight: bold;
+}
+
+.testimonial-box{
+    text-align: center;
+}
+
+.testimonial-text{
+    font-size: 1em;
+    margin: 5px 0px 5px 0px;
+}
+
+img.testimonial-image{
+    width: 73px;
+    height: 73px;
+    border-radius: 10px;
+}
+
 .category-hero{
     margin: 0px 0px 20px 0px;
 }
