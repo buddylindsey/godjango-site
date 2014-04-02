@@ -131,7 +131,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'home',
     'episode',
-    'social_auth',
+    'social.apps.django_app.default',
     'accounts',
     'favorite',
     'payments',
@@ -149,15 +149,15 @@ INSTALLED_APPS = (
 
 # Django Social Auth settings
 AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.contrib.github.GithubBackend',
+    'social.backends.github.GithubOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
 SOCIAL_AUTH_ENABLED_BACKENDS = ('github',)
 SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
 
-GITHUB_APP_ID = os.environ.get('GITHUB_APP_ID', '')
-GITHUB_API_SECRET = os.environ.get('GITHUB_API_SECRET', '')
+SOCIAL_AUTH_GITHUB_KEY = os.environ.get('GITHUB_APP_ID', '')
+SOCIAL_AUTH_GITHUB_SECRET = os.environ.get('GITHUB_API_SECRET', '')
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/dashboard/'

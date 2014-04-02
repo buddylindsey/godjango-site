@@ -39,7 +39,7 @@
             {% if user.is_authenticated %}
               Hello <a href="{% url "dashboard" %}">{{ user.username }}</a>, <a href="{% url 'logout' %}">logout</a>
             {% else %}
-            <a href="{% url 'socialauth_begin' 'github' %}">Login with GitHub</a>
+            <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a>
             {% endif %}
           </div>
         </div>

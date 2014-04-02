@@ -1,4 +1,4 @@
-from django.conf.urls import *
+from django.conf.urls import patterns, url, include
 from django.views.generic.base import RedirectView
 from django.contrib.auth.decorators import login_required
 
@@ -8,7 +8,7 @@ from accounts.views import (
 
 urlpatterns = patterns(
     'accounts.views',
-    url(r'', include('social_auth.urls')),
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
     url(r'^dashboard/$',
         login_required(DashboardView.as_view()), name="dashboard"),
     url(

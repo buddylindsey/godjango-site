@@ -2,7 +2,6 @@ Django==1.5.2
 South==0.7.6
 django-crispy-forms==1.4.0
 django-jsonfield==0.9.4
-django-social-auth==0.7.2
 git+git://github.com/buddylindsey/django-stripe-payments.git#egg=payments
 git+git://github.com/buddylindsey/django-cart.git#egg=cart
 httplib2==0.7.4
@@ -18,3 +17,4 @@ django-extensions==1.2.5
 model-mommy==1.2
 mox==0.5.3
 dj-blog==0.2.6.1
+python-social-auth==0.1.23
