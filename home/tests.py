@@ -6,8 +6,8 @@ from django.views.generic import ListView
 
 from model_mommy import mommy
 
-from home.views import HomeView, CategoryView, PagedViewMixin
-from episode.models import Video, Category
+from home.views import HomeView, CategoryView
+from episode.models import Video
 
 
 class HomeViewTest(TestCase):
@@ -45,10 +45,10 @@ class CategoryViewTest(TestCase):
         self.assertEqual(self.view.template_name, 'home/category.html')
 
     def test_get_context_data(self):
-        self.mock.StubOutWithMock(PagedViewMixin, 'get_context_data')
+        self.mock.StubOutWithMock(ListView, 'get_context_data')
         self.mock.StubOutWithMock(self.view, 'get_category')
 
-        PagedViewMixin.get_context_data().AndReturn({})
+        ListView.get_context_data().AndReturn({})
         self.view.get_category().AndReturn('a category')
 
         self.mock.ReplayAll()
@@ -92,4 +92,3 @@ class CategoryViewTest(TestCase):
         self.mock.ReplayAll()
         self.assertRaises(AttributeError, self.view.get_category)
         self.mock.VerifyAll()
-
