@@ -2,19 +2,17 @@ import stripe
 import json
 
 from django.conf import settings
-from django.contrib import messages
-from django.template import RequestContext
 from django.http import Http404, HttpResponse
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView, View, FormView
 from django.utils.decorators import method_decorator
 
 from cart import Cart
 from payments.models import Customer
 
-from .utils import get_customer, update_email
+from .utils import update_email
 
 from forms import CheckoutForm
 from models import Subscription
@@ -120,8 +118,10 @@ class CheckoutView(CustomerMixin, CartMixin, FormView):
         product = cart.items()[0].product
 
         subscribe_kwargs = {}
-        if form.cleaned_data.get('coupon') != '':
-            subscribe_kwargs['coupon'] = form.cleaned_data.get('coupon')
+
+        coupon = form.cleaned_data.get('coupon', None)
+        if coupon:
+            subscribe_kwargs['coupon'] = coupon
 
         try:
             customer.subscribe(product.plan, **subscribe_kwargs)
@@ -137,58 +137,6 @@ class CheckoutView(CustomerMixin, CartMixin, FormView):
 
         return super(CheckoutView, self).form_valid(form)
 
-
-@login_required
-def checkout(request):
-    if request.method == 'POST':
-        cart = Cart(request)
-
-        form = CheckoutForm(request.POST)
-        if form.is_valid():
-            try:
-                if 'email' in request.POST:
-                    update_email(request.user, request.POST.get('email'))
-
-                customer = get_customer(request.user)
-
-                customer.update_card(request.POST.get("stripeToken"))
-
-                product = cart.items()[0].product
-
-                if form.cleaned_data['coupon']:
-                    customer.subscribe(
-                        product.plan, coupon=form.cleaned_data['coupon'])
-                else:
-                    customer.subscribe(product.plan)
-
-                cart.clear()
-                return redirect("order_confirmation")
-
-            except stripe.StripeError as e:
-                try:
-                    error = e.args[0]
-                except IndexError:
-                    error = "unknown error"
-
-                return render_to_response('godjango_cart/checkout.html', {
-                        'cart': Cart(request),
-                        'publishable_key': settings.STRIPE_PUBLIC_KEY,
-                        'error': error
-                    },
-                    context_instance=RequestContext(request))
-        else:
-            return render_to_response('godjango_cart/checkout.html', {
-                    'cart': Cart(request),
-                    'publishable_key': settings.STRIPE_PUBLIC_KEY,
-                    'error': "Problem with your card please try again"
-                },
-                context_instance=RequestContext(request))
-    else:
-        return render_to_response('godjango_cart/checkout.html', {
-                'cart': Cart(request),
-                'publishable_key': settings.STRIPE_PUBLIC_KEY
-            },
-            context_instance=RequestContext(request))
 
 @login_required()
 def subscribe(request):
