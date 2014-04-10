@@ -6,12 +6,12 @@
         {% endblock %}
     </div>
     <div class="span3">
-        <div class="row">
+        <div class="row sidebar-row">
           <a href="{% url "main_rss" %}"><img src="{{ STATIC_URL }}img/rss.png" alt="rss" /></a>
           <a href="http://www.facebook.com/godjango"><img src="{{ STATIC_URL }}img/facebook_box.png" alt="facebook" /></a>
         </div>
         {% if categories %}
-        <div class="row">
+        <div class="row sidebar-row">
             <div class="sidebar-categories">
                 <header>
                     Categories
@@ -26,5 +26,23 @@
             </div>
         </div>
         {% endif %}
+        <div class="row sidebar-row">
+            <div class="sidebar-mailing-list">
+                <!-- Begin MailChimp Signup Form -->
+                <div id="mc_embed_signup">
+                <form action="http://godjango.us7.list-manage.com/subscribe/post?u=d3bff239b0b3d3129899af6f8&amp;id=7cd56458e0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                  <label class="mailing-list-subscribe" for="mce-EMAIL">Subscribe to our mailing list</label>
+                  <p>
+                  Signup now for more monthly in-depth tutorials and resources to help better your Django.
+                  </p>
+                  <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+                    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                    <div style="position: absolute; left: -5000px;"><input type="text" name="b_d3bff239b0b3d3129899af6f8_7cd56458e0" value=""></div>
+                  <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+                </form>
+                </div>
+                <!--End mc_embed_signup-->
+            </div>
+        </div>
     </div>
 {% endblock %}
