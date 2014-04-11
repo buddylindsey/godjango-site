@@ -2,3 +2,4 @@ db.sqlite3
 *.pyc
 .DS_Store
 temp/*
+local_settings.py
