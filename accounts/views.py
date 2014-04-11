@@ -21,10 +21,6 @@ def logout(request):
     return redirect('index')
 
 
-class AccountsContextMixin(object):
-    pass
-
-
 class StripeContenxtMixin(object):
     def get_context_data(self, **kwargs):
         context = super(StripeContenxtMixin, self).get_context_data(**kwargs)
@@ -32,15 +28,15 @@ class StripeContenxtMixin(object):
         return context
 
 
-class BillingView(LoginRequiredMixin, AccountsContextMixin, TemplateView):
+class BillingView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/billing.html'
 
 
-class SettingsView(LoginRequiredMixin, AccountsContextMixin, TemplateView):
+class SettingsView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/settings.html'
 
 
-class DashboardView(LoginRequiredMixin, AccountsContextMixin, TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/dashboard.html'
 
 
@@ -65,7 +61,7 @@ class UpdateBillingView(LoginRequiredMixin, StripeContenxtMixin, FormView):
         return super(UpdateBillingView, self).form_valid(form)
 
 
-class FavoriteView(LoginRequiredMixin, AccountsContextMixin, TemplateView):
+class FavoriteView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/favorites.html'
 
 
