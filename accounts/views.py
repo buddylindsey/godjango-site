@@ -1,12 +1,12 @@
 from django.conf import settings
 from django.dispatch import receiver
 from django.core.mail import EmailMessage
+from django.core.urlresolvers import reverse_lazy
 from django.contrib.sites.models import Site
 from django.views.generic import TemplateView, FormView
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.contrib.auth import logout as auth_logout
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from braces.views import LoginRequiredMixin
@@ -14,7 +14,6 @@ from braces.views import LoginRequiredMixin
 from payments.signals import WEBHOOK_SIGNALS
 from payments.settings import INVOICE_FROM_EMAIL
 from godjango_cart.forms import CheckoutForm
-
 
 
 def logout(request):
@@ -48,7 +47,7 @@ class DashboardView(LoginRequiredMixin, AccountsContextMixin, TemplateView):
 class UpdateBillingView(LoginRequiredMixin, StripeContenxtMixin, FormView):
     form_class = CheckoutForm
     template_name = 'accounts/update_card.html'
-    success_url = '/accounts/billing/'
+    success_url = reverse_lazy('billing')
 
     def form_valid(self, form):
         token = self.get_form_kwargs().get('data')['stripeToken']
