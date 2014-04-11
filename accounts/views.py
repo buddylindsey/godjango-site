@@ -9,6 +9,8 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+from braces.views import LoginRequiredMixin
+
 from payments.signals import WEBHOOK_SIGNALS
 from payments.settings import INVOICE_FROM_EMAIL
 from godjango_cart.forms import CheckoutForm
@@ -31,19 +33,19 @@ class StripeContenxtMixin(object):
         return context
 
 
-class BillingView(AccountsContextMixin, TemplateView):
+class BillingView(LoginRequiredMixin, AccountsContextMixin, TemplateView):
     template_name = 'accounts/billing.html'
 
 
-class SettingsView(AccountsContextMixin, TemplateView):
+class SettingsView(LoginRequiredMixin, AccountsContextMixin, TemplateView):
     template_name = 'accounts/settings.html'
 
 
-class DashboardView(AccountsContextMixin, TemplateView):
+class DashboardView(LoginRequiredMixin, AccountsContextMixin, TemplateView):
     template_name = 'accounts/dashboard.html'
 
 
-class UpdateBillingView(StripeContenxtMixin, FormView):
+class UpdateBillingView(LoginRequiredMixin, StripeContenxtMixin, FormView):
     form_class = CheckoutForm
     template_name = 'accounts/update_card.html'
     success_url = '/accounts/billing/'
@@ -64,15 +66,7 @@ class UpdateBillingView(StripeContenxtMixin, FormView):
         return super(UpdateBillingView, self).form_valid(form)
 
 
-@login_required()
-def favorites(request):
-    favorites = Favorite.objects.filter(user__id=request.user.id)
-    return render_to_response(
-        'accounts/favorites.html', {'favorites': favorites},
-        context_instance=RequestContext(request))
-
-
-class FavoriteView(AccountsContextMixin, TemplateView):
+class FavoriteView(LoginRequiredMixin, AccountsContextMixin, TemplateView):
     template_name = 'accounts/favorites.html'
 
 
