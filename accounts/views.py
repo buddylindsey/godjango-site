@@ -3,10 +3,12 @@ from django.dispatch import receiver
 from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.sites.models import Site
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, CreateView
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 
 from braces.views import LoginRequiredMixin
@@ -14,6 +16,8 @@ from braces.views import LoginRequiredMixin
 from payments.signals import WEBHOOK_SIGNALS
 from payments.settings import INVOICE_FROM_EMAIL
 from godjango_cart.forms import CheckoutForm
+
+from .forms import UserCreateForm
 
 
 def logout(request):
@@ -26,6 +30,29 @@ class StripeContenxtMixin(object):
         context = super(StripeContenxtMixin, self).get_context_data(**kwargs)
         context['publishable_key'] = settings.STRIPE_PUBLIC_KEY
         return context
+
+
+class LoginView(FormView):
+    template_name = 'accounts/login.html'
+    form_class = AuthenticationForm
+    success_url = reverse_lazy('dashboard')
+
+    def form_valid(self, form):
+        user = form.get_user()
+        auth_login(self.request, user)
+        return super(LoginView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.add_message(
+            self.request, messages.ERROR,
+            'Invalid Username or Password. Please Try Again')
+        return super(LoginView, self).form_invalid(form)
+
+
+class AccountRegistrationView(CreateView):
+    template_name = 'accounts/register.html'
+    form_class = UserCreateForm
+    success_url = reverse_lazy('dashboard')
 
 
 class BillingView(LoginRequiredMixin, TemplateView):

@@ -48,6 +48,17 @@ img.testimonial-image{
     border-radius: 10px;
 }
 
+.login-left{
+    border-right: 1px solid #EEEEEE;
+    margin-top: 15px;
+    padding-top: 25px;
+}
+
+.login-right{
+    margin-top: 65px;
+    margin-left: 60px;
+}
+
 .category-hero{
     margin: 0px 0px 20px 0px;
 }
