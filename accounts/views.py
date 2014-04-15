@@ -38,6 +38,12 @@ class LoginView(FormView):
     form_class = AuthenticationForm
     success_url = reverse_lazy('dashboard')
 
+    def get_success_url(self):
+        if 'next' in self.request.GET:
+            return self.request.GET.get('next')
+
+        return super(LoginView, self).get_success_url()
+
     def form_valid(self, form):
         user = form.get_user()
         auth_login(self.request, user)
