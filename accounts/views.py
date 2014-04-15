@@ -8,7 +8,8 @@ from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import (
+    AuthenticationForm, SetPasswordForm, PasswordChangeForm)
 from django.contrib import messages
 
 from braces.views import LoginRequiredMixin
@@ -59,8 +60,23 @@ class BillingView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/billing.html'
 
 
-class SettingsView(LoginRequiredMixin, TemplateView):
+class SettingsView(LoginRequiredMixin, FormView):
     template_name = 'accounts/settings.html'
+
+    def get_form_kwargs(self):
+        kwargs = super(SettingsView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_form_class(self):
+        if self.request.user.has_usable_password():
+            return PasswordChangeForm
+        else:
+            return SetPasswordForm
+
+    def form_valid(self, form):
+        form.save()
+        return super(SettingsView, self).form_valid(form)
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
