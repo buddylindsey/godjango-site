@@ -37,13 +37,13 @@
             {% endfor %}
             <div class="control-group">
                 <div class="controls">
-                    <input type="submit" value="Login" class="btn btn-primary"> or <a rel="no-follow" href="{% url "register" %}">Register</a>
+                    <input type="submit" value="Login" class="btn btn-primary"> or <a rel="no-follow" href="{% url "register" %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Register</a>
                 </div>
             </div>
                     </form>
     </div>
     <div class="span5 login-right">
-        <a href="{% url 'social:begin' 'github' %}" class="zocial github">Login with GitHub</a>
+        <a href="{% url 'social:begin' 'github' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" class="zocial github">Login with GitHub</a>
     </div>
 </div>
 {% endblock %}

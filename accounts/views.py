@@ -33,16 +33,18 @@ class StripeContenxtMixin(object):
         return context
 
 
-class LoginView(FormView):
-    template_name = 'accounts/login.html'
-    form_class = AuthenticationForm
-    success_url = reverse_lazy('dashboard')
-
+class NextUrlMixin(object):
     def get_success_url(self):
         if 'next' in self.request.GET:
             return self.request.GET.get('next')
 
         return super(LoginView, self).get_success_url()
+
+
+class LoginView(NextUrlMixin, FormView):
+    template_name = 'accounts/login.html'
+    form_class = AuthenticationForm
+    success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
         user = form.get_user()
@@ -56,7 +58,7 @@ class LoginView(FormView):
         return super(LoginView, self).form_invalid(form)
 
 
-class AccountRegistrationView(CreateView):
+class AccountRegistrationView(NextUrlMixin, CreateView):
     template_name = 'accounts/register.html'
     form_class = UserCreateForm
     success_url = reverse_lazy('dashboard')
