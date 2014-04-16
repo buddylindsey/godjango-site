@@ -3,11 +3,13 @@ from django.dispatch import receiver
 from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.sites.models import Site
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, FormView, CreateView
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import (
     AuthenticationForm, SetPasswordForm, PasswordChangeForm)
 from django.contrib import messages
@@ -38,7 +40,7 @@ class NextUrlMixin(object):
         if 'next' in self.request.GET:
             return self.request.GET.get('next')
 
-        return super(LoginView, self).get_success_url()
+        return super(NextUrlMixin, self).get_success_url()
 
 
 class LoginView(NextUrlMixin, FormView):
@@ -58,10 +60,24 @@ class LoginView(NextUrlMixin, FormView):
         return super(LoginView, self).form_invalid(form)
 
 
-class AccountRegistrationView(NextUrlMixin, CreateView):
+class AccountRegistrationView(CreateView):
     template_name = 'accounts/register.html'
     form_class = UserCreateForm
     success_url = reverse_lazy('dashboard')
+
+    def get_success_url(self):
+        if 'next' in self.request.GET:
+            return self.request.GET.get('next')
+
+        return self.success_url
+
+    def form_valid(self, form):
+        saved_user = form.save()
+        user = authenticate(
+            username=saved_user.username,
+            password=form.cleaned_data['password1'])
+        auth_login(self.request, user)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class BillingView(LoginRequiredMixin, TemplateView):
