@@ -113,7 +113,13 @@ class CheckoutView(CustomerMixin, CartMixin, FormView):
         customer = self.get_customer()
 
         if not customer.can_charge():
-            customer.update_card(form.cleaned_data.get('stripeToken', None))
+            try:
+                customer.update_card(
+                    form.cleaned_data.get('stripeToken', None))
+            except stripe.CardError:
+                self.errors.append('Your card has either expired or was '
+                                   'declined Please try another')
+                return super(CheckoutView, self).form_invalid(form)
 
         product = cart.items()[0].product
 
