@@ -43,6 +43,8 @@ urlpatterns = patterns(
 
     url(r'^blog/', include('djblog.urls', namespace='djblog')),
 
+    url(r'^search/', include('search.urls')),
+
     # Subscription
     url(r'^subscribe/$',
         TemplateView.as_view(template_name="home/subscribe.html"),

@@ -155,6 +155,7 @@ INSTALLED_APPS = (
     'videositemap',
     'django_extensions',
     'djblog',
+    'search',
 )
 
 # Django Social Auth settings

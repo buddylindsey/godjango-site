@@ -7,6 +7,12 @@
     </div>
     <div class="span3">
         <div class="row sidebar-row">
+          <form action='{% url "search" %}' method="get">
+            <input type="text" name="q" placeholder="Search" />
+            <input type="submit" value="Search" class="btn" />
+          </form>
+        </div>
+        <div class="row sidebar-row">
           <a href="{% url "main_rss" %}"><img src="{{ STATIC_URL }}img/rss.png" alt="rss" /></a>
           <a href="http://www.facebook.com/godjango"><img src="{{ STATIC_URL }}img/facebook_box.png" alt="facebook" /></a>
         </div>
