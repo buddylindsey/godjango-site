@@ -19,3 +19,4 @@ mox==0.5.3
 dj-blog==0.2.6.1
 python-social-auth==0.1.23
 django-braces==1.4.0
+gunicorn
