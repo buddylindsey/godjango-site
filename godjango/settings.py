@@ -156,6 +156,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'djblog',
     'search',
+    'analytics',
 )
 
 # Django Social Auth settings

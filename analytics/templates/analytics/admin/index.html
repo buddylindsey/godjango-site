@@ -1,0 +1,12 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="/admin/">{% trans "Home" %}</a> &rsaquo;
+</div>
+{% endblock %}
+
+{% block content %}
+<strong>Current Active Subscribers:</strong> {{ active_subscribers }}<br />
+<strong>New Subscribers in last 30 days:</strong> {{ 30_day_new }}
+{% endblock %}
