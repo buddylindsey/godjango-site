@@ -10,10 +10,14 @@ class AnalyticsIndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AnalyticsIndexView, self).get_context_data(**kwargs)
-        context['active_subscribers'] = CurrentSubscription.objects.count() - 6
+        context['active_subscribers'] = self.active_subscribers()
         context['30_day_new'] = self.thirty_day_new()
         return context
 
+    def active_subscribers(self):
+        return CurrentSubscription.objects.filter(status='active').count() - 6
+
     def thirty_day_new(self):
         prev_date = datetime.now() - timedelta(days=30)
-        return CurrentSubscription.objects.filter(start__gte=prev_date).count()
+        return CurrentSubscription.objects.filter(
+            start__gte=prev_date, status='active').count()
