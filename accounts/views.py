@@ -86,6 +86,7 @@ class BillingView(LoginRequiredMixin, TemplateView):
 
 class SettingsView(LoginRequiredMixin, FormView):
     template_name = 'accounts/settings.html'
+    success_url = reverse_lazy('settings')
 
     def get_form_kwargs(self):
         kwargs = super(SettingsView, self).get_form_kwargs()
