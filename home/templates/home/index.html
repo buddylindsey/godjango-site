@@ -1,34 +1,9 @@
 {% extends "sidebarbase.html" %}
-{% load video_util %}
-
-{% load sitemap_util %}
 
 {% block content %}
 <div class="browse-videos">
   {% for video in videos %}
-  <div class="media">
-    <a class="pull-left" href="{{ video.get_absolute_url }}">
-      <img class="media-object" data-src="" src="{{ video.thumbnail_image }}" alt="{{ video.title }}" />
-    </a>
-    <div class="media-body">
-      <a href="{{ video.get_absolute_url }}">
-        {% if video.is_premium %}
-        <h4 class="media-header">[Pro] {{ video.title }}</h4>
-        {% else %}
-        <h4 class="media-header">{{ video.title }}</h4>
-        {% endif %}
-      </a>
-      {{ video.description }} <small>({{ video.length|sec_to_min }} minutes)</small>
-      {% if user.is_authenticated %}
-        {% if video|is_favorited:user.id %}
-          <img class="video-favorite" data-video="{{ video.id }}" src="{{ STATIC_URL }}img/favorite.png" height="15px" width="15px" />
-        {% else %}
-          <img class="video-favorite" data-video="{{ video.id }}" src="{{ STATIC_URL }}img/nofav.png" height="15px" width="15px" />
-        {% endif %}
-      {% endif %}
-    </div>
-  </div>
-  <hr />
+  {% include 'home/_video_body.html' %}
   {% empty %}
   You have no content
   {% endfor %}

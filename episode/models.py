@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -91,6 +91,13 @@ class Video(models.Model):
     def admin_link(self):
         return "<a href='%s'>View Video</a>" % self.get_absolute_url()
     admin_link.allow_tags = True
+
+    def length_in_minutes(self):
+        if self.length:
+            length = timedelta(seconds=self.length)
+            return str(length).split(':')[1]
+
+        return 0
 
     def __str__(self):
         return self.title
