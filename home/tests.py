@@ -36,7 +36,7 @@ class BrowseViewTest(TestCase):
         self.assertEqual(self.view.model, Video)
         self.assertEqual(self.view.paginate_by, 10)
         self.assertEqual(self.view.context_object_name, 'videos')
-        self.assertEqual(self.view.template_name, 'home/index.html')
+        self.assertEqual(self.view.template_name, 'home/browse.html')
 
 
 class CategoryViewTest(TestCase):
