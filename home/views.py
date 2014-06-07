@@ -7,19 +7,19 @@ class AboutView(TemplateView):
     template_name = 'home/about.html'
 
 
-class IndexView(ListView):
-    model = Video
-    paginate_by = 10
-    queryset = Video.objects.published()
-    context_object_name = "videos"
-    template_name = 'home/index.html'
-
-
 class CategoryListMixin(object):
     def get_context_data(self, **kwargs):
         context = super(CategoryListMixin, self).get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         return context
+
+
+class IndexView(CategoryListMixin, ListView):
+    model = Video
+    paginate_by = 8
+    queryset = Video.objects.published()
+    context_object_name = "videos"
+    template_name = 'home/index.html'
 
 
 class BrowseView(CategoryListMixin, ListView):

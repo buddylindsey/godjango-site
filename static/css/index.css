@@ -1,0 +1,104 @@
+.header {
+  background-color: #2D3E50;
+  background-repeat: repeat-x;
+  color: #CDBFE3;
+  padding: 30px 15px;
+  position: relative;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.index-navbar {
+  background-color: #2D3E50;
+  margin-bottom: 0px;
+  padding: 20px 0px 20px 0px;
+}
+
+.logo-header {
+  padding: 0px 0px 0px 100px;
+}
+
+.logo-header img {
+  max-width: 350px;
+}
+
+.logo-header .logo {
+  padding: 0px;
+}
+
+.navbar-right {
+  padding: 0px 100px 0px 0px;
+}
+
+.navbar-right a {
+  font-weight: bold;
+}
+
+.header-left {
+  color: white;
+  text-align: left;
+  padding: 0px 0px 0px 100px;
+}
+
+.header-left .subheading {
+  font-size: 18px;
+}
+.header-left .subscript {
+  margin-top: 5px;
+}
+
+.header-left h1 {
+  font-size: 45px;
+}
+
+.header-right {
+  text-align: right;
+  padding: 0px 100px 0px 0px;
+}
+
+.btn-large {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 40px 0px 0px 0px;
+}
+
+.btn-raised {
+  padding: 15px 40px 15px 40px;
+  border-bottom: 1px solid white;
+}
+
+.video-container {
+  width: 1000px;
+  margin-top: 50px;
+}
+
+.video-container h2 {
+  margin-left: 15px;
+  margin-bottom: 15px;
+  margin-top: 0px;
+}
+
+.episode-box {
+  height: 200px;
+}
+
+.episode-box img {
+  border: 1px solid #D3D3D3;
+  padding: 5px;
+}
+
+.footer {
+  background-color: #2A2A2A;
+  padding: 50px;
+  color: #E7E7E7;
+  margin: 50px 0px 0px 0px;
+}
+
+.footer .content {
+  width: 1200px;
+}
+
+.copyright {
+  text-align: center;
+  margin: 10px 0px;
+}
