@@ -1,7 +1,7 @@
 $(document).ready(function() {
     switch (window.location.pathname) {
         // Used for Main Navigation
-        case "/":
+        case "/browse/":
             $(".nav-home").addClass("active");
             break;
         case "/about/":

@@ -24,8 +24,7 @@ urlpatterns = patterns(
     # SEO
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
         {'sitemaps': sitemaps}),
-    url(
-        r'^videositemap\.xml$', 'videositemap.views.video_sitemap',
+    url(r'^videositemap\.xml$', 'videositemap.views.video_sitemap',
         name='video_sitemap'),
     url(r'^robots\.txt$', include('robots.urls')),
 

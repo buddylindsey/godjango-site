@@ -1,5 +1,14 @@
 {% extends "sidebarbase.html" %}
 
+{% block head %}
+{% if page_obj.has_previous %}
+    <link rel="prev" href="{% url "browse" %}?page={{page_obj.previous_page_number}}" />
+{% endif %}
+{% if page_obj.has_next %}
+    <link rel="next" href="{% url "browse" %}?page={{page_obj.next_page_number}}" />
+{% endif %}
+{% endblock  %}
+
 {% block content %}
 <div class="row">
     <div class="span9">
@@ -21,7 +30,7 @@
 <div class="pagination">
     <ul>
         {% if page_obj.has_previous %}
-        <li><a rel="prev" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+        <li><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
         {% endif %}
         {% for pg in paginator.page_range %}
         {% if page_obj.number == pg %}
@@ -31,7 +40,7 @@
         {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-        <li><a rel="next" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+        <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
         {% endif %}
     </ul>
 </div>

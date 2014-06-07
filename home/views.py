@@ -7,11 +7,12 @@ class AboutView(TemplateView):
     template_name = 'home/about.html'
 
 
-class CategoryMixin(object):
-    def get_context_data(self, **kwargs):
-        context = super(CategoryMixin, self).get_context_data(**kwargs)
-        context['category'] = self.get_category()
-        return context
+class IndexView(ListView):
+    model = Video
+    paginate_by = 10
+    queryset = Video.objects.published()
+    context_object_name = "videos"
+    template_name = 'home/index.html'
 
 
 class CategoryListMixin(object):
@@ -21,7 +22,7 @@ class CategoryListMixin(object):
         return context
 
 
-class HomeView(CategoryListMixin, ListView):
+class BrowseView(CategoryListMixin, ListView):
     model = Video
     paginate_by = 10
     queryset = Video.objects.published()
