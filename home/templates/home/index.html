@@ -42,7 +42,7 @@
       <h2>Latest Videos</h2>
       {% for video in videos %}
         <div class="col-sm-6 col-md-4 col-lg-3 episode-box">
-          <img src="https://godjango.com{{ video.thumbnail_image }}" alt="{{ video.title }}" />
+          <img src="{{ video.thumbnail_image }}" alt="{{ video.title }}" />
           <div>
             <strong>Episode: {{ video.episode }}</strong><br />
             <a href="{{ video.get_absolute_url }}">{{ video.title }}</a>
