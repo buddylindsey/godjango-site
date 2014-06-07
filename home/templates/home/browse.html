@@ -1,5 +1,14 @@
 {% extends "sidebarbase.html" %}
 
+{% block head %}
+{% if page_obj.has_previous %}
+    <link rel="prev" href="{% url "browse" %}?page={{page_obj.previous_page_number}}" />
+{% endif %}
+{% if page_obj.has_next %}
+    <link rel="next" href="{% url "browse" %}?page={{page_obj.next_page_number}}" />
+{% endif %}
+{% endblock  %}
+
 {% block content %}
 <div class="browse-videos">
   {% for video in videos %}

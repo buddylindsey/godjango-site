@@ -27,7 +27,7 @@ class BrowseView(CategoryListMixin, ListView):
     paginate_by = 10
     queryset = Video.objects.published()
     context_object_name = "videos"
-    template_name = 'home/index.html'
+    template_name = 'home/browse.html'
 
 
 class CategoryView(CategoryListMixin, ListView):
