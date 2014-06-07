@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.conf.urls.defaults import patterns
+from django.conf.urls import patterns
 
 from .views import AnalyticsIndexView
 

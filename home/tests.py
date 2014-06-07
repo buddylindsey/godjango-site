@@ -1,34 +1,42 @@
 import mox
 
 from django.test import TestCase
-from django.core.urlresolvers import reverse
 from django.views.generic import ListView
 
 from model_mommy import mommy
 
-from home.views import HomeView, CategoryView
+from .views import AboutView, BrowseView, CategoryView, IndexView
 from episode.models import Video
 
 
-class HomeViewTest(TestCase):
-    def test_index_page(self):
-        response = self.client.get(reverse("index"))
-        self.assertEqual(200, response.status_code)
-
-    def test_about_page(self):
-        response = self.client.get(reverse("about"))
-        self.assertEqual(200, response.status_code)
-
-    def test_feedback_page(self):
-        response = self.client.get(reverse("feedback"))
-        self.assertEqual(200, response.status_code)
+class AboutViewTest(TestCase):
+    def setUp(self):
+        self.view = AboutView()
 
     def test_attrs(self):
-        view = HomeView()
-        self.assertEqual(view.model, Video)
-        self.assertEqual(view.paginate_by, 10)
-        self.assertEqual(view.context_object_name, 'videos')
-        self.assertEqual(view.template_name, 'home/index.html')
+        self.assertEqual(self.view.template_name, 'home/about.html')
+
+
+class IndexViewTest(TestCase):
+    def setUp(self):
+        self.view = IndexView()
+
+    def test_attrs(self):
+        self.assertEqual(self.view.model, Video)
+        self.assertEqual(self.view.paginate_by, 10)
+        self.assertEqual(self.view.context_object_name, 'videos')
+        self.assertEqual(self.view.template_name, 'home/index.html')
+
+
+class BrowseViewTest(TestCase):
+    def setUp(self):
+        self.view = BrowseView()
+
+    def test_attrs(self):
+        self.assertEqual(self.view.model, Video)
+        self.assertEqual(self.view.paginate_by, 10)
+        self.assertEqual(self.view.context_object_name, 'videos')
+        self.assertEqual(self.view.template_name, 'home/index.html')
 
 
 class CategoryViewTest(TestCase):
