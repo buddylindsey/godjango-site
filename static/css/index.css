@@ -1,5 +1,5 @@
 .header {
-  background-color: #2D3E50;
+  background-color: #24364B;
   background-repeat: repeat-x;
   color: #CDBFE3;
   padding: 30px 15px;
@@ -9,13 +9,9 @@
 }
 
 .index-navbar {
-  background-color: #2D3E50;
+  background-color: #24364B;
   margin-bottom: 0px;
   padding: 20px 0px 20px 0px;
-}
-
-.logo-header {
-  padding: 0px 0px 0px 100px;
 }
 
 .logo-header img {
@@ -26,34 +22,24 @@
   padding: 0px;
 }
 
-.navbar-right {
-  padding: 0px 100px 0px 0px;
-}
-
 .navbar-right a {
   font-weight: bold;
 }
 
-.header-left {
+.header {
   color: white;
-  text-align: left;
-  padding: 0px 0px 0px 100px;
 }
 
-.header-left .subheading {
+.header-body .subheading {
   font-size: 18px;
 }
-.header-left .subscript {
+
+.header-body .subscript {
   margin-top: 5px;
 }
 
-.header-left h1 {
+.header-body h1 {
   font-size: 45px;
-}
-
-.header-right {
-  text-align: right;
-  padding: 0px 100px 0px 0px;
 }
 
 .btn-large {
