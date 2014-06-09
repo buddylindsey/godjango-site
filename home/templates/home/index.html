@@ -42,6 +42,9 @@
       <h2>Latest Videos</h2>
       {% for video in videos %}
         <div class="col-sm-6 col-md-4 col-lg-3 episode-box">
+          {% if video.is_premium %}
+          <img src="{% static "img/pro.png" %}" class="pro-video" />
+          {% endif %}
           <img src="{{ video.thumbnail_image }}" alt="{{ video.title }}" />
           <div>
             <strong>Episode: {{ video.episode }}</strong><br />
