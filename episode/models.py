@@ -38,7 +38,7 @@ class VideoManager(models.Manager):
 @python_2_unicode_compatible
 class Video(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200)
+    slug = models.SlugField(max_length=200, blank=True)
     thumbnail_image = models.CharField(max_length=200, null=True, blank=True)
     preview_image = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField()
@@ -80,7 +80,8 @@ class Video(models.Model):
     webm = property(_webm)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        if not self.slug:
+            self.slug = slugify(self.title)
         super(Video, self).save(*args, **kwargs)
 
     # Admin specific properties
