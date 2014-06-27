@@ -1,0 +1,10 @@
+Dear, {{ customer.user.username }}
+
+It appears that your card ending in: {{ card.last4 }} has expired, and we were unable to charge it to keep your subscription going.
+
+You can update your card here: https://godjango.com/accounts/billing/update_card/
+
+Once you do that you can leave it alone and we will attempt to recharge it again. Or you can reply to this email, and we can try to recharge it immediately.
+
+Thank You,
+Buddy

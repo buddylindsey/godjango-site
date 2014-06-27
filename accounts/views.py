@@ -1,3 +1,5 @@
+import arrow
+
 from django.conf import settings
 from django.dispatch import receiver
 from django.core.mail import EmailMessage
@@ -131,6 +133,43 @@ class UpdateBillingView(LoginRequiredMixin, StripeContenxtMixin, FormView):
 
 class FavoriteView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/favorites.html'
+
+
+def card_expired(card):
+    expired = arrow.get(
+        '{}-{}'.format(card.exp_month, card.exp_year), 'M-YYYY')
+    return arrow.utcnow() <= expired
+
+
+@receiver(WEBHOOK_SIGNALS['charge.failed'])
+def card_declined(sender, **kwargs):
+    customer = kwargs.get('event').customer
+
+    card = customer.stripe_customer.get('cards').data[0]
+
+    if card_expired(card):
+        message_template = 'accounts/email/card_expire_body.txt'
+        subject_template = 'accounts/email/card_expire_subject.txt'
+    else:
+        return
+
+    protocol = getattr(settings, "DEFAULT_HTTP_PROTOCOL", "http")
+    site = Site.objects.get_current()
+    ctx = {
+        "customer": customer,
+        "site": site,
+        "protocol": protocol,
+        "card": card,
+    }
+    subject = render_to_string(subject_template, ctx)
+    subject = subject.strip()
+    message = render_to_string(message_template, ctx)
+    EmailMessage(
+        subject,
+        message,
+        to=[customer.user.email],
+        from_email=INVOICE_FROM_EMAIL
+    ).send()
 
 
 @receiver(WEBHOOK_SIGNALS['customer.subscription.deleted'])

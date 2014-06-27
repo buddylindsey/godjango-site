@@ -20,3 +20,4 @@ dj-blog==0.2.6.1
 python-social-auth==0.1.23
 django-braces==1.4.0
 gunicorn
+arrow==0.4.2
