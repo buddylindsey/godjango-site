@@ -156,6 +156,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'djblog',
     'search',
+    'djcelery',
     'analytics',
 )
 
@@ -201,6 +202,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap'
 
 BROKER_URL = 'redis://:foo@127.0.0.1:6379/1'
 BROKER_TRANSPORT = 'redis'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
