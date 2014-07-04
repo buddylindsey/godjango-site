@@ -23,7 +23,7 @@ class IndexViewTest(TestCase):
 
     def test_attrs(self):
         self.assertEqual(self.view.model, Video)
-        self.assertEqual(self.view.paginate_by, 10)
+        self.assertEqual(self.view.paginate_by, 8)
         self.assertEqual(self.view.context_object_name, 'videos')
         self.assertEqual(self.view.template_name, 'home/index.html')
 
