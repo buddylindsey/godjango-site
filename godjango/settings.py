@@ -200,7 +200,7 @@ PAYMENTS_PLANS = {
 
 CRISPY_TEMPLATE_PACK = 'bootstrap'
 
-BROKER_URL = 'redis://:foo@127.0.0.1:6379/1'
+BROKER_URL = 'redis://127.0.0.1:6379/1'
 BROKER_TRANSPORT = 'redis'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
