@@ -4,19 +4,19 @@ import mox
 #from django.http import HttpRequest, Http404
 from django.conf import settings
 from django.test import TestCase
-from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth.models import AnonymousUser
 from django.core.urlresolvers import reverse
 from django.test.client import RequestFactory
 
 from mock import patch
 from cart import Cart as TheCart
 from cart.models import Cart
-from payments.models import Customer
+from payments.models import Customer, Charge
 from model_mommy import mommy
 
 from .utils import get_customer, update_email
-from .models import Subscription
 from .forms import CheckoutForm
+from .tasks import send_receipts
 from episode.models import Video
 
 
@@ -199,3 +199,23 @@ class UtilTest(TestCase):
     def test_update_email(self):
         update = update_email(self.user, 'other@other.com')
         self.assertEqual(self.user.email, update)
+
+
+class RecieptTaskTest(TestCase):
+    def setUp(self):
+        self.mock = mox.Mox()
+
+    def tearDown(self):
+        self.mock.UnsetStubs()
+
+    def test_send_reciepts(self):
+        mommy.make('payments.Charge', paid=True, _quantity=3)
+
+        self.mock.StubOutWithMock(Charge, 'send_receipt')
+        Charge.send_receipt()
+        Charge.send_receipt()
+        Charge.send_receipt()
+
+        self.mock.ReplayAll()
+        send_receipts()
+        self.mock.VerifyAll()
