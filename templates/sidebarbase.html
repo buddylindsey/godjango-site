@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block bigcontent %}
-    <div class="span9">
+    <div class="span10 offset1">
         {% block content %}
         {% endblock %}
     </div>
-    <div class="span3">
+    <div class="offset1 span4">
         <div class="row sidebar-row">
           <form action='{% url "search" %}' method="get">
             <input type="text" name="q" placeholder="Search" />

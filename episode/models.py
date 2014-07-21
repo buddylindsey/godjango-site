@@ -55,6 +55,7 @@ class Video(models.Model):
     price = models.DecimalField(
         max_digits=6, decimal_places=2, null=True, blank=True)
     meta_keywords = models.TextField(null=True, blank=True)
+    widescreen = models.BooleanField(default=False)
 
     objects = VideoManager()
 

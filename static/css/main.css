@@ -1,6 +1,11 @@
 html, body{
     background-color: #EEEEEE;
 }
+
+.top-level-container {
+    width: 1280px;
+}
+
 .content{
     background-color: #FFFFFF;
     border-radius: 0 0 6px 6px;
@@ -109,8 +114,14 @@ img.testimonial-image{
   margin: 0px 20px 0px 20px;
 }
 
-#video-container .video {
-  margin: 0px 0px 0px 50px;
+#video-container .video-standard{
+  margin: 0px 0px 0px 200px;
+  display: none
+}
+
+#video-container .video-wide{
+  margin: 0px 0px 0px -10px;
+  display: none
 }
 
 #meta-content {

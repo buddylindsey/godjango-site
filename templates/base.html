@@ -27,15 +27,15 @@
 </script>
   </head>
   <body>
-    <div class="container">
+    <div class="container top-level-container">
       <div class="row header-content">
         <header>
-        <div class="span8">
+        <div class="span10 offset1">
           <div class="page-header">
             <a href="{% url "index" %}"><img src="{% static "img/godjango-logo.png" %}" alt="GoDjango" /></a>
           </div>
         </div>
-        <div class="span3 offset1">
+        <div class="span4 offset1">
           <div class="right-header-content">
             {% if user.is_authenticated %}
               Hello <a href="{% url "dashboard" %}">{{ user.username }}</a>, <a href="{% url 'logout' %}">logout</a>

@@ -43,8 +43,13 @@
 </div>
 
 {% if not video.is_premium or user.customer.has_active_subscription %}
-<div class="video">
-  <video class="sublime" width="800" height="600" poster="{{ video.preview_imgae }}">
+{% if not video.widescreen %}
+<div class="video-standard">
+  <video class="sublime" width="800" height="600" poster="{{ video.preview_image }}">
+{% else %}
+<div class="video-wide">
+  <video class="sublime" width="1280" height="720" poster="{{ video.preview_image }}">
+{% endif %}
   {% if video.h264 %}
   <source src="{{ video.h264 }}" />
   {% endif %}

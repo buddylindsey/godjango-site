@@ -46,7 +46,8 @@ $(document).ready(function() {
     $('.watch-video').click(function(){
         window._gaq.push(['_trackEvent', 'Video', 'watch-video', null, null, false])
         $('.video-preview').toggle();
-        $('.video').toggle();
+        $('.video-standard').toggle();
+        $('.video-wide').toggle();
     });
 
     $(".video-favorite").click(function(){
