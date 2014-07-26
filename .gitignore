@@ -5,3 +5,5 @@ temp/*
 local_settings.py
 tags
 media/*
+static/stylus/*.css
+static/coffee/*.js

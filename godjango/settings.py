@@ -94,6 +94,13 @@ STATICFILES_FINDERS = (
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+PIPELINE_COMPILERS = (
+    'pipeline.compilers.coffee.CoffeeScriptCompiler',
+    'pipeline.compilers.stylus.StylusCompiler',
+)
+
 SECRET_KEY = 'l$f@dvrc!!+afw$-a-w(^vv889^%5%cl%+1)h+0!8@i0eq=sv2'
 
 TEMPLATE_LOADERS = (
@@ -158,6 +165,7 @@ INSTALLED_APPS = (
     'search',
     'djcelery',
     'analytics',
+    'pipeline',
 )
 
 # Django Social Auth settings
@@ -203,6 +211,42 @@ CRISPY_TEMPLATE_PACK = 'bootstrap'
 BROKER_URL = 'redis://127.0.0.1:6379/1'
 BROKER_TRANSPORT = 'redis'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
+
+PIPELINE_JS = {
+    'main': {
+        'source_filenames': (
+            'coffee/app.coffee',
+        ),
+        'output_filename': 'js/main.min.js'
+    },
+    'vendor': {
+        'source_filenames': (
+            'js/django-csrf.js',
+            'js/bootstrap.min.js',
+            'js/bootstrap-ajax.js',
+        ),
+        'output_filename': 'js/vendor.js'
+    }
+}
+
+PIPELINE_CSS = {
+    'main': {
+        'source_filenames': (
+            'stylus/main.styl',
+        ),
+        'output_filename': 'css/main.min.css'
+    },
+    'vendor': {
+        'source_filenames': (
+            'css/bootstrap.min.css',
+            'css/pygments.css',
+        ),
+        'output_filename': 'css/vendor.min.css'
+    }
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
