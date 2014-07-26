@@ -239,6 +239,12 @@ PIPELINE_CSS = {
         ),
         'output_filename': 'css/main.min.css'
     },
+    'index': {
+        'source_filenames': (
+            'stylus/index.styl',
+        ),
+        'output_filename': 'css/index.min.css'
+    },
     'vendor': {
         'source_filenames': (
             'css/bootstrap.min.css',
