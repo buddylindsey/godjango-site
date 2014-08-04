@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=0, width=device-width">
+    <title>Django Screencasts with GoDjango.com</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    {{ compressed_css('index') }}
+  </head>
+  <body>
+    <div class="navbar navbar-static-top index-navbar">
+      <div class="container">
+        <div class="navbar-header logo-header">
+          <a class="navbar-brand logo" href="{{ url("index") }}"><img src="{{ static("img/godjango-logo.png") }}" /></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ url("browse") }}">Browse</a></a></li>
+            {% if user.customer and not user.customer.has_active_subscription() %}
+            <li><a href="{{ url("subscribe") }}">Pro</a></li>
+            {% endif %}
+            {% if not user.is_authenticated() %}
+            <li><a href="{{ url("login") }}">Sign In</a></li>
+            {% else %}
+            <li><a href="{{ url("dashboard") }}">{{ user.username }}</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 header-body">
+            <h1>Learn Django, Python, and All the Things</h1>
+            <p class="subheading">Learn beginner to advanced Django. From using templates to testing, and how to host your awesome creation.</p>
+            <div class="col-xs-6 col-xs-offset-3">
+              <a class="btn btn-primary btn-large btn-raised" href="{{ url("browse") }}">Browse Videos</a>
+              <a class="btn btn-primary btn-large btn-raised" href="{{ url("subscribe") }}">Go Pro</a>
+              <p class="subscript">Get the best learning experience out of GoDjango by <a href="{{ url("subscribe") }}">subscribing</a> today.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid video-container">
+      <div class="row">
+      <h2>Latest Videos</h2>
+      {% for video in videos %}
+        <div class="col-sm-6 col-md-4 col-lg-3 episode-box">
+          {% if video.is_premium %}
+          <img src="{{ static("img/pro.png") }}" class="pro-video" />
+          {% endif %}
+          <img src="{{ video.thumbnail_image }}" alt="{{ video.title }}" />
+          <div>
+            <strong>Episode: {{ video.episode }}</strong><br />
+            <a href="{{ video.get_absolute_url() }}">{{ video.title }}</a>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+    <div class="footer">
+      <div class="container-fluid content">
+        <div class="row">
+          <div class="col-sm-6 col-md-4 col-lg-3">
+            <h3>Site</h3>
+            <ul>
+              <li><a href="{{ url("browse") }}">Browse</a></li>
+              <li><a href="{{ url("about") }}">About</a></li>
+              <li><a href="{{ url("search") }}">Search</a></li>
+              <li><a href="{{ url("djblog:index") }}">Blog</a></li>
+            </ul>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-3">
+            <h3>Video Categories</h3>
+            <ul>
+            {% for cat in categories %}
+            <li><a href="{{ cat.get_absolute_url() }}">{{ cat.title }}</a></li>
+            {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; GoDjango 2014
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

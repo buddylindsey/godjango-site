@@ -104,9 +104,11 @@ PIPELINE_COMPILERS = (
 SECRET_KEY = 'l$f@dvrc!!+afw$-a-w(^vv889^%5%cl%+1)h+0!8@i0eq=sv2'
 
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
+    'django_jinja.loaders.FileSystemLoader',
+    'django_jinja.loaders.AppLoader',
 )
+
+DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
@@ -166,6 +168,8 @@ INSTALLED_APPS = (
     'djcelery',
     'analytics',
     'pipeline',
+    'django_jinja',
+    'django_jinja.contrib._pipeline',
 )
 
 # Django Social Auth settings

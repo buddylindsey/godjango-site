@@ -19,7 +19,7 @@ class IndexView(CategoryListMixin, ListView):
     paginate_by = 8
     queryset = Video.objects.published()
     context_object_name = "videos"
-    template_name = 'home/index.html'
+    template_name = 'home/index.jinja'
 
 
 class BrowseView(CategoryListMixin, ListView):
