@@ -23,18 +23,22 @@ $(document).ready ->
 
   $('#video-comments').on 'click', (event) ->
     window._gaq.push ['_trackEvent', 'Video-Meta', 'comments', null, null, false]
+    return
 
   $('#video-show-notes').on 'click', (event) ->
     window._gaq.push ['_trackEvent', 'Video-Meta', 'show-notes', null, null, false]
+    return
 
   $('#video-description').on 'click', (event) ->
     window._gaq.push ['_trackEvent', 'Video-Meta', 'description', null, null, false]
+    return
 
   $('.watch-video').click ->
     window._gaq.push ['_trackEvent', 'Video', 'watch-video', null, null, false]
     $('.video-preview').toggle()
     $('.video-standard').toggle()
     $('.video-wide').toggle()
+    return
 
   $(".video-favorite").click ->
     el = $(this)
@@ -49,6 +53,10 @@ $(document).ready ->
         if(data.status == 'removed')
           el.attr('src', '/static/img/nofav.png')
           window._gaq.push(['_trackEvent', 'Video-Meta', 'favorite', 'unfavorite', null, false])
+          return
         else
           el.attr('src', '/static/img/favorite.png')
           window._gaq.push(['_trackEvent', 'Video-Meta', 'favorite', 'favorite', null, false])
+          return
+    return
+  return
