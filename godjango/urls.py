@@ -6,6 +6,7 @@ from djblog.sitemaps import ArticleSitemap
 
 from home.sitemap import VideoSitemap
 from episode.models import Video
+from episode.views import VideoView
 
 admin.autodiscover()
 sitemaps = {
@@ -53,6 +54,5 @@ urlpatterns = patterns(
 
     # Episodes
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/$',
-        DetailView.as_view(
-            model=Video, template_name="episode/video.html"), name="episode"),
+        VideoView.as_view(), name="episode"),
 )

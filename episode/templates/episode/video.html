@@ -1,5 +1,6 @@
 {% extends "fullbase.html" %}
 {% load video_util %}
+{% load static %}
 
 {% load sitemap_util %}
 
@@ -20,7 +21,6 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="video-preview">
   <div class="media">
     <a class="pull-left" href="{{ video.get_absolute_url }}">
@@ -45,10 +45,10 @@
 {% if not video.is_premium or user.customer.has_active_subscription %}
 {% if not video.widescreen %}
 <div class="video-standard">
-  <video class="sublime" width="800" height="600" poster="{{ video.preview_image }}">
+  <video id='video-player' class="sublime" width="800" height="600" poster="{{ video.preview_image }}" data-sharing-url="https://godjango.com{{ video.get_absolute_url }}" data-google-analytics-enable='true' data-title="{{ video.title }}">
 {% else %}
 <div class="video-wide">
-  <video class="sublime" width="1280" height="720" poster="{{ video.preview_image }}">
+  <video id='video-player' class="sublime" width="1280" height="720" poster="{{ video.preview_image }}" data-sharing-url="https://godjango.com{{ video.get_absolute_url }}" data-google-analytics-enable='true' data-title="{{ video.title }}">
 {% endif %}
   {% if video.h264 %}
   <source src="{{ video.h264 }}" />
@@ -118,6 +118,42 @@
     <div id="description" class="tab-pane">
       {{ video.description }}
     </div>
+  </div>
+</div>
+<div id="newsletter-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="newsletter-modal" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  </div>
+  <div class="modal-body">
+    <h3>For more Django subscribe to the GoDjango Newsletter</h3>
+    <div id='newsletter-message'>
+    </div>
+    <form id="newsletter-subscribe" class="form-horizontal">
+      {% csrf_token %}
+     <div class="control-group">
+        <label class="control-label" for="id_{{ newsletter_form.email.name }}">Email</label>
+        <div class="controls">
+          {{ newsletter_form.email }}
+        </div>
+     </div>
+     <div class="control-group">
+        <label class="control-label" for="id_{{ newsletter_form.first_name.name }}">First Name</label>
+        <div class="controls">
+          {{ newsletter_form.first_name }}
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="id_{{ newsletter_form.last_name.name }}">Last Name</label>
+        <div class="controls">
+          {{ newsletter_form.first_name }}
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn blue">Subscribe</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
 

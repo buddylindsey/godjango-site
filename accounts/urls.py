@@ -1,9 +1,8 @@
 from django.conf.urls import patterns, url, include
-#from django.views.generic.base import RedirectView
 
 from accounts.views import (
     AccountRegistrationView, BillingView,  DashboardView, FavoriteView,
-    LoginView, SettingsView, UpdateBillingView)
+    LoginView, SettingsView, UpdateBillingView, NewsletterSubscribeView)
 
 
 urlpatterns = patterns(
@@ -20,4 +19,6 @@ urlpatterns = patterns(
         name='update_card'),
     url(r'^favorites/$', FavoriteView.as_view(), name="favorites"),
     url(r'^billing/$', BillingView.as_view(), name="billing"),
+    url(r'^newsletter-subscribe/$',
+        NewsletterSubscribeView.as_view(), name='newsletter-subscribe')
 )

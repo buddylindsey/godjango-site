@@ -1,11 +1,13 @@
 import arrow
+import json
+import mailchimp
 
 from django.conf import settings
 from django.dispatch import receiver
 from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.sites.models import Site
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import TemplateView, FormView, CreateView
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -22,7 +24,7 @@ from payments.signals import WEBHOOK_SIGNALS
 from payments.settings import INVOICE_FROM_EMAIL
 from godjango_cart.forms import CheckoutForm
 
-from .forms import UserCreateForm
+from .forms import UserCreateForm, NewsletterSubscribeForm
 
 
 def logout(request):
@@ -35,6 +37,11 @@ class StripeContenxtMixin(object):
         context = super(StripeContenxtMixin, self).get_context_data(**kwargs)
         context['publishable_key'] = settings.STRIPE_PUBLIC_KEY
         return context
+
+
+class MailchimpMixin(object):
+    def get_mailchimp(self):
+        return mailchimp.Mailchimp(settings.MAILCHIMP_API_KEY)
 
 
 class NextUrlMixin(object):
@@ -133,6 +140,36 @@ class UpdateBillingView(LoginRequiredMixin, StripeContenxtMixin, FormView):
 
 class FavoriteView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/favorites.html'
+
+
+class NewsletterSubscribeView(MailchimpMixin, FormView):
+    template_name = 'accounts/subscribe.html'
+    form_class = NewsletterSubscribeForm
+
+    def form_valid(self, form):
+        try:
+            mc = self.get_mailchimp()
+            mc.lists.subscribe(
+                settings.MAILCHIMP_LIST_MAIN, form.cleaned_data['email'])
+            data = {
+                'success': ('Thank you for subscribing. Please confirm '
+                            'in the email you that you have subscribed')}
+        except mailchimp.ListAlreadySubscribedError:
+            data = {'success': 'Thank you. You are already subscribed'}
+        except mailchimp.Error, e:
+            data = {'error': {'general': [('Something went horribly wrong. '
+                                           'Please try again')]}}
+
+        if self.request.is_ajax():
+            return HttpResponse(json.dumps(data))
+        else:
+            return super(NewsletterSubscribeForm, self).form_valid(form)
+
+    def form_invalid(self, form):
+        if self.request.is_ajax():
+            return HttpResponse(json.dumps({"errors": form.errors}))
+        else:
+            return super(NewsletterSubscribeForm, self).form_invalid(form)
 
 
 def card_expired(card):
