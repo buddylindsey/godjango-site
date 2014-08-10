@@ -60,7 +60,7 @@ $(".video-favorite").click ->
   return
 
 $("#newsletter-subscribe").on 'submit', (e) ->
-  ${'newsletter-suscribe-button').prop "disabled", true
+  $("#newsletter-subscribe-button").prop "disabled", true
   e.preventDefault()
   $.ajax
     type: "POST"
