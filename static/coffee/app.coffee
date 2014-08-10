@@ -60,6 +60,7 @@ $(".video-favorite").click ->
   return
 
 $("#newsletter-subscribe").on 'submit', (e) ->
+  ${'newsletter-suscribe-button').prop "disabled", true
   e.preventDefault()
   $.ajax
     type: "POST"
@@ -67,15 +68,15 @@ $("#newsletter-subscribe").on 'submit', (e) ->
     data: $("#newsletter-subscribe").serializeArray()
     dataType: "json"
     success: (data) ->
-      console.log(data)
       element = $('#newsletter-message')
       if data.success
-        element.removeClass('alert alert-error')
-        element.addClass('alert alert-success')
-        element.html(data.success)
+        element.removeClass 'alert alert-error'
+        element.addClass 'alert alert-success'
+        element.html data.success
       if data.errors
-        element.removeClass('alert alert-success')
-        element.addClass('alert alert-error')
+        $('#newsletter-subscribe-button').prop "disabled", false
+        element.removeClass 'alert alert-success'
+        element.addClass 'alert alert-error'
         if data.errors.email
           element.append("Email: " + d) for d in data.errors.email
         if data.errors.general

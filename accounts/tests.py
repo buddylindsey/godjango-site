@@ -44,7 +44,10 @@ class NewsletterSubscribeViewTest(TestCase):
         form.is_valid()
 
         self.mock.StubOutWithMock(mailchimp.Lists, 'subscribe')
-        mailchimp.Lists.subscribe('mainlistkey', 'other@example.com')
+        mailchimp.Lists.subscribe(
+            'mainlistkey', {'email': 'other@example.com'}, merge_vars={
+                'FNAME': form.cleaned_data['first_name'],
+                'LNAME': form.cleaned_data['last_name']})
 
         self.mock.ReplayAll()
         response = self.view.form_valid(form)
@@ -60,8 +63,10 @@ class NewsletterSubscribeViewTest(TestCase):
 
         self.mock.StubOutWithMock(mailchimp.Lists, 'subscribe')
         mailchimp.Lists.subscribe(
-            'mainlistkey', 'other@example.com').AndRaise(
-                mailchimp.ListAlreadySubscribedError)
+            'mainlistkey', {'email': 'other@example.com'}, merge_vars={
+                'FNAME': form.cleaned_data['first_name'],
+                'LNAME': form.cleaned_data['last_name']}).AndRaise(
+                    mailchimp.ListAlreadySubscribedError)
 
         self.mock.ReplayAll()
         response = self.view.form_valid(form)
@@ -76,15 +81,18 @@ class NewsletterSubscribeViewTest(TestCase):
 
         self.mock.StubOutWithMock(mailchimp.Lists, 'subscribe')
         mailchimp.Lists.subscribe(
-            'mainlistkey', 'other@example.com').AndRaise(mailchimp.Error)
+            'mainlistkey', {'email': 'other@example.com'}, merge_vars={
+                'FNAME': form.cleaned_data['first_name'],
+                'LNAME': form.cleaned_data['last_name']}).AndRaise(
+                    mailchimp.Error)
 
         self.mock.ReplayAll()
         response = self.view.form_valid(form)
         self.mock.VerifyAll()
 
         self.assertEqual(json.loads(response.content), {
-            'error': {'general':[('Something went horribly wrong. Please '
-                                  'try again')]}})
+            'errors': {'general':[('Something went horribly wrong. Please '
+                                   'try again ')]}})
 
     def test_form_invalid(self):
         form = NewsletterSubscribeForm({'email': 'wasup'})

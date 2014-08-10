@@ -149,16 +149,21 @@ class NewsletterSubscribeView(MailchimpMixin, FormView):
     def form_valid(self, form):
         try:
             mc = self.get_mailchimp()
+
+            name = {
+                'FNAME': form.cleaned_data['first_name'],
+                'LNAME': form.cleaned_data['last_name']}
+            email = {'email': form.cleaned_data['email']}
             mc.lists.subscribe(
-                settings.MAILCHIMP_LIST_MAIN, form.cleaned_data['email'])
+                settings.MAILCHIMP_LIST_MAIN, email, merge_vars=name)
             data = {
                 'success': ('Thank you for subscribing. Please confirm '
                             'in the email you that you have subscribed')}
         except mailchimp.ListAlreadySubscribedError:
             data = {'success': 'Thank you. You are already subscribed'}
         except mailchimp.Error, e:
-            data = {'error': {'general': [('Something went horribly wrong. '
-                                           'Please try again')]}}
+            data = {'errors': {'general': [('Something went horribly wrong. '
+                                           'Please try again {}'.format(e))]}}
 
         if self.request.is_ajax():
             return HttpResponse(json.dumps(data))
