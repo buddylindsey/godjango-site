@@ -229,8 +229,6 @@ PIPELINE_JS = {
     'vendor': {
         'source_filenames': (
             'js/django-csrf.js',
-            'js/bootstrap.min.js',
-            'js/bootstrap-ajax.js',
         ),
         'output_filename': 'js/vendor.js'
     }
@@ -251,7 +249,6 @@ PIPELINE_CSS = {
     },
     'vendor': {
         'source_filenames': (
-            'css/bootstrap.min.css',
             'css/pygments.css',
         ),
         'output_filename': 'css/vendor.min.css'
