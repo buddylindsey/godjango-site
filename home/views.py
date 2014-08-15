@@ -1,5 +1,6 @@
 from django.views.generic import ListView, TemplateView
 
+from accounts.mixins import CustomerMixin
 from episode.models import Video, Category
 
 
@@ -14,7 +15,7 @@ class CategoryListMixin(object):
         return context
 
 
-class IndexView(CategoryListMixin, ListView):
+class IndexView(CustomerMixin, CategoryListMixin, ListView):
     model = Video
     paginate_by = 8
     queryset = Video.objects.published()
