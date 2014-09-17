@@ -1,5 +1,7 @@
 {% extends "base.jinja" %}
 
+{% block title %}{{ category.title }} Videos - GoDjango{% endblock %}
+
 {% block head %}
 {% if page_obj.has_previous() %}
     <link rel="prev" href="{{ url("category", category.slug) }}?page={{page_obj.previous_page_number()}}" />
