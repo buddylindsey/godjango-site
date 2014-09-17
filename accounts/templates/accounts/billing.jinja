@@ -1,0 +1,103 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+{% set customer, paying = is_customer(user) %}
+{% if messages %}
+<div id="messages">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if paying %}
+<div class="row">
+    <div class="col-sm-12">
+        <h3>Subscriber RSS Feed</h3>
+        <input type="text" value="https://godjango.com/feeds/pro/?user={{user.username}}" class="form-control" />
+        <p>
+            This is your iTunes compatible RSS feed. It is tied to your account so keep track of it.
+        </p>
+    </div>
+</div>
+{% endif %}
+
+{% if customer %}
+<div class="row">
+    <div class="col-sm-6">
+        <h3>Credit Card Information</h3>
+        {% if user.customer.can_charge %}
+            {% if user.customer.card_type %}
+            <div>
+                Card Type: <strong>{{ user.customer.card_type }}<strong>
+            </div>
+            {% endif %}
+            Last 4 digits of Card: <strong>{{ user.customer.card_last_4 }}</strong>
+        {% else %}
+        <p>
+            You don't have a valid card on file.
+        </p>
+        {% endif %}
+    <p>
+    <a href="{{ url("update_card") }}">Update or Add Card</a>
+    </p>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <h3>Billing History</h3>
+        <table class="table table-striped">
+            <thead>
+                <th>Invoice #</th>
+                <th>Purchase Date</th>
+                <th>Amount</th>
+            </thead>
+            {% for invoice in user.customer.invoices.all() %}
+            <tr>
+                <td>{{ invoice.id }}</td>
+                <td>{{ invoice.date.strftime("%m/%d/%Y") }}</td>
+                <td>
+                    {% if invoice.paid and invoice.total > 0 %}
+                    <span class="label label-success">Paid</span> ${{ invoice.total }}
+                    {% endif %}
+                    {% if invoice.paid and invoice.total < 0 %}
+                    <span class="label label-success">Credit</span> ${{ invoice.total }}
+                    {% endif %}
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        {% include 'accounts/_subscription_status.jinja' %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="cancel-subscription">
+            <h3>Cancel Subscription</h3>
+            <p class="lead">Are you sure that you want to cancel?</p>
+
+            {% if user.customer.current_subscription.status == 'canceled' %}
+                <div class="alert alert-danger">Your account has been canceled. It will remain active until <strong>{{ user.customer.current_subscription.current_period_end }}.</strong>
+            {% else %}
+            <form action="{{ url('cancel_subscription') }}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="cancel" value="True" >
+                <button type="submit" class="btn btn-mini btn-danger">Cancel</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

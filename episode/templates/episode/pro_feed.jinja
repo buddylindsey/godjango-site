@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+    <channel>
+        <title>GoDjango Pro Subscribers Feed</title>
+        <link>https://godjango.com/</link>
+        <description>Short easy to consume Django, Python and Web Development</description>
+        <copyright>&#x2117; &amp; &#xA9; 2014 GoDjango. All Rights Reserved.</copyright>
+        <language>en</language>
+        <lastBuildDate>{{ episodes[0].publish_date.strftime("%a, %d %b %Y %H:%M:%S %z") }}</lastBuildDate>
+        <generator>Django Web Framework</generator>
+        <itunes:author>GoDjango</itunes:author>
+        <itunes:owner>
+            <itunes:name>Buddy Lindsey, Jr.</itunes:name>
+            <itunes:email>buddy@buddylindsey.com</itunes:email>
+        </itunes:owner>
+        <itunes:summary>Short easy to consume Django, Python and Web Development</itunes:summary>
+        <itunes:image href="https://godjango.com/static/img/itunes-image.png" />
+        <itunes:category text="Technology">
+            <itunes:category text="Software How-To"/>
+        </itunes:category>
+        <itunes:category text="Education">
+            <itunes:category text="Training"/>
+        </itunes:category>
+        <itunes:explicit>clean</itunes:explicit>
+
+        {% for episode in episodes %}
+        <item>
+            <title>{{ episode.title }}</title>
+            <link>https://godjango.com{{ episode.get_absolute_url() }}?utm_source=rss&amp;utm_medium=feed&amp;utm_campaign=pro_rss_feed</link>
+            <guid>https://godjango.com{{ episode.get_absolute_url() }}</guid>
+            <description>{{ episode.description }}</description>
+            <author>buddy@buddylindsey.com</author>
+            <enclosure url="https://godjango.com{{ episode.h264_download() }}&amp;user={{username}}" length="{{ episode.length }}" type="" />
+            <pubDate>{{ episode.publish_date.strftime("%a, %d %b %Y %H:%M:%S %z") }}</pubDate>
+            <itunes:author>Buddy Lindsey, Jr.</itunes:author>
+            <itunes:subtitle>{{ episode.description|truncate(147, True) }}</itunes:subtitle>
+            <itunes:summary>{{ episode.description }}</itunes:summary>
+            <itunes:duration>{{ episode.length_in_minutes() }}</itunes:duration>
+            <itunes:explicit>no</itunes:explicit>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>

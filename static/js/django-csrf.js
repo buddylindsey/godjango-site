@@ -44,4 +44,11 @@ jQuery( document ).ready(function( $ ) {
             }
         }
     });
-})
+    var oldSync = Backbone.sync;
+    Backbone.sync = function(method, model, options){
+        options.beforeSend = function(xhr){
+            xhr.setRequestHeader('X-CSRFToken', csrftoken);
+        };
+        return oldSync(method, model, options);
+    };
+});

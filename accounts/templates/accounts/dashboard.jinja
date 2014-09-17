@@ -1,0 +1,29 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+{% set customer, paying = is_customer(user) %}
+<div class="row">
+    <div class="col-sm-6">
+        <h2>Your Favorite Videos</h2>
+        {% if user.favorites.all() %}
+        <ul>
+        {% for video in user.favorites.all() %}
+            <li><a href="{{ video.get_absolute_url() }}">{{ video.title }}</a></li>
+        {% endfor %}
+        </ul>
+        {% else %}
+        <p>
+            You can favorite videos by clicking on the star next the title of the video
+        </p>
+        {% endif %}
+    </div>
+</div>
+{% if paying %}
+<div class="row">
+    <div class="col-sm-12">
+        {% include 'accounts/_subscription_status.jinja' %}
+    </div>
+</div>
+{% else %}
+{% endif %}
+{% endblock %}

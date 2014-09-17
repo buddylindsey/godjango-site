@@ -1,0 +1,29 @@
+{% extends "base.jinja" %}
+
+{% block head %}
+{% if page_obj.has_previous() %}
+    <link rel="prev" href="{{ url("browse") }}?page={{page_obj.previous_page_number()}}" />
+{% endif %}
+{% if page_obj.has_next() %}
+    <link rel="next" href="{{ url("browse") }}?page={{page_obj.next_page_number()}}" />
+{% endif %}
+{% endblock  %}
+
+{% block content -%}
+<div class="row">
+    <div class="col-sm-9 col-md-8 col-lg-9">
+        <div class="total-header">
+          {{ total_videos }} videos
+        </div>
+        {% for video in videos %}
+        {% include 'episode/_video.jinja' %}
+        {% else %}
+            no data
+        {% endfor %}
+        {% include 'episode/_pagination.jinja' %}
+    </div>
+    <div class="col-sm-3 col-md-4 col-lg-3 sidebar">
+      {% include 'episode/_sidebar.jinja' %}
+    </div>
+</div>
+{%- endblock %}

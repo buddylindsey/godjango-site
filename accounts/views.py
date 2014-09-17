@@ -1,19 +1,19 @@
 import arrow
-import json
-import mailchimp
+import stripe
 
 from django.conf import settings
 from django.dispatch import receiver
 from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.sites.models import Site
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, FormView, CreateView
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import (
     AuthenticationForm, SetPasswordForm, PasswordChangeForm)
 from django.contrib import messages
@@ -22,9 +22,13 @@ from braces.views import LoginRequiredMixin
 
 from payments.signals import WEBHOOK_SIGNALS
 from payments.settings import INVOICE_FROM_EMAIL
-from godjango_cart.forms import CheckoutForm
+from newsletter.tasks import newsletter_subscribe
 
-from .forms import UserCreateForm, NewsletterSubscribeForm
+from .mixins import NextUrlMixin, StripeContenxtMixin
+from .forms import (
+    CardForm, CancelSubscriptionForm, UserCreateForm, PasswordRecoveryForm)
+from .tasks import (
+    new_registration_email, password_changed_email, password_reset_email)
 
 
 def logout(request):
@@ -32,28 +36,8 @@ def logout(request):
     return redirect('index')
 
 
-class StripeContenxtMixin(object):
-    def get_context_data(self, **kwargs):
-        context = super(StripeContenxtMixin, self).get_context_data(**kwargs)
-        context['publishable_key'] = settings.STRIPE_PUBLIC_KEY
-        return context
-
-
-class MailchimpMixin(object):
-    def get_mailchimp(self):
-        return mailchimp.Mailchimp(settings.MAILCHIMP_API_KEY)
-
-
-class NextUrlMixin(object):
-    def get_success_url(self):
-        if 'next' in self.request.GET:
-            return self.request.GET.get('next')
-
-        return super(NextUrlMixin, self).get_success_url()
-
-
 class LoginView(NextUrlMixin, FormView):
-    template_name = 'accounts/login.html'
+    template_name = 'accounts/login.jinja'
     form_class = AuthenticationForm
     success_url = reverse_lazy('dashboard')
 
@@ -69,16 +53,10 @@ class LoginView(NextUrlMixin, FormView):
         return super(LoginView, self).form_invalid(form)
 
 
-class AccountRegistrationView(CreateView):
-    template_name = 'accounts/register.html'
+class AccountRegistrationView(NextUrlMixin, CreateView):
+    template_name = 'accounts/register.jinja'
     form_class = UserCreateForm
     success_url = reverse_lazy('dashboard')
-
-    def get_success_url(self):
-        if 'next' in self.request.GET:
-            return self.request.GET.get('next')
-
-        return self.success_url
 
     def form_valid(self, form):
         saved_user = form.save()
@@ -86,15 +64,57 @@ class AccountRegistrationView(CreateView):
             username=saved_user.username,
             password=form.cleaned_data['password1'])
         auth_login(self.request, user)
+
+        new_registration_email.delay(user.id)
+
+        if form.cleaned_data['subscribe']:
+            newsletter_subscribe.delay(user.email)
         return HttpResponseRedirect(self.get_success_url())
 
 
+class PasswordRecoveryView(FormView):
+    template_name = 'accounts/password_recovery.jinja'
+    form_class = PasswordRecoveryForm
+    success_url = reverse_lazy('password_recovery')
+
+    def form_valid(self, form):
+        user = User.objects.get(email=form.cleaned_data['email'])
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            ('Your password has been reset and emailed to you. '
+             'Please check your email'))
+        password_reset_email.delay(user.id)
+        return super(PasswordRecoveryView, self).form_valid(form)
+
+
 class BillingView(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts/billing.html'
+    template_name = 'accounts/billing.jinja'
+
+
+class CancelSubscriptionView(LoginRequiredMixin, FormView):
+    template_name = 'accounts/cancel.jinja'
+    form_class = CancelSubscriptionForm
+    success_url = reverse_lazy('billing')
+
+    def form_valid(self, form):
+        try:
+            self.request.user.customer.cancel()
+            messages.add_message(
+                self.request, messages.SUCCESS,
+                'Your subscription has been cancelled')
+        except stripe.StripeError, e:
+            messages.add_message(
+                self.request, messages.ERROR,
+                'Something went wrong: {}'.format(e.message))
+        return super(CancelSubscriptionView, self).form_valid(form)
+
+
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/dashboard.jinja'
 
 
 class SettingsView(LoginRequiredMixin, FormView):
-    template_name = 'accounts/settings.html'
+    template_name = 'accounts/settings.jinja'
     success_url = reverse_lazy('settings')
 
     def get_form_kwargs(self):
@@ -110,16 +130,15 @@ class SettingsView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         form.save()
+        messages.add_message(
+            self.request, messages.SUCCESS, 'Your password has been changed')
+        password_changed_email.delay(self.request.user.id)
         return super(SettingsView, self).form_valid(form)
 
 
-class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts/dashboard.html'
-
-
 class UpdateBillingView(LoginRequiredMixin, StripeContenxtMixin, FormView):
-    form_class = CheckoutForm
-    template_name = 'accounts/update_card.html'
+    form_class = CardForm
+    template_name = 'accounts/update_card.jinja'
     success_url = reverse_lazy('billing')
 
     def form_valid(self, form):
@@ -136,45 +155,6 @@ class UpdateBillingView(LoginRequiredMixin, StripeContenxtMixin, FormView):
                 'Something went wrong updating your card, please try again.')
 
         return super(UpdateBillingView, self).form_valid(form)
-
-
-class FavoriteView(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts/favorites.html'
-
-
-class NewsletterSubscribeView(MailchimpMixin, FormView):
-    template_name = 'accounts/subscribe.html'
-    form_class = NewsletterSubscribeForm
-
-    def form_valid(self, form):
-        try:
-            mc = self.get_mailchimp()
-
-            name = {
-                'FNAME': form.cleaned_data['first_name'],
-                'LNAME': form.cleaned_data['last_name']}
-            email = {'email': form.cleaned_data['email']}
-            mc.lists.subscribe(
-                settings.MAILCHIMP_LIST_MAIN, email, merge_vars=name)
-            data = {
-                'success': ('Thank you for subscribing. Please confirm '
-                            'in the email you that you have subscribed')}
-        except mailchimp.ListAlreadySubscribedError:
-            data = {'success': 'Thank you. You are already subscribed'}
-        except mailchimp.Error, e:
-            data = {'errors': {'general': [('Something went horribly wrong. '
-                                           'Please try again {}'.format(e))]}}
-
-        if self.request.is_ajax():
-            return HttpResponse(json.dumps(data))
-        else:
-            return super(NewsletterSubscribeForm, self).form_valid(form)
-
-    def form_invalid(self, form):
-        if self.request.is_ajax():
-            return HttpResponse(json.dumps({"errors": form.errors}))
-        else:
-            return super(NewsletterSubscribeForm, self).form_invalid(form)
 
 
 def card_expired(card):

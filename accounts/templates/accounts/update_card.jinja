@@ -1,0 +1,127 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+<h2>Update Credit Card</h2>
+<div class="update-card">
+      {% if messages %}
+      <div id="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <form action="{{ url("update_card") }}" method="POST" id="update-card-form">
+          {% csrf_token %}
+          {% if error %}
+            <span>Error: {{ error }}</span>
+          {% endif %}
+          <div class="payment-errors"></div>
+          <div class="form-horizontal">
+              <div class="form-group">
+                  <label class="col-sm-2" for="card">Card</label>
+                  <div class="col-sm-4">
+                      <input type="text" id="card" class="large form-control" data-stripe="number" />
+                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2" for="">Expiration (MM/YYYY)</label>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <select data-stripe="exp-month" class="form-control">
+                                <option value="01">01 - January</option>
+                                <option value="02">02 - February</option>
+                                <option value="03">03 - March</option>
+                                <option value="04">04 - April</option>
+                                <option value="05">05 - May</option>
+                                <option value="06">06 - June</option>
+                                <option value="07">07 - July</option>
+                                <option value="08">08 - August</option>
+                                <option value="09">09 - September</option>
+                                <option value="10">10 - October</option>
+                                <option value="11">11 - November</option>
+                                <option value="12">12 - December</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <select data-stripe="exp-year" class="form-control">
+                                <option value="2014">2014</option>
+                                <option value="2015">2015</option>
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                            </select>
+                        </div>
+                    </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2" for="cvc">CVC</label>
+                <div class="col-sm-4">
+                    <input type="text" id="cvc" size="4" class="form-control" data-stripe="cvc" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2">Accepted Cards</label>
+                <div class="col-sm-4">
+                  <img class="credit-card" src="{{ static("img/visa.png") }}" />
+                  <img class="credit-card" src="{{ static("img/mastercard.png") }}" />
+                  <img class="credit-card" src="{{ static("img/discover.png") }}" />
+                  <img class="credit-card" src="{{ static("img/american_express.png") }}" />
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <input type="submit" value="Update Card" class="btn btn-primary" />
+                </div>
+              </div>
+          </div>
+      </form>
+  </div>
+
+{% endblock %}
+
+{% block additional_js %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+    Stripe.setPublishableKey('{{ publishable_key }}');
+
+    var stripeResponseHandler = function(status, response) {
+        var $form = $('#update-card-form');
+
+        if (response.error) {
+            // Show the errors on the form
+            $form.find('.payment-errors').text(response.error.message);
+            $form.find('.payment-errors').addClass('alert');
+            $form.find('.payment-errors').addClass('alert-error');
+            $form.find('button').prop('disabled', false);
+        } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+            // and re-submit
+            $form.get(0).submit();
+        }
+    };
+
+    jQuery(function($) {
+        $('#update-card-form').submit(function(e) {
+            var $form = $(this);
+
+            // Disable the submit button to prevent repeated clicks
+            $form.find('button').prop('disabled', true);
+
+            Stripe.createToken($form, stripeResponseHandler);
+
+            // Prevent the form from submitting with the default action
+            return false;
+        });
+    });
+</script>
+{% endblock %}

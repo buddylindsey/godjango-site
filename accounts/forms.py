@@ -3,8 +3,28 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 
+class CardForm(forms.Form):
+    stripeToken = forms.CharField()
+
+
+class CancelSubscriptionForm(forms.Form):
+    cancel = forms.BooleanField()
+
+
+class PasswordRecoveryForm(forms.Form):
+    email = forms.EmailField(required=False)
+
+    def clean(self):
+        try:
+            User.objects.get(email=self.cleaned_data['email'])
+        except User.DoesNotExist:
+            raise forms.ValidationError("Can't find a user based on the email")
+        return self.cleaned_data
+
+
 class UserCreateForm(UserCreationForm):
     email = forms.EmailField(required=True)
+    subscribe = forms.BooleanField(required=False)
 
     class Meta:
         model = User
@@ -18,8 +38,3 @@ class UserCreateForm(UserCreationForm):
             user.save()
 
         return user
-
-class NewsletterSubscribeForm(forms.Form):
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)
-    email = forms.EmailField()

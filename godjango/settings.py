@@ -166,10 +166,11 @@ INSTALLED_APPS = (
     'djblog',
     'search',
     'djcelery',
-    'analytics',
     'pipeline',
     'django_jinja',
     'django_jinja.contrib._pipeline',
+    'newsletter',
+    'analytics',
 )
 
 # Django Social Auth settings
@@ -202,12 +203,20 @@ PAYMENTS_INVOICE_FROM_EMAIL = "buddy@buddylindsey.com"
 PAYMENTS_PLANS = {
     "monthly": {
         "stripe_plan_id": "pro",
-        "name": "Pro",
+        "name": "Pro - Monthly",
         "description": "The monthly subscription plan to GoDjango",
         "price": 9,
         "currency": "usd",
         "interval": "month"
     },
+    "yearly": {
+        "stripe_plan_id": "pro-yearly",
+        "name": "Pro - Yearly",
+        "description": "The yearly subscription plan to GoDjango",
+        "price": 90,
+        "currency": "usd",
+        "interval": "yearly"
+    }
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap'
@@ -229,6 +238,8 @@ PIPELINE_JS = {
     'vendor': {
         'source_filenames': (
             'js/django-csrf.js',
+            'js/underscore-min.js',
+            'js/backbone-min.js',
         ),
         'output_filename': 'js/vendor.js'
     }
@@ -238,6 +249,7 @@ PIPELINE_CSS = {
     'main': {
         'source_filenames': (
             'stylus/main.styl',
+            'stylus/properties.styl'
         ),
         'output_filename': 'css/main.min.css'
     },

@@ -1,0 +1,63 @@
+{% extends "base.jinja" %}
+
+{% block head %}
+<link href="//cdnjs.cloudflare.com/ajax/libs/zocial/0/zocial.min.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% if messages %}
+    <div class="span10 offset1">
+      <div id="messages">
+          {% for message in messages %}
+              <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+                  {{ message }}
+              </div>
+          {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    <div class="col-md-6 login login-left">
+        <form method="post" accept-charset="utf-8" class="form-horizontal">
+            {% csrf_token %}
+            <div class="form-group" {% if form['username'].errors %}has-error{% endif %}</div>
+                <label for="id_username" class="col-sm-offset-1 col-sm-3 control-label">username</label>
+                <div class="col-sm-4">
+                    <input id="id_username" maxlength="254" name="username" type="text" class="form-control" />
+                    {% if form['username'].errors %}
+                    <span class="help-block">
+                        {% for error in form['username'].errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group" {% if form['password'].errors %}has-error{% endif %}</div>
+                <label for="id_password" class="col-sm-offset-1 col-sm-3 control-label">password</label>
+                <div class="col-sm-4">
+                    <input id="id_password" maxlength="254" name="password" type="password" class="form-control" />
+                    {% if form['password'].errors %}
+                    <span class="help-block">
+                        {% for error in form['password'].errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-4">
+                    <input type="submit" value="Login" class="btn btn-primary"> or <a rel="no-follow" href="{{ url("register") }}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Register</a><br />
+                    <a href="{{ url("password_recovery") }}" rel="no-follow">Forgot Password</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6 login login-right">
+        <div class="col-sm-offset-3 col-sm-6">
+          <a href="{{ url('social:begin', 'github') }}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" class="zocial github github-button">Login with GitHub</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

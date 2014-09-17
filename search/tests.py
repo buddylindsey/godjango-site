@@ -16,7 +16,7 @@ class SearchViewTest(TestCase):
         self.assertEqual(self.view.model, Video)
         self.assertEqual(self.view.context_object_name, 'videos')
         self.assertEqual(self.view.paginate_by, 10)
-        self.assertEqual(self.view.template_name, 'home/browse.html')
+        self.assertEqual(self.view.template_name, 'episode/browse.jinja')
 
     def test_get_queryset(self):
         mommy.make('episode.Video', description='django')

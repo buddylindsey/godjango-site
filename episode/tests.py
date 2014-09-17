@@ -1,42 +1,34 @@
-from datetime import datetime
-from model_mommy import mommy
 from django.test import TestCase
-from django.utils.timezone import now
 
-from models import Video
+import mox
+import arrow
+from model_mommy import mommy
+
+from .models import Video
+from .views import VideoView, BrowseView, CategoryView
+from .mixins import CategoryListMixin
 
 
 class VideoReviewManagerTest(TestCase):
-    def setUp(self):
-        mommy.make(Video, publish_date=datetime.now())
-        mommy.make(Video, publish_date=datetime.now())
-        mommy.make(Video, publish_date=datetime.now())
-
-    def test_published_reviews(self):
+    def test_published_videos(self):
+        mommy.make(Video, publish_date=arrow.now().datetime, _quantity=3)
+        mommy.make(Video, _quantity=2)
         videos = Video.objects.published()
-        self.assertEqual(3, len(videos))
+        self.assertEqual(3, videos.count())
+
+    def test_premium_videos(self):
+        mommy.make(Video, premium=True, _quantity=3)
+        mommy.make(Video, _quantity=2)
+        videos = Video.objects.premium()
+        self.assertEqual(3, videos.count())
+
+    def test_not_premium_videos(self):
+        mommy.make(Video, _quantity=3)
+        videos = Video.objects.not_premium()
+        self.assertEqual(3, videos.count())
 
 
 class VideoModelTest(TestCase):
-    def test_model_fields(self):
-        video = Video()
-        video.title = "The Title"
-        video.slug = "the-title"
-        video.thumbnail_image = "thumbnail.jpg"
-        video.preview_image = "preview.jpg"
-        video.description = "long description here"
-        video.show_notes = "show notes here"
-        video.video_h264 = "video.mp4"
-        video.video_webm = "video.webm"
-        video.length = 12
-        video.episode = 1
-        video.publish_date = now()
-        video.is_premium = False
-        video.price = 105.00
-
-        video.save()
-        self.assertEqual(video, Video.objects.get(title__exact="The Title"))
-
     def test_video_slugify_on_save(self):
         video = Video()
         video.title = "I am an awesome title"
@@ -47,11 +39,10 @@ class VideoModelTest(TestCase):
         self.assertEqual("i-am-an-awesome-title", video.slug)
 
     def test_model_get_absolute_url(self):
-        video = Video(title="I is title", description="i is desc")
-        video.save()
+        video = mommy.make('episode.Video', slug='i-is-slug')
 
         self.assertEqual(
-            "/%s-%s/" % (video.id, video.slug), video.get_absolute_url())
+            "/{}-i-is-slug/".format(video.id), video.get_absolute_url())
 
     def test_model_video_url(self):
         video = Video(title="I is title", description="i is desc")
@@ -60,6 +51,126 @@ class VideoModelTest(TestCase):
         video.save()
 
         self.assertEqual(
-            "/media/episode-%s/%s" % (video.id, "h264.mp4"), video.h264)
+            "/media/episode-{}/{}".format(video.id, "h264.mp4"), video.h264)
         self.assertEqual(
-            "/media/episode-%s/%s" % (video.id, "webm.webm"), video.webm)
+            "/media/episode-{}/{}".format(video.id, "webm.webm"), video.webm)
+
+    def test_length_in_minutes(self):
+        video = mommy.make('episode.Video', length=130)
+
+        self.assertEqual(video.length_in_minutes(), '2:10')
+
+    def test_next_video(self):
+        video1 = mommy.make(
+            'episode.Video', publish_date=arrow.utcnow().datetime, episode=1)
+        video2 = mommy.make(
+            'episode.Video', publish_date=arrow.utcnow().datetime, episode=2)
+
+        video = video1.next_video()
+
+        self.assertEqual(video, video2)
+
+    def test_no_next_video(self):
+        video = mommy.make(
+            'episode.Video', publish_date=arrow.utcnow().datetime, episode=1)
+
+        self.assertEqual(None, video.next_video())
+
+
+class VideoViewTest(TestCase):
+    def setUp(self):
+        self.view = VideoView()
+        self.view.object = None
+
+    def test_attrs(self):
+        self.assertEqual(self.view.template_name, 'episode/video.jinja')
+        self.assertEqual(self.view.model, Video)
+        self.assertEqual(self.view.context_object_name, 'video')
+
+    def test_get_context_data(self):
+        context = self.view.get_context_data()
+        self.assertIsInstance(
+            context['newsletter_form'], NewsletterSubscribeForm)
+
+
+class BrowseViewTest(TestCase):
+    def setUp(self):
+        self.view = BrowseView()
+        self.view.object_list = {}
+        self.mock = mox.Mox()
+
+    def tearDown(self):
+        self.mock.UnsetStubs()
+
+    def test_attrs(self):
+        self.assertEqual(self.view.model, Video)
+        self.assertEqual(self.view.paginate_by, 10)
+        self.assertEqual(self.view.context_object_name, 'videos')
+        self.assertEqual(self.view.template_name, 'episode/browse.jinja')
+
+    def test_get_context_data(self):
+        mommy.make('episode.Video')
+        self.mock.StubOutWithMock(CategoryListMixin, 'get_context_data')
+        self.mock.StubOutWithMock(BrowseView, 'get_queryset')
+        CategoryListMixin.get_context_data().AndReturn({})
+        BrowseView.get_queryset().AndReturn(Video.objects.all())
+
+        self.mock.ReplayAll()
+        context = self.view.get_context_data()
+        self.mock.VerifyAll()
+
+        self.assertEqual(1, context['total_videos'])
+
+
+class CategoryViewTest(TestCase):
+    def setUp(self):
+        self.mock = mox.Mox()
+        self.view = CategoryView()
+
+    def tearDown(self):
+        self.mock.UnsetStubs()
+
+    def test_attrs(self):
+        self.assertEqual(self.view.model, Video)
+        self.assertEqual(self.view.paginate_by, 10)
+        self.assertEqual(self.view.context_object_name, 'videos')
+        self.assertEqual(self.view.template_name, 'episode/category.jinja')
+
+    def test_get_context_data(self):
+        mommy.make('episode.Video')
+        category = mommy.make('episode.Category')
+        self.mock.StubOutWithMock(CategoryListMixin, 'get_context_data')
+        self.mock.StubOutWithMock(CategoryView, 'get_category')
+        self.mock.StubOutWithMock(CategoryView, 'get_queryset')
+        CategoryListMixin.get_context_data().AndReturn({})
+        CategoryView.get_category().AndReturn(category)
+        CategoryView.get_queryset().AndReturn(Video.objects.all())
+
+        self.mock.ReplayAll()
+        context = self.view.get_context_data()
+        self.mock.VerifyAll()
+
+        self.assertEqual(category, context['category'])
+        self.assertEqual(1, context['total_videos'])
+
+    def test_get_category(self):
+        category = mommy.make('episode.Category')
+        self.view.kwargs = {'slug': category.slug}
+        self.assertEqual(category, self.view.get_category())
+
+    def test_get_category_no_category(self):
+        self.view.kwargs = {}
+        self.assertRaises(AttributeError, self.view.get_category)
+
+    def test_get_queryset(self):
+        category = mommy.make('episode.Category')
+        video = mommy.make('episode.Video', publish_date=arrow.now().datetime)
+        category.videos.add(video)
+        self.mock.StubOutWithMock(CategoryView, 'get_category')
+        CategoryView.get_category().AndReturn(category)
+
+        self.mock.ReplayAll()
+        videos = self.view.get_queryset()
+        self.mock.VerifyAll()
+
+        self.assertSequenceEqual(videos, [video])

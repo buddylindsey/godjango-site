@@ -1,0 +1,16 @@
+        <div class="media episode-list-item padding-15">
+            <a class="pull-right hidden-xs" href="{{ video.get_absolute_url() }}"><img class="thumbnail" src="{{ video.thumbnail_image }}" /></a>
+            <div class="media-body">
+                <h4 class="media-heading"><a href="{{ video.get_absolute_url() }}">{{ video.title }}</a></h4>
+                <div class="sub-heading">
+                    <strong>Video {{ video.episode }} · Length: {{ video.length_in_minutes() }}</strong>
+                    {% if video.is_premium %}
+                    <span class="label label label-warning pro-label">pro video</span>
+                    {% endif %}
+                </div>
+                <p>
+                    {{ video.description }}
+                </p>
+            </div>
+        </div>
+

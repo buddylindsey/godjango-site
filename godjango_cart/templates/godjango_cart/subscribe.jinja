@@ -1,0 +1,143 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="text-center">
+            <img src="{{ static("img/godjango-logo.png") }}" class="text-center" />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <h2 class="text-center">Access Hours of Content Instantly.</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 sales-copy">
+        <strong>Learning Django and Python can be hard, but it doesn't have to be.</strong> With short, easy to understand, and concise videos you can pick up on them both quickly, or learn that one thing you were trying to figure out.
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 sales-copy text-center">
+        <a href="#plans" class="btn btn-success btn-sales margin-20">Ready to Subscribe? Click Here</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 sales-copy">
+        Let's be honest it is tough to learn Django with as much is scattered around the internet, some in areas you will never see. The documentation is amazing, but almost too good as it throws a lot at you at once.
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 sales-copy">
+        <ul class="questions">
+            <li>How do you know the best practices?</li>
+            <li>What about learning those shiney new features?</li>
+            <li>What don't you know that you don't know?</li>
+            <li>How can you <strong>be a better Django developer</strong></li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 sales-copy">
+        <p>
+            As a developer you want to learn <strong>the latest</strong>, and <strong>right way</strong> to do things in django, but you really don't have a lot of time to scour all the blogs, read all the books, or stay completely engaged in the community.
+        </p>
+        <p>
+            So what can you do?
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 sales-copy">
+        <p>
+            You can spend a lot of time and effort reading everything on the internet, or you can start with GoDjango.
+        </p>
+        <p>
+            What does that mean for you?
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 sales-copy">
+        <ul class="answers">
+            <li>Shorter learning curves.</li>
+            <li>Increased skills.</li>
+            <li><strong>Better code.</strong></li>
+            <li>Confidence in the code you write.</li>
+            <li><strong>See how to do things</strong> instead of wondering how they work.</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 sales-copy">
+        <p>
+            The goal of GoDjango is to provide you with an easy to understand library of videos on Django and Python. We focus on high quality, short, and focused videos to really help your learning process.
+        </p>
+        <p>
+            We are developing new videos weekly, or more often. Be sure to join the other thousands of people who are watching videos every week.
+        </p>
+    </div>
+</div>
+<div class="row" id="plans">
+    <div class="col-sm-offset-1 col-sm-4 text-center">
+        <div class="plan-container plan-container-primary">
+            <h3>Pro - Monthly</h3>
+            <h4>$9.00/month</h4>
+            <div class="call-to-action">
+                <a href="{{ url("new_subscription") }}?plan=monthly" class="btn btn-success btn-large">Start Learning more Now</a>
+            </div>
+            <ul>
+                <li>Access to all Videos</li>
+                <li>Streaming Videos</li>
+                <li>Full HD Download*</li>
+                <li>iTunes "Podcast" RSS Feed</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-offset-1 col-sm-4 text-center">
+        <div class="plan-container">
+            <h3>Pro - Yearly</h3>
+            <h4>$90.00/year</h4>
+            <div class="call-to-action">
+                <a href="{{ url("new_subscription") }}?plan=yearly" class="btn btn-success btn-large">Start Learning more Now</a>
+            </div>
+            <ul>
+                <li>Access to all Videos</li>
+                <li>Streaming Videos</li>
+                <li>Full HD Download*</li>
+                <li>iTunes "Podcast" RSS Feed</li>
+                <li><em>best value</em></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        *videos up to episode 64 are not in HD.
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 sales-copy">
+        <div class="faq">
+            <h3>FAQ</h3>
+            <h4>What will I get with a Pro subscription?</h4>
+            <p>
+                In addition to free content, you will have access to Pro content as well. Pro content will be the same high quality videos you are used to with the free the videos, but there will be more of it.
+            </p>
+            <h4>What about all the existing videos?</h4>
+            <p>
+                You will continue to have access to it all, it isn't going anywhere.
+            </p>
+            <h4>Why are you charging me to watch videos?</h4>
+            <p>
+                You're a professional that wants to stay informed when it comes to technology. We are professionals that enjoy teaching others. Making video content is... a lot of work. Subscriptions are a way to help us continue to make high quality content.
+            </p>
+            <h4>What if I sign up and want to cancel?</h4>
+            <p>
+                You can cancel your subscription at any time. Your subscription will remain active until the current time period is finished.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

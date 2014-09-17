@@ -1,9 +1,15 @@
 from datetime import datetime, timedelta
+
 from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+
+import arrow
+from mistune import Markdown
+from djblog.utils import SyntaxHighlightRenderer
+
 from django_extensions.db.models import (
     TimeStampedModel, TitleSlugDescriptionModel)
 from django.utils.encoding import python_2_unicode_compatible
@@ -12,7 +18,7 @@ from django.utils.encoding import python_2_unicode_compatible
 class VideoQuerySet(models.query.QuerySet):
     def published(self):
         return self.filter(
-            publish_date__lte=datetime.now()).order_by('-publish_date')
+            publish_date__lte=arrow.now().datetime).order_by('-publish_date')
 
     def premium(self):
         return self.filter(is_premium=True)
@@ -43,6 +49,7 @@ class Video(models.Model):
     preview_image = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField()
     show_notes = models.TextField(null=True, blank=True)
+    transcript = models.TextField(null=True, blank=True)
     video_h264 = models.CharField(max_length=1000, null=True, blank=True)
     video_webm = models.CharField(max_length=1000, null=True, blank=True)
     length = models.PositiveIntegerField(null=True, blank=True)
@@ -59,25 +66,15 @@ class Video(models.Model):
 
     objects = VideoManager()
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('episode', (), {'pk': self.id, 'slug': self.slug})
+        return reverse('episode', kwargs={'pk': self.id, 'slug': self.slug})
 
     def _h264(self):
-        return "%sepisode-%s/%s" % (
-            settings.MEDIA_URL,
-            self.id,
-            self.video_h264
-        )
+        return "/file/?action=play&filename={}".format(self.video_h264)
     h264 = property(_h264)
 
     def _webm(self):
-        return "%sepisode-%s/%s" % (
-            settings.MEDIA_URL,
-            self.id,
-            self.video_webm
-        )
-
+        return "/file/?action=play&filename={}".format(self.video_webm)
     webm = property(_webm)
 
     def save(self, *args, **kwargs):
@@ -85,21 +82,37 @@ class Video(models.Model):
             self.slug = slugify(self.title)
         super(Video, self).save(*args, **kwargs)
 
-    # Admin specific properties
-    def admin_thumbnail(self):
-        return "<img src='%s' height='41' width='66' />" % self.thumbnail_image
-    admin_thumbnail.allow_tags = True
+    def h264_download(self):
+        return "/file/?filename={}".format(self.video_h264)
 
-    def admin_link(self):
-        return "<a href='%s'>View Video</a>" % self.get_absolute_url()
-    admin_link.allow_tags = True
+    def webm_download(self):
+        return "/file/?filename={}".format(self.video_h264)
 
     def length_in_minutes(self):
         if self.length:
             length = timedelta(seconds=self.length)
-            return str(length).split(':')[1]
+            hour, minute, second = str(length).split(':')
+            if int(minute) < 10:
+                minute = minute[1]
+            return "{}:{}".format(minute, second)
 
         return 0
+
+    def next_video(self):
+        try:
+            videos = Video.objects.filter(
+                episode__gt=self.episode).order_by('episode')[:1]
+            return videos[0]
+        except IndexError:
+            return None
+
+    def published_show_notes(self):
+        md = Markdown(renderer=SyntaxHighlightRenderer())
+        return md.render(self.show_notes)
+
+    def published_transcript(self):
+        md = Markdown(renderer=SyntaxHighlightRenderer())
+        return md.render(self.transcript)
 
     def __str__(self):
         return self.title

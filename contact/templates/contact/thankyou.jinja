@@ -1,0 +1,14 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+<div class="col-sm-offset-2 col-sm-8">
+    <h1>Thank you for your feedback</h1>
+    <hr />
+    <h3>Give These Videos a Try</h3>
+    <ul class="thank-you-videos">
+    {% for video in videos %}
+        <li>{{ video.episode }}. <a href="{{ video.get_absolute_url() }}">{{ video.title }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

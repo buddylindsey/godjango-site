@@ -1,187 +1,207 @@
-html
-    background-color: EEEEEE
+body
+    font-family: 'Karla',"Helvetica Neue",Helvetica,Arial,sans-serif
 
-.top-level-container
-    width: 1280
+.input-date
+    width: 20px
 
-.top-level-container
-    width: 1280px
+.navbar
+    border: none
+    background-color: #24364B
 
-.content
-    background-color: #FFFFFF
-    border-radius: 0 0 6px 6px
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15)
-    padding: 0px 0px 15px 0px
+    .nav
+        a.dropdown-toggle
+            color: white
+        a.main-link
+            color: white
 
-.header-content
-    background-color: #FFFFFF
-    border-radius: 0 0 0 0
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15)
+    li.go-pro-li
+        background-color: #9bd7ff
 
-img.about-profile
-    width: 125px
-    float: right
-    padding: 5px
-    border: lightgray 1px solid
-    margin: 0px 10px 0px 10px
+    li.go-pro-li > a
+        color: darkslateblue
 
-.testimonial-container
-    margin: 0px 0px 20px 0px
 
-.testimonial-header
-    font-size: 35px
-    text-align: center
-    margin: 10px 0px 30px 0px
+.sidebar-list-group
+    margin-top: 46px
+
+.total-header
+    font-size: 22px
     font-weight: bold
 
-.testimonial-box
-    text-align: center
+    .name
+        color: gray
 
-.testimonial-text
-    font-size: 1em
-    margin: 5px 0px 5px 0px
+.episode-list-item
+    border: lightgray 1px solid
 
-#newsletter-modal
-    width: 600px
-    margin: 0px 0px 0px -300px
+    h4
+        font-weight: bold
+        line-height: 1.2em
+        font-size: 1.6em
 
-img.testimonial-image
-    width: 73px
-    height: 73px
-    border-radius: 10px
+    .thumbnail
+        width: 350px
+        height: 196px
+        border: 0px
+        margin: 0px
+
+    .sub-heading
+        color: gray
+        margin-bottom: 5px
+
+    .pro-label
+        text-transform: uppercase
+
+.video-container
+    .video-preview-image
+        text-align: center
+
+    .video-preview-image img
+        max-width: 1170px
+
+    .pro-placeholder
+        color: white
+        height: 630px
+        border: lightgray 1px solid
+        border-radius: 5px
+        text-align: center
+        background: url(http://api.thumbr.it/whitenoise-361x370.png?background=24364B&noise=626262&density=35&opacity=50)
+        margin-top: 20px
+        margin-bottom: 20px
+
+        h3
+            font-size: 30px
+
+
+        .feature-list
+            margin-top: 100px
+            .header
+                font-size: 20px
+
+.video-meta
+    margin-top: 10px
+    margin-bottom: 10px
+
+.login
+    margin-top: 60px
+
+    .github-button
+        margin-top: 50px
 
 .login-left
-    border-right: 1px solid #EEEEEE
-    margin-top: 15px
-    padding-top: 25px
+    border-right: 1px solid lightgray
 
-.login-right
-    margin-top: 65px
-    margin-left: 60px
-
-.category-hero
-    margin: 0px 0px 20px 0px
-
-.sidebar-categories ul
-    list-style-type: none
-    margin: 0px 0px 0px 5px
-
-.sidebar-categories ul li
-    margin: 5px 0px 5px 0px
-
-.sidebar-categories header
-    font-size: 20px
-    margin: 10px 0px 0px 5px
-    padding: 5px 0px 5px 0px
-    border-bottom: 1px solid #EEEEEE
-
-.sidebar-row
-    margin-bottom: 20px
-
-.mailing-list-subscribe
-    border-bottom: 1px solid #EEEEEE
+.sales-copy
     font-size: 18px
-    margin: 0 0 10px
-    padding: 0 0 5px
+    line-height: 26px
 
-.video-favorite
-    cursor: pointer
+    .faq
+        font-size: 14px
 
-.page-header
-    border-bottom: none
-    font-size: 2.3em
-    margin: 30px 0px 10px 0px
-    padding: 0px
+        h3
+            font-weight: bold
 
-.right-header-content
-    margin: 65px 0px 0px 0px
+        h4
+            font-weight: bold
+            font-size: 16px
 
-#video-container
-  margin: 0px 20px 0px 20px
+    a.btn-sales
+        font-size: 19px
 
-#video-container .video-standard
-    margin: 0px 0px 0px 200px
-    display: none
+    ul.questions
+        list-style-type: none
+        margin: 20px 0px
 
-#video-container .video-wide
-    margin: 0px 0px 0px -10px
-    display: none
+        li:before
+            content: "?"
+            width: 25px
+            height: 25px
+            text-align: center
+            background: none repeat scroll 0% 0% #CF341E
+            color: white
+            border-radius: 13px
+            position: absolute
+            left: 20px
 
-#meta-content
-    margin: 20px 0px 20px 0px
+    ul.answers
+        list-style-type: none
+        margin: 20px 0px
 
-.media
-    text-align: left
+        li:before
+            content: "+"
+            width: 25px
+            height: 25px
+            text-align: center
+            background: none repeat scroll 0% 0% #2465CD
+            color: white
+            border-radius: 13px
+            position: absolute
+            left: 20px
 
-.video-preview .media .media-body h4.media-header
-    margin: 0px
-    padding: 0px
+#plans
+    .plan-container
+        border: solid 1px #DDD
+        border-radius: 5px
+        margin-top: 20px
+        background-color: #F5F5F5
 
-.browse-videos .media .media-body h4.media-header
-    margin: 0px
-    padding: 0px
+    .plan-container-primary
+        margin-top: 5px
 
-.browse-videos .media .pull-left img 
-    border: 1px solid gray
+    ul
+        list-style-type: none
+        padding: 0px
 
-.media-body h1.media-header
-    font-size: 17.5px
-    margin: 0px
-    padding: 0px
+        li
+            border-top: solid 1px #DDD
+            padding: 10px 0px
+            margin: 0px 20px
 
-.video
-    display: none
+        li:first-child
+            border-top: medium none
 
-.navbar-inner
-    border-radius: 0 0 0 0
-
-#account-content
-    margin: 0px 50px 0px 50px
-
-#meta-data
-    border: 1px solid lightgray
-    padding: 10px 15px
-    margin: 20px 0px
+.checkout-header
+    max-width: 361px
+    font-size: 20px
+    padding: 5px 15px
+    background-color: #F5F5F5
+    border: 1px solid #DDD
     border-radius: 5px
+    margin: 20px 0px 10px 0px
 
-.episode-title
-    line-height: 1.5em
+.checkout-plan
+    font-size: 20px
 
-.episode-title .meta-number
-    font-size: 1.25em
-    color: gray
+.thank-you-videos
+    list-style-type: none
 
-.episode-title .meta-title
-    font-size: 1.25em
-    font-weight: bold
+.index-header
+    background-image: url(/static/img/index-header.jpg)
+    background-size: cover
+    background-position: center
+    background-repeat: no-repeat
+    color: white
 
-.pubdate-length
-    line-height: 1.25em
-    font-size: .85em
-    color: gray
+    h1
+        margin-top: 130px
+        text-shadow: 1px 1px 2px #000000
 
-.main-subscribe-copy-header
-    margin: 10px 100px 10px 100px
-    line-height: 1.65em
-    font-size: 1.5em
+    h2
+        margin-top: 50px
+        text-shadow: 1px 1px 2px #000000
+        font-size: 23px
 
-.main-subscribe-copy
-    margin: 20px
+    .buttons
+        margin-bottom: 100px
 
-.subscribe-note
-    text-align: center
-    margin: 0px 200px 0px 200px
-
-.subscribe-button
-    margin: 20px
-    text-align: center
-
-.button-banner
-    font-size: 1.35em
-    font-weight: bold
+        .btn-header
+            margin-top 20px
+            margin-bottom: 20px
+            margin-right: 10px
+            border-bottom: 1px solid white
+            font-size: 22px
+            font-weight: bold
 
 footer
-    margin: 10px 0px 0px 0px
-
-footer p
-    text-align: center
+    margin-top: 20px
+    margin-bottom: 20px

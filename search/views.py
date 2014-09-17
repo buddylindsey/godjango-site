@@ -8,7 +8,7 @@ class SearchView(ListView):
     model = Video
     context_object_name = 'videos'
     paginate_by = 10
-    template_name = 'home/browse.html'
+    template_name = 'episode/browse.jinja'
 
     def get_queryset(self):
         queryset = super(SearchView, self).get_queryset()

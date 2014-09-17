@@ -1,0 +1,64 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        {% if messages %}
+        <div id="messages">
+          {% for message in messages %}
+          <div class="alert alert-{{message.tags}}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <h3>Change/Set Password</h3>
+        <form method="post" accept-charset="utf-8" class="form-horizontal">
+            {% csrf_token %}
+            <div class="form-group {% if form['old_password'].errors %}has-error{% endif %}">
+                <label for="id_old_password" class="col-sm-4 control-label">old password</label>
+                <div class="col-sm-4">
+                  <input type="password" id="id_old_password" name="old_password" class="form-control" />
+                    {% if form['old_password'].errors %}
+                    <span class="help-block">
+                        {% for error in form['old_password'].errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group {% if form['new_password1'].errors %}has-error{% endif %}">
+                <label for="id_new_password1" class="col-sm-4 control-label">new password</label>
+                <div class="col-sm-4">
+                  <input type="password" id="id_new_password1" name="new_password1" class="form-control" />
+                    {% if form['new_password1'].errors %}
+                    <span class="help-block">
+                        {% for error in form['new_password1'].errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group {% if form['new_password2'].errors %}has-error{% endif %}">
+                <label for="id_new_password2" class="col-sm-4 control-label">password confirmation</label>
+                <div class="col-sm-4">
+                  <input type="password" id="id_new_password2" name="new_password2" class="form-control" />
+                    {% if form['new_password2'].errors %}
+                    <span class="help-block">
+                        {% for error in form['new_password2'].errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-4">
+                    <input type="submit" value="Update Password" class="btn btn-primary">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
