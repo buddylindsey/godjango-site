@@ -13,7 +13,7 @@
 
 {% block content -%}
 <div class="row">
-    <div class="col-sm-9">
+    <div class="col-sm-9 col-md-8 col-lg-9">
         <div class="total-header">
             {{ total_videos }} <span class="name">{{ category }}</span> videos
         </div>
@@ -25,7 +25,7 @@
         {% include 'episode/_pagination.jinja' %}
         </ul>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-3 col-md-4 col-lg-3 sidebar">
         {% include 'episode/_sidebar.jinja' %}
     </div>
 </div>
