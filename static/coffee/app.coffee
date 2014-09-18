@@ -42,7 +42,13 @@ NewsletterView = Backbone.View.extend
       email: @$el.find('input[name=email]').val()
     email.save email_data,
       success: (email) ->
-        console.log email
+        $("#newsletter-message").html("Thank you for subscribing.")
+        $("#newsletter-message").addClass("alert alert-success")
+        $(".newsletter-email-message").removeClass("alert alert-danger")
+        return
+      error: (model, response, options) ->
+        $(".newsletter-email-message").html(response.responseJSON.errors.email[0])
+        $(".newsletter-email-message").addClass("alert alert-danger")
         return
     return
 

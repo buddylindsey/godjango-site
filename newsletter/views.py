@@ -23,14 +23,12 @@ class WebhookView(CsrfExemptMixin, View):
 
 
 class EmailView(View):
-    def post(self, request, *args, **kwargs):
-        data = json.loads(request.body)
-
+    def form_valid(self, form):
         subscriber = Subscriber.objects.create(
-            first_name=data['first_name'], last_name=data['last_name'],
-            email=data['email'])
-
-        newsletter_subscribe.delay(**data)
+            first_name=form.cleaned_data['first_name'],
+            last_name=form.cleaned_data['last_name'],
+            email=form.cleaned_data['email'])
+        newsletter_subscribe.delay(**form.cleaned_data)
 
         final_data = {
             'id': subscriber.id, 'first_name': subscriber.first_name,
@@ -38,6 +36,22 @@ class EmailView(View):
 
         return HttpResponse(
             json.dumps(final_data), content_type="application/json")
+
+    def form_invalid(self, form):
+        final_data = {'errors': form.errors}
+        return HttpResponse(
+            json.dumps(final_data), content_type="application/json",
+            status=422)
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+
+        form = NewsletterSubscribeForm(data)
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class NewsletterSubscribeView(MailchimpMixin, FormView):
