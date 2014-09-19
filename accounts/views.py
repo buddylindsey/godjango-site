@@ -71,6 +71,12 @@ class AccountRegistrationView(NextUrlMixin, CreateView):
             newsletter_subscribe.delay(user.email)
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_success_url(self):
+        if 'next' in self.request.GET:
+            return self.request.GET.get('next')
+
+        return self.success_url
+
 
 class PasswordRecoveryView(FormView):
     template_name = 'accounts/password_recovery.jinja'
