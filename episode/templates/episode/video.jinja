@@ -77,7 +77,7 @@
           </div>
           {% if video.transcript %}
           <div id="transcript" class="tab-pane">
-            {{ video.published_transcript() }}
+            {{ video.published_transcript()|safe }}
           </div>
           {% endif %}
         </div>
