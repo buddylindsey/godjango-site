@@ -77,12 +77,13 @@
           </div>
           {% if video.transcript %}
           <div id="transcript" class="tab-pane">
-            {{ video.transcript }}
+            {{ video.published_transcript() }}
           </div>
           {% endif %}
         </div>
         {% else %}
-        subscribe to get resources, show notes, trascript, and code
+        <p>subscribe to get resources, show notes, trascript, and code</p>
+        <a href="{{ url("subscribe") }}" class="btn btn-primary">Subscribe Now</a>
         {% endif %}
       </div>
     </div>
