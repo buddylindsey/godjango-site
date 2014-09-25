@@ -6,7 +6,6 @@
 
 {% block head %}
 <link href="//vjs.zencdn.net/4.8/video-js.css" rel="stylesheet">
-<script src="//vjs.zencdn.net/4.8/video.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -147,3 +146,7 @@
   </div>
 </div>
 {% endblock %}
+
+{%- block additional_js -%}
+<script src="//vjs.zencdn.net/4.8/video.js"></script>
+{%- endblock -%}
