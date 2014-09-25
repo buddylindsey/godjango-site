@@ -24,10 +24,6 @@ class WebhookView(CsrfExemptMixin, View):
 
 class EmailView(View):
     def form_valid(self, form):
-        subscriber = Subscriber.objects.create(
-            first_name=form.cleaned_data['first_name'],
-            last_name=form.cleaned_data['last_name'],
-            email=form.cleaned_data['email'])
         newsletter_subscribe.delay(**form.cleaned_data)
 
         final_data = {
