@@ -148,5 +148,10 @@
 {% endblock %}
 
 {%- block additional_js -%}
+{% if not video.is_premium or paying %}
 <script src="//vjs.zencdn.net/4.8/video.js"></script>
+<script>
+videojs("#video-player", {}, function(){ });
+</script>
+{% endif %}
 {%- endblock -%}
