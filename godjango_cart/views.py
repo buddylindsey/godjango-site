@@ -100,7 +100,7 @@ class FileView(View):
 
     def download_headers(self, filename):
         response = HttpResponse()
-        response['content_type'] = 'video/mp4'
+        response['Content-Type'] = 'video/mp4'
         response["Content-Disposition"] = "attachment; filename={}".format(
             filename)
         response['X-Accel-Redirect'] = "/videos/{}".format(filename)
@@ -108,7 +108,7 @@ class FileView(View):
 
     def play_headers(self, filename):
         response = HttpResponse()
-        response['Content-type'] = 'video/mp4'
+        response['Content-Type'] = 'video/mp4'
         response['Accept-Ranges'] = 'bytes'
         response['X-Accel-Redirect'] = "/videos/{}".format(filename)
         return response
