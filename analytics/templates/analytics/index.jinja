@@ -1,0 +1,67 @@
+{% extends "base.jinja" %}
+
+{%- block container -%}container-fluid{%- endblock -%}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-6 col-md-4 col-lg-2 chart">
+        <div class="numeric">
+            <header class="chart-header">
+                Current Subscribers
+            </header>
+            <div class="value">
+                {{ active_subscribers }}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-2 chart">
+        <div class="numeric">
+            <header class="chart-header">
+                New in last 30 days
+            </header>
+            <div class="value">
+                {{ thirty_day_new }}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-2 chart">
+        <div class="numeric">
+            <header class="chart-header">
+                Newsletter Subscribers
+            </header>
+            <div class="value">
+                {{ newsletter_subscribers }}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+        <canvas id="registrations" width="475" height="200"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$( document ).ready(function() {
+    var registration_data = {
+        labels: {{ thirty_day_registrations['labels'] }},
+        datasets: [
+            {
+                label: "Site Registrations in the Last 30 Days",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: {{ thirty_day_registrations['data'] }}
+            }
+        ]
+    };
+    var registration_ctx = document.getElementById("registrations").getContext("2d");
+    var myLineChart = new Chart(registration_ctx).Line(registration_data);
+});
+</script>
+
+{% endblock %}

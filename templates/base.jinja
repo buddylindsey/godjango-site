@@ -80,6 +80,7 @@
                             <li><a href="{{ url("logout") }}"><i class="fa fa-sign-out"></i>&nbsp;logout</a></li>
                             {% if user.is_superuser %}
                             <li class="divider"></li>
+                            <li><a href="{{ url('analytics') }}"><i class="fa fa-area-chart"></i>&nbsp;analytics</a></li>
                             <li><a href="/admin/"><i class="fa fa-rebel"></i>&nbsp;admin</a></li>
                             {% endif %}
                         </ul>

@@ -4,19 +4,25 @@ from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 
 import arrow
+from braces.views import SuperuserRequiredMixin
 
 from payments.models import CurrentSubscription
+from newsletter.models import Subscriber
 
 
-class AnalyticsIndexView(TemplateView):
-    template_name = 'analytics/admin/index.html'
+class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
+    template_name = 'analytics/index.jinja'
 
     def get_context_data(self, **kwargs):
         context = super(AnalyticsIndexView, self).get_context_data(**kwargs)
         context['active_subscribers'] = self.active_subscribers()
-        context['30_day_new'] = self.thirty_day_new()
-        context['30_day_registrations'] = self.thirty_day_registrations()
+        context['thirty_day_new'] = self.thirty_day_new()
+        context['thirty_day_registrations'] = self.thirty_day_registrations()
+        context['newsletter_subscribers'] = self.newsletter_subscribers()
         return context
+
+    def newsletter_subscribers(self):
+        return Subscriber.objects.filter(active=True).count()
 
     def active_subscribers(self):
         return CurrentSubscription.objects.filter(status='active').count() - 5
@@ -27,14 +33,15 @@ class AnalyticsIndexView(TemplateView):
             start__gte=prev_date, status='active').count()
 
     def thirty_day_registrations(self):
-        final_data = []
+        final_data = {'labels': range(1,31)[::-1], 'data': []}
 
         date = arrow.now()
+        data = []
         for day in xrange(1, 30):
             date = date.replace(days=-1)
             count = User.objects.filter(
                 date_joined__gte=date.floor('day').datetime,
                 date_joined__lte=date.ceil('day').datetime).count()
-            final_data.append(count)
-
+            data.append(count)
+        final_data['data'] = data[::-1]
         return final_data

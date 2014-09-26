@@ -1,9 +1,8 @@
-from django.contrib import admin
-from django.conf.urls import patterns
+from django.conf.urls import patterns, url
 
 from .views import AnalyticsIndexView
 
-admin_urls = patterns(
+urlpatterns = patterns(
     '',
-    (r'^analytics/$', admin.site.admin_view(AnalyticsIndexView.as_view()))
+    url(r'^$', AnalyticsIndexView.as_view(), name="analytics"),
 )
