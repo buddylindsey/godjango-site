@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 import arrow
 from braces.views import SuperuserRequiredMixin
 
-from payments.models import CurrentSubscription
+from payments.models import CurrentSubscription, Transfer
 from newsletter.models import Subscriber
 
 
@@ -19,6 +19,7 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
         context['thirty_day_new'] = self.thirty_day_new()
         context['thirty_day_registrations'] = self.thirty_day_registrations()
         context['newsletter_subscribers'] = self.newsletter_subscribers()
+        context['total_transfer_this_month'] = self.total_transfer_this_month()
         return context
 
     def newsletter_subscribers(self):
@@ -45,3 +46,10 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
             data.append(count)
         final_data['data'] = data[::-1]
         return final_data
+
+    def total_transfer_this_month(self):
+        now = arrow.utcnow()
+        transfers = Transfer.objects.filter(
+            created_at__gt=now.floor('month').datetime).values_list(
+                'amount', flat=True)
+        return sum(transfers)
