@@ -101,7 +101,7 @@ class Video(models.Model):
     def next_video(self):
         try:
             videos = Video.objects.filter(
-                episode__gt=self.episode).order_by('episode')[:1]
+                episode__gt=self.episode).published().order_by('episode')[:1]
             return videos[0]
         except IndexError:
             return None
