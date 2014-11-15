@@ -1,4 +1,5 @@
-{% with subscription = user.customer.current_subscription %}
+{% if user.customer and current_subscription(user.customer) %}
+{% with subscription = current_subscription(user.customer) %}
     {% if subscription %}
         {% if subscription.status == "active" %}
             <div class="alert alert-info">
@@ -35,3 +36,4 @@
         {% endif %}
     {% endif %}
 {% endwith %}
+{% endif %}

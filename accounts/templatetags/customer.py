@@ -1,6 +1,6 @@
 from django_jinja import library
 
-from payments.models import Customer
+from payments.models import Customer, CurrentSubscription
 
 
 def is_customer(user):
@@ -20,4 +20,12 @@ def is_customer(user):
             raise Exception(e)
     return (paying, customer)
 
+
+def current_subscription(customer):
+    try:
+        return customer.current_subscription
+    except CurrentSubscription.DoesNotExist:
+        return False
+
 library.global_function(is_customer)
+library.global_function(current_subscription)
