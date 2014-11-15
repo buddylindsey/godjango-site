@@ -44,7 +44,8 @@ class CheckoutView(LoginRequiredMixin, CustomerMixin, StripeContenxtMixin,
         return super(CheckoutView, self).form_invalid(form)
 
     def form_valid(self, form):
-        if 'email' in form.cleaned_data:
+        email = form.cleaned_data.get('email', None)
+        if not self.request.user.email and email:
             update_email(self.request.user, form.cleaned_data['email'])
 
         if not self.request.user.email:
