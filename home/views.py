@@ -5,7 +5,7 @@ from episode.models import Video
 
 
 class AboutView(TemplateView):
-    template_name = 'home/about.html'
+    template_name = 'home/about.jinja'
 
 
 class PrivacyView(TemplateView):
@@ -16,9 +16,9 @@ class IndexView(CategoryListMixin, ListView):
     model = Video
     context_object_name = "videos"
     template_name = 'home/index.jinja'
+    paginate_by = 4
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['index'] = True
-        context['videos'] = Video.objects.published()[:4]
         return context
