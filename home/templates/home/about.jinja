@@ -1,0 +1,13 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-12 col-md-12">
+    <h1>About GoDjango</h1>
+    <img src="{{ static("img/medium-profile.jpeg") }}" class="pull-right about-profile" />
+    GoDjango is created by <a href="http://buddylindsey.com/">Buddy Lindsey</a>. Each episode is focused on something that can help django developers do django development better. Most videos will be short, sweet, and to the point about the specific topic. It is expected that most developers have some experience with Django, but anyone will usually be able to benefit some how.
+    <h2>Contact</h2>
+    All feedback is welcome be it comment, criticism, help, or suggestions feel free to hit me with it. The easiest way to contact me is via the <a href="{{ url('feedback') }}">feedback</a> page. However, I am available on twitter as well at, <a href="http://twitter.com/buddylindsey">@BuddyLindsey</a>.
+   </div>
+</div>
+{% endblock %}
