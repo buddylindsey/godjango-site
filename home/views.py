@@ -22,3 +22,7 @@ class IndexView(CategoryListMixin, ListView):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['index'] = True
         return context
+
+    def get_queryset(self):
+        qs = super(IndexView, self).get_queryset()
+        return qs.published()
