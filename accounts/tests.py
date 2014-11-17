@@ -79,7 +79,6 @@ class AccountRegistrationViewTest(TestCase):
         self.mock.StubOutWithMock(form, 'save')
         self.mock.StubOutWithMock(views, 'authenticate')
         self.mock.StubOutWithMock(views, 'auth_login')
-        self.mock.StubOutWithMock(self.view, 'newsletter_subscribe')
         self.mock.StubOutWithMock(self.view, 'get_success_url')
         self.mock.StubOutWithMock(new_registration_email, 'delay')
         form.save().AndReturn(user)
@@ -97,19 +96,19 @@ class AccountRegistrationViewTest(TestCase):
         form = UserCreateForm()
         form.cleaned_data = {
             'password1': '123', 'subscribe': True, 'email': 'email'}
-        user = mommy.make('auth.User')
+        user = mommy.make('auth.User', email='test@example.com')
         self.mock.StubOutWithMock(form, 'save')
         self.mock.StubOutWithMock(views, 'authenticate')
         self.mock.StubOutWithMock(views, 'auth_login')
         self.mock.StubOutWithMock(new_registration_email, 'delay')
-        self.mock.StubOutWithMock(self.view, 'newsletter_subscribe')
+        self.mock.StubOutWithMock(views.newsletter_subscribe, 'delay')
         self.mock.StubOutWithMock(self.view, 'get_success_url')
         form.save().AndReturn(user)
         views.authenticate(
             username=user.username, password='123').AndReturn(user)
         views.auth_login(self.view.request, user)
         new_registration_email.delay(user.id)
-        self.view.newsletter_subscribe('', '', 'email')
+        views.newsletter_subscribe.delay('', '', 'test@example.com')
         self.view.get_success_url().AndReturn('/')
 
         self.mock.ReplayAll()
@@ -121,6 +120,7 @@ class PasswordRecoveryViewTest(TestCase):
     def setUp(self):
         self.mock = mox.Mox()
         self.view = PasswordRecoveryView()
+        self.view.request = RequestFactory().post('/')
 
     def tearDown(self):
         self.mock.UnsetStubs()
@@ -129,15 +129,19 @@ class PasswordRecoveryViewTest(TestCase):
         self.assertEqual(
             self.view.template_name, 'accounts/password_recovery.jinja')
         self.assertEqual(self.view.form_class, PasswordRecoveryForm)
-        self.assertEqual(
-            self.view.success_url, reverse('password_recovery_confirmation'))
+        self.assertEqual(self.view.success_url, reverse('password_recovery'))
 
     def test_form_valid(self):
         user = mommy.make('auth.User', email='test@example.com')
         form = PasswordRecoveryForm()
         form.cleaned_data = {'email': 'test@example.com'}
 
+        self.mock.StubOutWithMock(views.messages, 'add_message')
         self.mock.StubOutWithMock(password_reset_email, 'delay')
+        views.messages.add_message(
+            self.view.request, views.messages.SUCCESS,
+            ('Your password has been reset and emailed to you. Please check '
+             'your email'))
         password_reset_email.delay(user.id)
 
         self.mock.ReplayAll()

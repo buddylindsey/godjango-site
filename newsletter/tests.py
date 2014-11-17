@@ -1,91 +1,15 @@
 import json
-import mailchimp
 
 from django.test import TestCase
 from django.test.client import RequestFactory
-from django.core.urlresolvers import reverse
 
 import mox
 
 from model_mommy import mommy
 
-from .views import NewsletterSubscribeView, WebhookView
+from .views import WebhookView
 from .forms import NewsletterSubscribeForm
 from .models import Event, Subscriber
-from .tasks import newsletter_subscribe
-
-
-class NewsletterSubscribeViewTest(TestCase):
-    def setUp(self):
-        self.mock = mox.Mox()
-        self.view = NewsletterSubscribeView()
-        self.view.request = RequestFactory().post(
-            '/', HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-
-    def tearDown(self):
-        self.mock.UnsetStubs()
-
-    def test_form_valid(self):
-        form = NewsletterSubscribeForm({'email': 'other@example.com'})
-        form.is_valid()
-
-        self.mock.StubOutWithMock(mailchimp.Lists, 'subscribe')
-        mailchimp.Lists.subscribe(
-            'mainlistkey', {'email': 'other@example.com'}, merge_vars={
-                'FNAME': form.cleaned_data['first_name'],
-                'LNAME': form.cleaned_data['last_name']})
-
-        self.mock.ReplayAll()
-        response = self.view.form_valid(form)
-        self.mock.VerifyAll()
-
-        self.assertEqual(json.loads(response.content), {
-            'success': ('Thank you for subscribing. Please confirm in the '
-                        'email you that you have subscribed')})
-
-    def test_already_subscribed_form_valid(self):
-        form = NewsletterSubscribeForm({'email': 'other@example.com'})
-        form.is_valid()
-
-        self.mock.StubOutWithMock(mailchimp.Lists, 'subscribe')
-        mailchimp.Lists.subscribe(
-            'mainlistkey', {'email': 'other@example.com'}, merge_vars={
-                'FNAME': form.cleaned_data['first_name'],
-                'LNAME': form.cleaned_data['last_name']}).AndRaise(
-                    mailchimp.ListAlreadySubscribedError)
-
-        self.mock.ReplayAll()
-        response = self.view.form_valid(form)
-        self.mock.VerifyAll()
-
-        self.assertEqual(json.loads(response.content), {
-            'success': ('Thank you. You are already subscribed')})
-
-    def test_errored_form_valid(self):
-        form = NewsletterSubscribeForm({'email': 'other@example.com'})
-        form.is_valid()
-
-        self.mock.StubOutWithMock(mailchimp.Lists, 'subscribe')
-        mailchimp.Lists.subscribe(
-            'mainlistkey', {'email': 'other@example.com'}, merge_vars={
-                'FNAME': form.cleaned_data['first_name'],
-                'LNAME': form.cleaned_data['last_name']}).AndRaise(
-                    mailchimp.Error)
-
-        self.mock.ReplayAll()
-        response = self.view.form_valid(form)
-        self.mock.VerifyAll()
-
-        self.assertEqual(json.loads(response.content), {
-            'errors': {'general':[('Something went horribly wrong. Please '
-                                   'try again ')]}})
-
-    def test_form_invalid(self):
-        form = NewsletterSubscribeForm({'email': 'wasup'})
-        form.is_valid()
-        response = self.view.form_invalid(form)
-
-        self.assertEqual(json.loads(response.content), {'errors': form.errors})
 
 
 class EventModelTest(TestCase):
@@ -112,7 +36,6 @@ class EventModelTest(TestCase):
             "data[ip_opt]": "10.20.10.30",
             "data[ip_signup]": "10.20.10.30"}
 
-
         event = Event.objects.create(kind='subscribe', data=data)
         event.process()
 
@@ -137,7 +60,6 @@ class EventModelTest(TestCase):
             "data[ip_opt]": "10.20.10.30",
             "data[ip_signup]": "10.20.10.30"}
 
-
         event = Event.objects.create(kind='subscribe', data=data)
         event.process()
 
@@ -152,7 +74,7 @@ class EventModelTest(TestCase):
         mommy.make(
             'newsletter.Subscriber', email='api+unsub@mailchimp.com',
             active=True)
-        data= {
+        data = {
             "type": "unsubscribe",
             "fired_at": "2009-03-26 21:40:57",
             "data[action]": "unsub",
@@ -181,16 +103,16 @@ class EventModelTest(TestCase):
             'newsletter.Subscriber', email='api@mailchimp.com',
             first_name='Buddy', last_name='Lindsey', active=True)
         data = {
-            "type": "profile", 
-            "fired_at": "2009-03-26 21:31:21", 
-            "data[id]": "8a25ff1d98", 
+            "type": "profile",
+            "fired_at": "2009-03-26 21:31:21",
+            "data[id]": "8a25ff1d98",
             "data[list_id]": "a6b5da1054",
-            "data[email]": "api@mailchimp.com", 
-            "data[email_type]": "html", 
-            "data[merges][EMAIL]": "api@mailchimp.com", 
-            "data[merges][FNAME]": "MailChimp", 
-            "data[merges][LNAME]": "API", 
-            "data[merges][INTERESTS]": "Group1,Group2", 
+            "data[email]": "api@mailchimp.com",
+            "data[email_type]": "html",
+            "data[merges][EMAIL]": "api@mailchimp.com",
+            "data[merges][FNAME]": "MailChimp",
+            "data[merges][LNAME]": "API",
+            "data[merges][INTERESTS]": "Group1,Group2",
             "data[ip_opt]": "10.20.10.30"
         }
 
@@ -247,4 +169,3 @@ class WebhookViewTest(TestCase):
         self.mock.VerifyAll()
 
         self.assertEqual(response.status_code, 200)
-

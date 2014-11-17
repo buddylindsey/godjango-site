@@ -4,6 +4,8 @@ import mox
 import arrow
 from model_mommy import mommy
 
+from newsletter.forms import NewsletterSubscribeForm
+
 from .models import Video
 from .views import VideoView, BrowseView, CategoryView
 from .mixins import CategoryListMixin
@@ -17,7 +19,7 @@ class VideoReviewManagerTest(TestCase):
         self.assertEqual(3, videos.count())
 
     def test_premium_videos(self):
-        mommy.make(Video, premium=True, _quantity=3)
+        mommy.make(Video, is_premium=True, _quantity=3)
         mommy.make(Video, _quantity=2)
         videos = Video.objects.premium()
         self.assertEqual(3, videos.count())
@@ -51,9 +53,9 @@ class VideoModelTest(TestCase):
         video.save()
 
         self.assertEqual(
-            "/media/episode-{}/{}".format(video.id, "h264.mp4"), video.h264)
+            "/file/?action=play&filename=h264.mp4", video.h264)
         self.assertEqual(
-            "/media/episode-{}/{}".format(video.id, "webm.webm"), video.webm)
+            "/file/?action=play&filename=webm.webm", video.webm)
 
     def test_length_in_minutes(self):
         video = mommy.make('episode.Video', length=130)

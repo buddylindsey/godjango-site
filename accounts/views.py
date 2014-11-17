@@ -68,7 +68,7 @@ class AccountRegistrationView(NextUrlMixin, CreateView):
         new_registration_email.delay(user.id)
 
         if form.cleaned_data['subscribe']:
-            newsletter_subscribe.delay(user.email)
+            newsletter_subscribe.delay('', '', saved_user.email)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):

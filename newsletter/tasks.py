@@ -4,14 +4,9 @@ from django.conf import settings
 
 from godjango.celery import app
 
-from .models import Subscriber
-
 
 @app.task
 def newsletter_subscribe(first_name, last_name, email):
-    Subscriber.objects.create(
-        email=email, first_name=first_name, last_name=last_name, active=False)
-
     try:
         mc = mailchimp.Mailchimp(settings.MAILCHIMP_API_KEY)
 

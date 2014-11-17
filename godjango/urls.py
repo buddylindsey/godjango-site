@@ -62,8 +62,7 @@ urlpatterns = patterns(
     url(r'^newsletter/', include('newsletter.urls')),
 
     # Download
-    url(r'^file/$',
-        FileView.as_view(), name="download"),
+    url(r'^file/$', FileView.as_view(), name="download"),
 
     # Episodes
     url(r'^feeds/pro/$', ProFeedView.as_view(), name='pro_feed'),

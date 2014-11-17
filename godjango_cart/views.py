@@ -46,7 +46,7 @@ class CheckoutView(LoginRequiredMixin, CustomerMixin, StripeContenxtMixin,
     def form_valid(self, form):
         email = form.cleaned_data.get('email', None)
         if not self.request.user.email and email:
-            update_email(self.request.user, form.cleaned_data['email'])
+            update_email(self.request.user, email)
 
         if not self.request.user.email:
             self.errors.append('You do not have an email please add one')
