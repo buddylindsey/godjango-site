@@ -57,7 +57,8 @@ class CategoryView(CategoryListMixin, ListView):
 
     def get_queryset(self):
         return Video.objects.filter(
-            categories=self.get_category()).order_by('-publish_date')
+            categories=self.get_category()).published().order_by(
+                '-publish_date')
 
 
 class ProFeedView(TemplateView):

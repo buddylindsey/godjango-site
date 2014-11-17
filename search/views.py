@@ -17,6 +17,7 @@ class SearchView(ListView):
         if q:
             return queryset.filter(
                 Q(description__icontains=q) | Q(title__icontains=q) |
-                Q(show_notes__icontains=q)).order_by('-publish_date')
+                Q(show_notes__icontains=q)).published().order_by(
+                    '-publish_date')
 
         return queryset

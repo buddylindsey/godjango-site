@@ -1,3 +1,5 @@
+import arrow
+
 from django.test import TestCase
 from django.test.client import RequestFactory
 
@@ -19,11 +21,14 @@ class SearchViewTest(TestCase):
         self.assertEqual(self.view.template_name, 'episode/browse.jinja')
 
     def test_get_queryset(self):
-        mommy.make('episode.Video', description='django')
-        mommy.make('episode.Video', title='django')
+        mommy.make(
+            'episode.Video', description='django',
+            publish_date=arrow.utcnow().replace(days=-1).datetime)
+        mommy.make('episode.Video', title='django',
+            publish_date=arrow.utcnow().replace(days=-2).datetime)
         mommy.make('episode.Video', show_notes='django')
 
         self.view.request.GET = {'q': 'django'}
         qs = self.view.get_queryset()
 
-        self.assertEqual(qs.count(), 3)
+        self.assertEqual(qs.count(), 2)
