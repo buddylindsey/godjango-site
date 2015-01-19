@@ -56,9 +56,14 @@ class CategoryView(CategoryListMixin, ListView):
             raise AttributeError("Must use slug for urls")
 
     def get_queryset(self):
-        return Video.objects.filter(
-            categories=self.get_category()).published().order_by(
-                '-publish_date')
+        category = self.get_category()
+
+        qs = Video.objects.filter(categories=category).published()
+
+        if category.series:
+            return qs.order_by('episode', 'created')
+        else:
+            return qs.order_by('-episode', '-created')
 
 
 class ProFeedView(TemplateView):

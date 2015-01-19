@@ -123,6 +123,7 @@ class Category(TimeStampedModel, TitleSlugDescriptionModel):
     image = models.CharField(max_length=255, blank=True)
     videos = models.ManyToManyField(
         Video, related_name='categories', blank=True)
+    series = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         return reverse('category', kwargs={'slug': self.slug})
