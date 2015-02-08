@@ -60,10 +60,15 @@ class CategoryView(CategoryListMixin, ListView):
 
         qs = Video.objects.filter(categories=category).published()
 
-        if category.series:
-            return qs.order_by('episode', 'created')
-        else:
-            return qs.order_by('-episode', '-created')
+        return qs.order_by('-episode', '-created_at')
+
+
+class SeriesView(CategoryView):
+    def get_queryset(self):
+        category = self.get_category()
+        qs = Video.objects.filter(categories=category).published()
+        return qs.order_by('episode', 'created_at')
+
 
 
 class ProFeedView(TemplateView):

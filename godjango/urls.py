@@ -4,7 +4,8 @@ from django.conf.urls import patterns, include, url
 from djblog.sitemaps import ArticleSitemap
 
 from home.sitemap import VideoSitemap
-from episode.views import BrowseView, CategoryView, ProFeedView, VideoView
+from episode.views import (
+    BrowseView, CategoryView, ProFeedView, SeriesView, VideoView)
 from newsletter.views import WebhookView
 from godjango_cart.views import (
     CheckoutView, FileView, SubscribeView, SubscriptionConfirmationView)
@@ -29,6 +30,8 @@ urlpatterns = patterns(
     url(r'^browse/$', BrowseView.as_view(), name="browse"),
     url(r'^category/(?P<slug>[-\w]+)/$', CategoryView.as_view(),
         name='category'),
+    url(r'^series/(?P<slug>[-\w]+)/$', SeriesView.as_view(),
+        name='series'),
     url(r'^favorite/add/$', 'favorite.views.toggle_favorite',
         name='favorite_toggle'),
 
