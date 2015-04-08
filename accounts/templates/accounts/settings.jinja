@@ -13,7 +13,7 @@
         <h3>Change/Set Password</h3>
         <form method="post" accept-charset="utf-8" class="form-horizontal">
             {% csrf_token %}
-            {% if 'old_password' in form %}
+            {% if 'old_password' in form.fields %}
             <div class="form-group {% if form['old_password'].errors %}has-error{% endif %}">
                 <label for="id_old_password" class="col-sm-4 control-label">old password</label>
                 <div class="col-sm-4">
