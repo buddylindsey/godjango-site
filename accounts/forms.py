@@ -12,13 +12,15 @@ class CancelSubscriptionForm(forms.Form):
 
 
 class PasswordRecoveryForm(forms.Form):
-    email = forms.EmailField(required=False)
+    email = forms.EmailField()
 
     def clean(self):
         try:
             User.objects.get(email=self.cleaned_data['email'])
         except User.DoesNotExist:
             raise forms.ValidationError("Can't find a user based on the email")
+        except KeyError:
+            raise forms.ValidationError("Email is required")
         return self.cleaned_data
 
 
