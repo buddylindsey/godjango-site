@@ -20,6 +20,8 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
         context['thirty_day_registrations'] = self.thirty_day_registrations()
         context['newsletter_subscribers'] = self.newsletter_subscribers()
         context['total_transfer_this_month'] = self.total_transfer_this_month()
+        context['monthly_subscribers'] = self.monthly_subscribers()
+        context['yearly_subscribers'] = self.yearly_subscribers()
         return context
 
     def newsletter_subscribers(self):
@@ -27,6 +29,14 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
 
     def active_subscribers(self):
         return CurrentSubscription.objects.filter(status='active').count() - 5
+
+    def monthly_subscribers(self):
+        return CurrentSubscription.objects.filter(
+            status='active', plan='monthly').count() - 5
+
+    def yearly_subscribers(self):
+        return CurrentSubscription.objects.filter(
+            status='active', plan='yearly').count()
 
     def thirty_day_new(self):
         prev_date = datetime.now() - timedelta(days=30)
