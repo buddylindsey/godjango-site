@@ -24,7 +24,7 @@ from payments.signals import WEBHOOK_SIGNALS
 from payments.settings import INVOICE_FROM_EMAIL
 from newsletter.tasks import newsletter_subscribe
 
-from .mixins import NextUrlMixin, StripeContenxtMixin
+from .mixins import NextUrlMixin, StripeContenxtMixin, LastAccessMixin
 from .forms import (
     CardForm, CancelSubscriptionForm, UserCreateForm, PasswordRecoveryForm)
 from .tasks import (
@@ -93,11 +93,11 @@ class PasswordRecoveryView(FormView):
         return super(PasswordRecoveryView, self).form_valid(form)
 
 
-class BillingView(LoginRequiredMixin, TemplateView):
+class BillingView(LoginRequiredMixin, LastAccessMixin, TemplateView):
     template_name = 'accounts/billing.jinja'
 
 
-class CancelSubscriptionView(LoginRequiredMixin, FormView):
+class CancelSubscriptionView(LoginRequiredMixin, LastAccessMixin, FormView):
     template_name = 'accounts/cancel.jinja'
     form_class = CancelSubscriptionForm
     success_url = reverse_lazy('billing')
@@ -115,11 +115,11 @@ class CancelSubscriptionView(LoginRequiredMixin, FormView):
         return super(CancelSubscriptionView, self).form_valid(form)
 
 
-class DashboardView(LoginRequiredMixin, TemplateView):
+class DashboardView(LoginRequiredMixin, LastAccessMixin, TemplateView):
     template_name = 'accounts/dashboard.jinja'
 
 
-class SettingsView(LoginRequiredMixin, FormView):
+class SettingsView(LoginRequiredMixin, LastAccessMixin, FormView):
     template_name = 'accounts/settings.jinja'
     success_url = reverse_lazy('settings')
 
@@ -142,7 +142,8 @@ class SettingsView(LoginRequiredMixin, FormView):
         return super(SettingsView, self).form_valid(form)
 
 
-class UpdateBillingView(LoginRequiredMixin, StripeContenxtMixin, FormView):
+class UpdateBillingView(
+    LoginRequiredMixin, StripeContenxtMixin, LastAccessMixin, FormView):
     form_class = CardForm
     template_name = 'accounts/update_card.jinja'
     success_url = reverse_lazy('billing')

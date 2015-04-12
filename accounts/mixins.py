@@ -14,3 +14,9 @@ class NextUrlMixin(object):
             return self.request.GET.get('next')
 
         return super(NextUrlMixin, self).get_success_url()
+
+class LastAccessMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            request.user.profile.update_last_access()
+        return super(LastAccessMixin, self).dispatch(request, *args, **kwargs)

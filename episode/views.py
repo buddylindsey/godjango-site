@@ -4,11 +4,13 @@ from django.views.generic import DetailView, ListView, TemplateView
 
 from newsletter.forms import NewsletterSubscribeForm
 
+from accounts.mixins import LastAccessMixin
+
 from .mixins import CategoryListMixin
 from .models import Category, Video
 
 
-class VideoView(DetailView):
+class VideoView(LastAccessMixin, DetailView):
     template_name = 'episode/video.jinja'
     model = Video
     context_object_name = 'video'
@@ -19,7 +21,7 @@ class VideoView(DetailView):
         return context
 
 
-class BrowseView(CategoryListMixin, ListView):
+class BrowseView(LastAccessMixin, CategoryListMixin, ListView):
     model = Video
     paginate_by = 10
     context_object_name = "videos"
@@ -35,7 +37,7 @@ class BrowseView(CategoryListMixin, ListView):
         return qs.published()
 
 
-class CategoryView(CategoryListMixin, ListView):
+class CategoryView(LastAccessMixin, CategoryListMixin, ListView):
     model = Video
     paginate_by = 10
     context_object_name = 'videos'
