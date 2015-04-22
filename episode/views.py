@@ -101,3 +101,8 @@ class ProFeedView(TemplateView):
         context['episodes'] = Video.objects.published()
         context['username'] = self.user
         return context
+
+    def get(self, request, *args, **kwargs):
+        response = super(ProFeedView, self).get(request, args, kwargs)
+        response['Content-Type'] = 'application/rss+xml'
+        return response
