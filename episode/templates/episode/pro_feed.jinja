@@ -29,8 +29,8 @@
             <link>https://godjango.com{{ episode.get_absolute_url() }}?utm_source=rss&amp;utm_medium=feed&amp;utm_campaign=pro_rss_feed</link>
             <guid>https://godjango.com{{ episode.get_absolute_url() }}</guid>
             <description>{{ episode.description }}</description>
-            <author>buddy@buddylindsey.com</author>
-            <enclosure url="https://godjango.com{{ episode.h264_download() }}&amp;user={{username}}" length="{{ episode.length }}" type="" />
+            <author>buddy@buddylindsey.com (Buddy Lindsey, Jr)</author>
+            <enclosure url="https://godjango.com{{ episode.h264_download() }}&amp;user={{username}}" length="{{ episode.length }}" type="video/mp4" />
             <pubDate>{{ episode.publish_date.strftime("%a, %d %b %Y %H:%M:%S %z") }}</pubDate>
             <itunes:author>Buddy Lindsey, Jr.</itunes:author>
             <itunes:subtitle>{{ episode.description|truncate(147, True) }}</itunes:subtitle>
