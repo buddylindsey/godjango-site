@@ -22,6 +22,7 @@
             <itunes:category text="Training"/>
         </itunes:category>
         <itunes:explicit>clean</itunes:explicit>
+        <atom:link href="http://godjango.com/feeds/pro/?user={{username}}" rel="self" type="application/rss+xml" />
 
         {% for episode in episodes %}
         <item>
@@ -30,7 +31,7 @@
             <guid>https://godjango.com{{ episode.get_absolute_url() }}</guid>
             <description>{{ episode.description }}</description>
             <author>buddy@buddylindsey.com (Buddy Lindsey, Jr)</author>
-            <enclosure url="http://godjango.com{{ episode.h264_download() }}&amp;user={{username}}" length="{{ episode.length }}" type="video/mp4" />
+            <enclosure url="http://godjango.com{{ episode.h264_download() }}" length="{{ episode.length }}" type="video/mp4" />
             <pubDate>{{ episode.publish_date.strftime("%a, %d %b %Y %H:%M:%S %z") }}</pubDate>
             <itunes:author>Buddy Lindsey, Jr.</itunes:author>
             <itunes:subtitle>{{ episode.description|truncate(147, True) }}</itunes:subtitle>
@@ -39,6 +40,5 @@
             <itunes:explicit>no</itunes:explicit>
         </item>
         {% endfor %}
-        <atom:link href="http://godjango.com/feeds/pro/?user={{username}}" rel="self" type="application/rss+xml" />
     </channel>
 </rss>
