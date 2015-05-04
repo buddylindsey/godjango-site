@@ -83,10 +83,10 @@ class Video(models.Model):
         super(Video, self).save(*args, **kwargs)
 
     def h264_download(self):
-        return "/video/{}".format(self.video_h264)
+        return "/videos/{}".format(self.video_h264)
 
     def webm_download(self):
-        return "/video/{}".format(self.video_webm)
+        return "/videos/{}".format(self.video_webm)
 
     def length_in_minutes(self):
         if self.length:
