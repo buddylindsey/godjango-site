@@ -18,7 +18,16 @@ class VideoView(LastAccessMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(VideoView, self).get_context_data(**kwargs)
         context['newsletter_form'] = NewsletterSubscribeForm()
+        context['related_videos'] = self.get_related_videos()
         return context
+
+    def get_related_videos(self):
+        videos = self.object.categories.all().order_by('-series')
+        if not videos.exists():
+            return {}
+
+        return videos[0].videos.all()[:5]
+
 
 
 class BrowseView(LastAccessMixin, CategoryListMixin, ListView):

@@ -109,6 +109,16 @@
         <a href="{{ url("subscribe") }}" class="btn btn-primary">Subscribe Now</a>
         {% endif %}
       </div>
+      {% if related_videos %}
+      <div class="col-xs-12 col-sm-12 col-md-3">
+          <div class="list-group sidebar-list-group">
+          <span class="sidebar-video-content-header">Related Videos</span>
+          {% for video in related_videos %}
+              <a class="list-group-item" href="{{ video.get_absolute_url() }}">{{ video.title }}</a>
+          {% endfor %}
+          </div>
+      </div>
+      {% endif %}
     </div>
     {% if paying %}
     <div class="row">

@@ -94,6 +94,14 @@ class VideoViewTest(TestCase):
         self.assertIsInstance(
             context['newsletter_form'], NewsletterSubscribeForm)
 
+    def test_get_related_videos_non_series(self):
+        cat1, cat2 = mommy.make('episode.Category', _quantity=2)
+        self.view.object = mommy.make('episode.Video', categories=[cat1, cat2])
+
+
+    def test_get_related_videos_with_series(self):
+        pass
+
 
 class BrowseViewTest(TestCase):
     def setUp(self):
