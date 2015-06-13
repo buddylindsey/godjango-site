@@ -183,9 +183,12 @@
 
 {%- block additional_js -%}
 {% if not video.is_premium or paying %}
-<script src="//vjs.zencdn.net/4.8/video.js"></script>
+<script type="text/javascript" charset="utf-8" src="//vjs.zencdn.net/4.8/video.js"></script>
+<script type="text/javascript" charset="utf-8" src="{{ static("js/videojs.ga.min.js") }}"></script>
 <script>
-videojs("#video-player", {}, function(){ });
+videojs("#video-player", {}, function(){
+  this.ga();
+});
 </script>
 {% endif %}
 {%- endblock -%}

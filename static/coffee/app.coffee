@@ -53,11 +53,3 @@ NewsletterView = Backbone.View.extend
     return
 
 new NewsletterView()
-
-
-#sublime.ready ->
-  #player = sublime('video-player')
-
-  #player.on 'end', () ->
-    #$('#newsletter-modal').modal('show')
-    #return
