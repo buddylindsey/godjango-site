@@ -67,6 +67,8 @@ urlpatterns = patterns(
     # Download
     url(r'^file/$', FileView.as_view(), name="download"),
 
+    url(r'^api/', include('api.urls')),
+
     # Episodes
     url(r'^feeds/pro/$', ProFeedView.as_view(), name='pro_feed'),
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/$',

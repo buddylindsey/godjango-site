@@ -171,6 +171,7 @@ INSTALLED_APPS = (
     'django_jinja.contrib._pipeline',
     'newsletter',
     'analytics',
+    'rest_framework',
 )
 
 # Django Social Auth settings
