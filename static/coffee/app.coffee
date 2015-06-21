@@ -29,27 +29,35 @@ Email = Backbone.Model.extend
     last_name: ''
     email: ''
 
-NewsletterView = Backbone.View.extend
-  el: $("form.newsletter")
-  events:
-    "submit": "addsubscriber"
-  addsubscriber: (e) ->
-    e.preventDefault()
-    email = new Email()
-    email_data =
-      first_name: @$el.find('input[name=first_name]').val()
-      last_name: @$el.find('input[name=last_name]').val()
-      email: @$el.find('input[name=email]').val()
-    email.save email_data,
-      success: (email) ->
-        $("#newsletter-message").html("Thank you for subscribing.")
-        $("#newsletter-message").addClass("alert alert-success")
-        $(".newsletter-email-message").removeClass("alert alert-danger")
-        return
-      error: (model, response, options) ->
-        $(".newsletter-email-message").html(response.responseJSON.errors.email[0])
-        $(".newsletter-email-message").addClass("alert alert-danger")
-        return
-    return
+app = angular.module('godjango', [])
 
-new NewsletterView()
+app.config(['$httpProvider', ($httpProvider) ->
+      $httpProvider.defaults.xsrfCookieName = 'csrftoken'
+      $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'
+      return
+])
+
+app.controller('NewsletterForm', ['$scope', ($scope)->
+    $scope.save = (user)->
+      alert user.email
+
+      $.ajax
+        type: "POST"
+        url: "/api/subscriber/create/"
+        data:
+          email: user.email
+          first_name: user.first_name
+          last_name: user.last_name
+        dataType: "json"
+        success: (data) ->
+          $("#newsletter-message").html("Thank you for subscribing.")
+          $("#newsletter-message").addClass("alert alert-success")
+          $(".newsletter-email-message").removeClass("alert alert-danger")
+          return
+        error: (data) ->
+          $(".newsletter-email-message").html(data.responseJSON.email[0])
+          $(".newsletter-email-message").addClass("alert alert-danger")
+          return
+      return
+    return
+  ])

@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer, ValidationError
 
 from newsletter.models import Subscriber
 
+
 class SubscriberSerializer(ModelSerializer):
     class Meta:
         model = Subscriber
@@ -11,6 +12,6 @@ class SubscriberSerializer(ModelSerializer):
         """
         Verify not a duplicate subscriber.
         """
-        if Subscriber.objects.filter(email=value).exists:
+        if Subscriber.objects.filter(email=value).exists():
             raise ValidationError("User exists")
         return value
