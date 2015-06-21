@@ -39,8 +39,6 @@ app.config(['$httpProvider', ($httpProvider) ->
 
 app.controller('NewsletterForm', ['$scope', ($scope)->
     $scope.save = (user)->
-      alert user.email
-
       $.ajax
         type: "POST"
         url: "/api/subscriber/create/"
