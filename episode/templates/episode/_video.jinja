@@ -7,6 +7,9 @@
                     {% if video.is_premium %}
                     <span class="label label label-warning pro-label">pro video</span>
                     {% endif %}
+                    {% if video.revised %}
+                    <span class="label label label-revised">revised</span>
+                    {% endif %}
                 </div>
                 <p>
                     {{ video.description }}

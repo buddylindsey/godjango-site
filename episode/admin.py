@@ -7,6 +7,26 @@ class VideoAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
     exclude = ('favorites',)
     list_filter = ('is_premium',)
+    readonly_fields = ('slug',)
+
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'slug', 'publish_date')
+        }),
+        ('Images', {
+            'fields': ('preview_image', 'thumbnail_image')
+        }),
+        ('Video Location', {
+            'fields': ('video_h264', 'video_webm')
+        }),
+        ('Meta', {
+            'fields': ('widescreen', 'is_premium', 'revised', 'price',
+                       'length', 'episode')
+        }),
+        ('Data', {
+            'fields': ('description', 'show_notes', 'transcript')
+        }),
+    )
 
 
 class CategoryAdmin(admin.ModelAdmin):

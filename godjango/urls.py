@@ -71,6 +71,6 @@ urlpatterns = patterns(
 
     # Episodes
     url(r'^feeds/pro/$', ProFeedView.as_view(), name='pro_feed'),
-    url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/$',
+    url(r'^(?P<episode>\d+)-(?P<slug>[-\w]+)/$',
         VideoView.as_view(), name="episode"),
 )

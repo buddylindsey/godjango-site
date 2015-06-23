@@ -62,12 +62,14 @@ class Video(models.Model):
     price = models.DecimalField(
         max_digits=6, decimal_places=2, null=True, blank=True)
     meta_keywords = models.TextField(null=True, blank=True)
-    widescreen = models.BooleanField(default=False)
+    widescreen = models.BooleanField(default=True)
+    revised = models.BooleanField(default=False)
 
     objects = VideoManager()
 
     def get_absolute_url(self):
-        return reverse('episode', kwargs={'pk': self.id, 'slug': self.slug})
+        return reverse(
+            'episode', kwargs={'episode': self.episode, 'slug': self.slug})
 
     def _h264(self):
         return "/file/?action=play&filename={}".format(self.video_h264)
@@ -79,7 +81,10 @@ class Video(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            if self.revised:
+                self.slug = slugify("{} revised".format(self.title))
+            else:
+                self.slug = slugify(self.title)
         super(Video, self).save(*args, **kwargs)
 
     def h264_download(self):
@@ -113,6 +118,21 @@ class Video(models.Model):
     def published_transcript(self):
         md = Markdown(renderer=SyntaxHighlightRenderer())
         return md.render(self.transcript)
+
+    def revised_video(self):
+        try:
+            video = Video.objects.filter(
+                episode=self.episode, revised=True).published().latest()
+            if video.id == self.id:
+                # return None if the latest revision is itself.
+                return None
+            else:
+                return video
+        except Video.DoesNotExist:
+            return None
+
+    class Meta:
+        get_latest_by = 'created_at'
 
     def __str__(self):
         return self.title

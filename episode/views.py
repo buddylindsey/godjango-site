@@ -14,6 +14,7 @@ class VideoView(LastAccessMixin, DetailView):
     template_name = 'episode/video.jinja'
     model = Video
     context_object_name = 'video'
+    pk_url_kwarg = 'episode'
 
     def get_context_data(self, **kwargs):
         context = super(VideoView, self).get_context_data(**kwargs)
@@ -28,6 +29,10 @@ class VideoView(LastAccessMixin, DetailView):
 
         return videos[0].videos.all()[:5]
 
+    def get_object(self, queryset=None):
+        episode = self.kwargs.get('episode')
+        slug = self.kwargs.get('slug')
+        return Video.objects.get(episode=episode, slug=slug)
 
 
 class BrowseView(LastAccessMixin, CategoryListMixin, ListView):
