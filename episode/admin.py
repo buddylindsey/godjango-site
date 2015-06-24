@@ -17,7 +17,7 @@ class VideoAdmin(admin.ModelAdmin):
             'fields': ('preview_image', 'thumbnail_image')
         }),
         ('Video Location', {
-            'fields': ('video_h264', 'video_webm')
+            'fields': ('video_h264', 'video_webm', 'youtube_id')
         }),
         ('Meta', {
             'fields': ('widescreen', 'is_premium', 'revised', 'price',

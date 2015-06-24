@@ -64,6 +64,7 @@ class Video(models.Model):
     meta_keywords = models.TextField(null=True, blank=True)
     widescreen = models.BooleanField(default=True)
     revised = models.BooleanField(default=False)
+    youtube_id = models.CharField(max_length=50, blank=True)
 
     objects = VideoManager()
 

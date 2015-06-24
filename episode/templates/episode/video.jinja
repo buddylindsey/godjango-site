@@ -54,7 +54,9 @@
       There is a newer version of this video check out the <a href="{{ revised_video.get_absolute_url() }}">Revised Video</a>
     </div>
     {% endif %}
-    {% if video.is_premium and not paying %}
+    {% if video.youtube_id %}
+    <iframe width="1100" height="615" src="https://www.youtube.com/embed/{{ video.youtube_id }}" FRAMeborder="0" allowfullscreen></iframe>
+    {% elif video.is_premium and not paying %}
     <div class="pro-placeholder">
       <h3>This video is for <strong class="blue-highlight">Pro</strong> subscribers</h3>
       <h4>Learn more and support GoDjango subscribe today</h4>
