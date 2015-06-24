@@ -10,7 +10,9 @@ class CreateSubscriber(CreateAPIView):
     def perform_create(self, serializer):
         serializer.save()
 
-        newsletter_subscribe.delay(
-            serializer.validated_data['first_name'],
-            serializer.validated_data['last_name'],
-            serializer.validated_data['email'])
+        first_name = serializer.validated_data.get('first_name', '')
+        last_name = serializer.validated_data.get('last_name', '')
+
+        if serializer.validated_data['email']:
+            newsletter_subscribe.delay(
+                first_name, last_name, serializer.validated_data['email'])
