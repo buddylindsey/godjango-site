@@ -4,7 +4,7 @@ from django.conf import settings
 
 from godjango.celery import app
 
-from .models import
+from .models import Subscriber
 
 
 @app.task
