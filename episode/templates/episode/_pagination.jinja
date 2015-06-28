@@ -1,6 +1,6 @@
         <ul class="pagination">
             {% if page_obj.has_previous() %}
-            <li><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            <li><a href="?page={{ page_obj.previous_page_number() }}">Previous</a></li>
             {% endif %}
             {% for pg in paginator.page_range %}
             {% if page_obj.number == pg %}
