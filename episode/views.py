@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponsePermanentRedirect
 from django.contrib.auth.models import User
 from django.views.generic import DetailView, ListView, TemplateView
 
@@ -15,6 +15,7 @@ class VideoView(LastAccessMixin, DetailView):
     model = Video
     context_object_name = 'video'
     pk_url_kwarg = 'episode'
+    redirect = False
 
     def get_context_data(self, **kwargs):
         context = super(VideoView, self).get_context_data(**kwargs)
@@ -32,7 +33,25 @@ class VideoView(LastAccessMixin, DetailView):
     def get_object(self, queryset=None):
         episode = self.kwargs.get('episode')
         slug = self.kwargs.get('slug')
-        return Video.objects.get(episode=episode, slug=slug)
+        try:
+            return Video.objects.get(episode=episode, slug=slug)
+        except Video.DoesNotExist:
+            self.redirect = True
+            return self.video_redirect(episode, slug)
+
+    def video_redirect(self, episode, slug):
+        video = Video.objects.filter(episode=episode)
+        if 'revised' in slug:
+            return video.latest()
+        else:
+            return video.exclude(slug__contains='revised').get()
+
+    def get(self, request, *args, **kwargs):
+        response = super(VideoView, self).get(request, *args, **kwargs)
+        if self.redirect:
+            return HttpResponsePermanentRedirect(
+                self.object.get_absolute_url())
+        return response
 
 
 class BrowseView(LastAccessMixin, CategoryListMixin, ListView):
