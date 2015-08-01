@@ -46,7 +46,7 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
             start__gte=prev_date, status='active').count()
 
     def thirty_day_registrations(self):
-        final_data = {'labels': range(1,31)[::-1], 'data': []}
+        final_data = {'labels': range(1, 31)[::-1], 'data': []}
 
         date = arrow.now()
         data = []
