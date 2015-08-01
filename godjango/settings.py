@@ -37,9 +37,6 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*')
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 path = lambda *a: os.path.join(ROOT, *a)
 
-VIDEO_ROOT = "http://assets.godjango.com"
-
-
 ADMINS = (
     ('Buddy Lindsey', 'buddy@buddylindsey.com'),
 )
