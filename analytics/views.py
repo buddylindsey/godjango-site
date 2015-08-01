@@ -7,7 +7,7 @@ import arrow
 from braces.views import SuperuserRequiredMixin
 
 from accounts.models import Profile
-from payments.models import CurrentSubscription, Transfer
+from payments.models import CurrentSubscription, Transfer, Charge
 from newsletter.models import Subscriber
 
 
@@ -24,6 +24,8 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
         context['monthly_subscribers'] = self.monthly_subscribers()
         context['yearly_subscribers'] = self.yearly_subscribers()
         context['active_users'] = self.active_users()
+        context['total_charges_this_month'] = self.total_charges_this_month()
+        context['total_subscribers_by_amount'] = self.subscribers_by_amount()
         return context
 
     def newsletter_subscribers(self):
@@ -70,3 +72,16 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
         today = arrow.utcnow()
         return Profile.objects.filter(
             last_access__gte=today.floor('day').datetime).count()
+
+    def total_charges_this_month(self):
+        return sum(
+            [c.amount for c in Charge.objects.filter(
+                charge_created__gt=arrow.now().floor('month').datetime)])
+
+    def subscribers_by_amount(self):
+        amounts = CurrentSubscription.objects.filter(
+            status='active').distinct().values_list('amount', flat=True)
+
+        return [
+            {a: CurrentSubscription.objects.filter(
+                status='active', amount=a).count()} for a in sorted(amounts)]

@@ -74,6 +74,28 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-6 col-md-4 col-lg-2 chart">
+        <div class="numeric">
+            <header class="chart-header">
+                Total Charges This Month
+            </header>
+            <div class="value">
+                {{ total_transfer_this_month }}
+            </div>
+        </div>
+    </div>
+    {% for data in total_subscribers_by_amount %}
+    <div class="col-sm-6 col-md-4 col-lg-2 chart">
+        <div class="numeric">
+            <header class="chart-header">
+                ${{ data.keys()[0] }} Subscriber
+            </header>
+            <div class="value">
+                {{ data.values()[0] }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
     <div class="col-sm-6 col-md-4 col-lg-3">
         <canvas id="registrations" width="475" height="200"></canvas>
     </div>
