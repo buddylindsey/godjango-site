@@ -214,6 +214,22 @@ PAYMENTS_PLANS = {
         "price": 14950,
         "currency": "usd",
         "interval": "yearly"
+    },
+    "monthly-first": {
+        "stripe_plan_id": "pro",
+        "name": "Pro - Monthly",
+        "description": "The monthly subscription plan to GoDjango",
+        "price": 9,
+        "currency": "usd",
+        "interval": "month"
+    },
+    "yearly-first": {
+        "stripe_plan_id": "pro-yearly",
+        "name": "Pro - Yearly",
+        "description": "The yearly subscription plan to GoDjango",
+        "price": 90,
+        "currency": "usd",
+        "interval": "yearly"
     }
 }
 
