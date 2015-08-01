@@ -200,18 +200,18 @@ EMAIL_USE_TLS = True
 PAYMENTS_INVOICE_FROM_EMAIL = "buddy@buddylindsey.com"
 PAYMENTS_PLANS = {
     "monthly": {
-        "stripe_plan_id": "pro",
-        "name": "Pro - Monthly",
+        "stripe_plan_id": "14-pro-monthly",
+        "name": "Pro Monthly 14",
         "description": "The monthly subscription plan to GoDjango",
-        "price": 9,
+        "price": 1495,
         "currency": "usd",
         "interval": "month"
     },
     "yearly": {
-        "stripe_plan_id": "pro-yearly",
-        "name": "Pro - Yearly",
+        "stripe_plan_id": "14-pro-yearly",
+        "name": "Pro Yearly 14",
         "description": "The yearly subscription plan to GoDjango",
-        "price": 90,
+        "price": 14950,
         "currency": "usd",
         "interval": "yearly"
     }
