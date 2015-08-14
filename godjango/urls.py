@@ -1,5 +1,7 @@
 from django.contrib import admin
+from django.conf import settings
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
 
 from djblog.sitemaps import ArticleSitemap
 
@@ -73,4 +75,4 @@ urlpatterns = patterns(
     url(r'^feeds/pro/$', ProFeedView.as_view(), name='pro_feed'),
     url(r'^(?P<episode>\d+)-(?P<slug>[-\w]+)/$',
         VideoView.as_view(), name="episode"),
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

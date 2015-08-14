@@ -76,9 +76,14 @@
       {% else %}
       <video id='video-player' controls preload="auto" class="video-js vjs-default-skin" width="1100" height="619" poster="{{ video.preview_image }}">
       {% endif -%} {# end widscreen if #}
-        {%- if video.h264 -%}<source src="{{ video.h264 }}" type="video/mp4" />{%- endif -%}
+      {%- if video.h264 -%}<source src="{{ video.h264 }}" type="video/mp4" />{%- endif -%}
+      {% if video.transcripts %}
+        {% for transcript in video.transcripts.all() %}
+        <track kind="subtitles" src="{{ transcript.file.url }}" srclang="{{ transcript.srclang }}" label="{{ transcript.label }}"></track>
+        {% endfor %}
+      {% endif %}
       </video>
-      {%- endif %}
+    {%- endif %}
     </div>
   </div>
   <div class="video-meta">

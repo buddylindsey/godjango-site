@@ -154,3 +154,13 @@ class Category(TimeStampedModel, TitleSlugDescriptionModel):
 
     def __str__(self):
         return self.title
+
+@python_2_unicode_compatible
+class Transcript(TimeStampedModel):
+    video = models.ForeignKey(Video, related_name='transcripts')
+    file = models.FileField(upload_to='transcript', blank=True)
+    srclang = models.CharField(max_length=10, blank=True)
+    label = models.CharField(max_length=20, blank=True)
+
+    def __str__(self):
+        return "{} - {}".format(self.video.title, self.label)

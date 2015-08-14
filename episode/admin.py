@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Video, Category
+from models import Video, Category, Transcript
 
 
 class VideoAdmin(admin.ModelAdmin):
@@ -40,3 +40,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Video, VideoAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Transcript)
