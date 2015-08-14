@@ -34,8 +34,10 @@ TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*')
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-path = lambda *a: os.path.join(ROOT, *a)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+#os.path.join(BASE_DIR, 'templates')
 
 ADMINS = (
     ('Buddy Lindsey', 'buddy@buddylindsey.com'),
@@ -55,40 +57,27 @@ LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
 USE_I18N = True
-
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale.
 USE_L10N = True
-
-# If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/var/www/assets/godjango/'
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+if(DJANGO_ENV == "production"):
+    MEDIA_ROOT = '/var/www/assets/godjango/'
+else:
+    MEDIA_ROOT = "{}/media/".format(os.path.join(BASE_DIR, 'media'))
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = "%s/static_final/" % path('.')
-
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_final')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    "%s/static/" % path('.'),
+    os.path.join(BASE_DIR, 'static'),
 )
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
@@ -131,7 +120,7 @@ ROOT_URLCONF = 'godjango.urls'
 WSGI_APPLICATION = 'godjango.wsgi.application'
 
 TEMPLATE_DIRS = (
-    "%s/templates" % path('.'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 INSTALLED_APPS = (
