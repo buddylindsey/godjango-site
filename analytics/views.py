@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 import arrow
 from braces.views import SuperuserRequiredMixin
@@ -36,7 +37,8 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
 
     def monthly_subscribers(self):
         return CurrentSubscription.objects.filter(
-            status='active', plan='monthly').count() - 5
+            status='active').filter(
+                Q(plan='monthly') | Q(plan='monthly-first')).count() - 5
 
     def yearly_subscribers(self):
         return CurrentSubscription.objects.filter(
