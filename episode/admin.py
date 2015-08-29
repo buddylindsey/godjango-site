@@ -1,5 +1,6 @@
 from django.contrib import admin
 from models import Video, Category, Transcript
+from django.template.response import TemplateResponse
 
 
 class VideoAdmin(admin.ModelAdmin):
@@ -8,6 +9,7 @@ class VideoAdmin(admin.ModelAdmin):
     exclude = ('favorites',)
     list_filter = ('is_premium',)
     readonly_fields = ('slug',)
+    actions = ('generate_social_urls',)
 
     fieldsets = (
         (None, {
@@ -27,6 +29,14 @@ class VideoAdmin(admin.ModelAdmin):
             'fields': ('description', 'show_notes', 'transcript')
         }),
     )
+
+    def generate_social_urls(self, request, queryset):
+        context = {
+            'queryset': queryset
+        }
+        return TemplateResponse(
+            request, ['admin/social_urls.html'],
+            context, current_app=self.admin_site.name)
 
 
 class CategoryAdmin(admin.ModelAdmin):
