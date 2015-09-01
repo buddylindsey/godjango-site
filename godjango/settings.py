@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'newsletter',
     'analytics',
     'rest_framework',
+    'podcasts',
 )
 
 # Django Social Auth settings

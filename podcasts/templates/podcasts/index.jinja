@@ -1,0 +1,30 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h1>GoDjango Podcast</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <img src="{{ static("img/podcast_cover.jpg") }}" class="pull-right" />
+        <p class="podcast-about">
+            The GoDjango podcast is a series of interviews of industry professionals who do django development either daily, or consulting. Learn what others are doing with django so you can find new things to do.
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+    {% for podcast in podcasts %}
+        <h2><a href="https://godjango.com/{{ podcast.get_absolute_url() }}">{{ podcast.title }}</a></h2>
+        <p>
+            {{ podcast.published_short_body()|safe }}
+            <hr />
+        </p>
+    {% else %}
+        No Podcasts Yet.
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -11,6 +11,7 @@ from episode.views import (
 from newsletter.views import WebhookView
 from godjango_cart.views import (
     CheckoutView, FileView, SubscribeView, SubscriptionConfirmationView)
+from podcasts.views import PodcastListView
 
 admin.autodiscover()
 sitemaps = {
@@ -70,6 +71,9 @@ urlpatterns = patterns(
     url(r'^file/$', FileView.as_view(), name="download"),
 
     url(r'^api/', include('api.urls')),
+
+    # Podcasts
+    url(r'^podcast/$', PodcastListView.as_view(), name='podcast'),
 
     # Episodes
     url(r'^feeds/pro/$', ProFeedView.as_view(), name='pro_feed'),
