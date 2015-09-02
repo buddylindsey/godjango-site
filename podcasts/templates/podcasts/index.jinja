@@ -1,5 +1,9 @@
 {% extends "base.jinja" %}
 
+{% block title %}
+GoDjango Podcast
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-sm-12">
@@ -17,7 +21,7 @@
 <div class="row">
     <div class="col-sm-12">
     {% for podcast in podcasts %}
-        <h2><a href="https://godjango.com/{{ podcast.get_absolute_url() }}">{{ podcast.title }}</a></h2>
+        <h2><a href="https://godjango.com{{ podcast.get_absolute_url() }}">{{ podcast.title }}</a></h2>
         <p>
             {{ podcast.published_short_body()|safe }}
             <hr />
