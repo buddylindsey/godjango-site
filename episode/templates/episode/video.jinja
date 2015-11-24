@@ -133,7 +133,7 @@
       </div>
       {% endif %}
     </div>
-    {% if paying %}
+    {% if paying or not video.is_premium %}
     <div class="row">
       <div class="col-xs-12">
         <div id="disqus_thread"></div>
