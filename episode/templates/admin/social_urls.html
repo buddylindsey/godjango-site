@@ -19,14 +19,14 @@
 <div>
   <h2>{{ qs.title }} - Release URLs</h2>
   <div>
-  [GoDjango] New Video is Up: {{ qs.title }} - {{ qs.description }} https://godjango.com/{{ qs.get_absolute_url }}?utm_source=twitter&utm_medium=tweet&utm_content=morning&utm_campaign=release<br />
-  [GoDjango] New Video is Up: {{ qs.title }} - {{ qs.description }} https://godjango.com/{{ qs.get_absolute_url }}?utm_source=twitter&utm_medium=tweet&utm_content=midday&utm_campaign=release<br />
-  [GoDjango] New Video is Up: {{ qs.title }} - {{ qs.description }} https://godjango.com/{{ qs.get_absolute_url }}?utm_source=twitter&utm_medium=tweet&utm_content=evening&utm_campaign=release<br />
-  [GoDjango] New Video is Up: {{ qs.title }} - {{ qs.description }} https://godjango.com/{{ qs.get_absolute_url }}?utm_source=facebook&utm_medium=post&utm_campaign=release<br />
+  [GoDjango] New Video is Up: {{ qs.title }} - {{ qs.description }} https://godjango.com{{ qs.get_absolute_url }}?utm_source=twitter&utm_medium=tweet&utm_content=morning&utm_campaign=release<br />
+  [GoDjango] New Video is Up: {{ qs.title }} - {{ qs.description }} https://godjango.com{{ qs.get_absolute_url }}?utm_source=twitter&utm_medium=tweet&utm_content=midday&utm_campaign=release<br />
+  [GoDjango] New Video is Up: {{ qs.title }} - {{ qs.description }} https://godjango.com{{ qs.get_absolute_url }}?utm_source=twitter&utm_medium=tweet&utm_content=evening&utm_campaign=release<br />
+  [GoDjango] New Video is Up: {{ qs.title }} - {{ qs.description }} https://godjango.com{{ qs.get_absolute_url }}?utm_source=facebook&utm_medium=post&utm_campaign=release<br />
   </div>
   <h2>{{ qs.title }} - Archive URLs</h2>
   <div>
-  [GoDjango Archive] {{ qs.title }}: - {{ qs.description }} https://godjango.com/{{ qs.get_absolute_url }}?utm_source=twitter&utm_medium=scheduled-tweet&utm_content=edgar&utm_campaign=link<br />
+  [GoDjango] {{ qs.title }} - {{ qs.description }} https://godjango.com{{ qs.get_absolute_url }}?utm_source=twitter&utm_medium=scheduled-tweet&utm_content=edgar&utm_campaign=link<br />
   </div>
   <hr>
 </div>
