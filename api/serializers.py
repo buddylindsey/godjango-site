@@ -12,6 +12,6 @@ class SubscriberSerializer(ModelSerializer):
         """
         Verify not a duplicate subscriber.
         """
-        if Subscriber.objects.filter(email=value).exists():
-            raise ValidationError("User exists")
+        if Subscriber.objects.filter(email=value, active=True).exists():
+            raise ValidationError("You are already subscribed")
         return value
