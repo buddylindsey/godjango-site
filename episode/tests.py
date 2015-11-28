@@ -41,10 +41,10 @@ class VideoModelTest(TestCase):
         self.assertEqual("i-am-an-awesome-title", video.slug)
 
     def test_model_get_absolute_url(self):
-        video = mommy.make('episode.Video', slug='i-is-slug')
+        video = mommy.make('episode.Video', slug='i-is-slug', episode=1)
 
         self.assertEqual(
-            "/{}-i-is-slug/".format(video.id), video.get_absolute_url())
+            "/{}-i-is-slug/".format(video.episode), video.get_absolute_url())
 
     def test_model_video_url(self):
         video = Video(title="I is title", description="i is desc")
@@ -90,14 +90,16 @@ class VideoViewTest(TestCase):
         self.assertEqual(self.view.context_object_name, 'video')
 
     def test_get_context_data(self):
+        self.view.object = mommy.make(Video)
         context = self.view.get_context_data()
         self.assertIsInstance(
             context['newsletter_form'], NewsletterSubscribeForm)
 
     def test_get_related_videos_non_series(self):
         cat1, cat2 = mommy.make('episode.Category', _quantity=2)
-        self.view.object = mommy.make('episode.Video', categories=[cat1, cat2])
-
+        self.view.object = mommy.make('episode.Video')
+        self.view.object.categories.add(cat1)
+        self.view.object.categories.add(cat2)
 
     def test_get_related_videos_with_series(self):
         pass
