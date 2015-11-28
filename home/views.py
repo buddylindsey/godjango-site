@@ -16,7 +16,7 @@ class IndexView(CategoryListMixin, ListView):
     model = Video
     context_object_name = "videos"
     template_name = 'home/index.jinja'
-    paginate_by = 4
+    paginate_by = 8
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
