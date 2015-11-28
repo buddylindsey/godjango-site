@@ -1,5 +1,5 @@
         <div class="media episode-list-item padding-15">
-            <a class="pull-right hidden-xs" href="{{ video.get_absolute_url() }}"><img class="thumbnail" src="{{ video.thumbnail_image }}" /></a>
+        <a class="pull-right hidden-xs" href="{{ video.get_absolute_url() }}"><img class="thumbnail" {% if video.thumbnail_image %}src="{{ video.thumbnail_image.url }}"{% endif %} /></a>
             <div class="media-body">
                 <h4 class="media-heading"><a href="{{ video.get_absolute_url() }}">{{ video.title }}</a></h4>
                 <div class="sub-heading">

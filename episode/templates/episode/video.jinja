@@ -19,7 +19,9 @@
 <meta name="twitter:description" content="{{ video.description|truncate(200) }}">
 <meta name="twitter:creator" content="@buddylindsey">
 <!-- Twitter Summary card images must be at least 120x120px -->
-<meta name="twitter:image" content="{{video.thumbnail_image}}">
+{% if video.thumbnail_image %}
+<meta name="twitter:image" content="{{video.thumbnail_image.url}}">
+{% endif %}
 <meta name="twitter:url" content="https://godjango.com{{video.get_absolute_url()}}">
 
 <!-- Open Graph data -->
@@ -27,7 +29,9 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://godjango.com{{video.get_absolute_url()}}" />
 <meta property="og:image" content="{{video.thumbnail_image}}" />
-<meta property="og:description" content="{{ video.description }}" />
+{% if video.thumbnail_image %}
+<meta property="og:description" content="{{ video.description.url }}" />
+{% endif %}
 <meta property="og:site_name" content="GoDjango" />
 
 {% endblock %}
@@ -74,9 +78,9 @@
     {% else %} {# if not premium or they are a subscriber #}
     <div class="video-player-container">
       {% if not video.widescreen %}
-      <video id='video-player' controls preload="auto" class="video-js vjs-default-skin" width="800" height="600" poster="{{ video.preview_image }}">
+      <video id='video-player' controls preload="auto" class="video-js vjs-default-skin" width="800" height="600"{% if video.preview_image %} poster="{{ video.preview_image.url }}"{% endif %}>
       {% else %}
-      <video id='video-player' controls preload="auto" class="video-js vjs-default-skin" width="1100" height="619" poster="{{ video.preview_image }}">
+      <video id='video-player' controls preload="auto" class="video-js vjs-default-skin" width="1100" height="619"{% if video.preview_image %} poster="{{ video.preview_image.url }}"{% endif %}>
       {% endif -%} {# end widscreen if #}
       {%- if video.h264 -%}<source src="{{ video.h264 }}" type="video/mp4" />{%- endif -%}
       {% if video.transcripts %}

@@ -45,8 +45,6 @@ class VideoManager(models.Manager):
 class Video(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, blank=True)
-    thumbnail_image = models.CharField(max_length=200, null=True, blank=True)
-    preview_image = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField()
     show_notes = models.TextField(null=True, blank=True)
     transcript = models.TextField(null=True, blank=True)
@@ -65,6 +63,14 @@ class Video(models.Model):
     widescreen = models.BooleanField(default=True)
     revised = models.BooleanField(default=False)
     youtube_id = models.CharField(max_length=50, blank=True)
+
+    def episode_dir(instance, name):
+        return "episode-{}/{}".format(instance.episode, name)
+
+    thumbnail_image = models.ImageField(
+        upload_to=episode_dir, max_length=200, null=True, blank=True)
+    preview_image = models.ImageField(
+        upload_to=episode_dir, max_length=200, null=True, blank=True)
 
     objects = VideoManager()
 
