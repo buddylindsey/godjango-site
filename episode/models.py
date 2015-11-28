@@ -163,9 +163,12 @@ class Category(TimeStampedModel, TitleSlugDescriptionModel):
 
 @python_2_unicode_compatible
 class Transcript(TimeStampedModel):
+    LANGUAGES = (
+        ('en-US', 'English'),
+    )
     video = models.ForeignKey(Video, related_name='transcripts')
     file = models.FileField(upload_to='transcript', blank=True)
-    srclang = models.CharField(max_length=10, blank=True)
+    srclang = models.CharField(max_length=10, blank=True, choices=LANGUAGES)
     label = models.CharField(max_length=20, blank=True)
 
     def __str__(self):

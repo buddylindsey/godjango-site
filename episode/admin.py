@@ -48,6 +48,18 @@ class CategoryAdmin(admin.ModelAdmin):
     total_videos.short_description = 'Total Videos in Category'
 
 
+class TranscriptAdmin(admin.ModelAdmin):
+    raw_id_fields = ('video',)
+    list_display = ('video', 'label')
+    list_filter = ('srclang',)
+
+    fieldsets = (
+        (None, {'fields': ('video',)}),
+        ('File', {'fields': ('file',)}),
+        ('Language', {'fields': ('srclang', 'label')})
+    )
+
+
 admin.site.register(Video, VideoAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Transcript)
+admin.site.register(Transcript, TranscriptAdmin)
