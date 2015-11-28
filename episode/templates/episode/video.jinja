@@ -134,6 +134,11 @@
           <span class="sidebar-video-content-header">Related Videos</span>
           {% for video in related_videos %}
               <a class="list-group-item" href="{{ video.get_absolute_url() }}">{{ video.title }}</a>
+              {% if video.thumbnail_image %}
+              <a class="list-group-item" href="{{ video.get_absolute_url() }}">
+                <img src="{{ video.thumbnail_image.url }}" width="225" />
+              </a>
+              {% endif %}
           {% endfor %}
           </div>
       </div>
