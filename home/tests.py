@@ -32,7 +32,7 @@ class IndexViewTest(TestCase):
         self.assertEqual(self.view.model, Video)
         self.assertEqual(self.view.context_object_name, 'videos')
         self.assertEqual(self.view.template_name, 'home/index.jinja')
-        self.assertEqual(self.view.paginate_by, 4)
+        self.assertEqual(self.view.paginate_by, 8)
 
     def test_get_queryst(self):
         pub1 = arrow.utcnow().replace(days=-1)

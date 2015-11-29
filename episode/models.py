@@ -45,7 +45,7 @@ class VideoManager(models.Manager):
 class Video(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, blank=True)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     show_notes = models.TextField(null=True, blank=True)
     transcript = models.TextField(null=True, blank=True)
     video_h264 = models.CharField(max_length=1000, null=True, blank=True)
