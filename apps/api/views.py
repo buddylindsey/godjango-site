@@ -32,7 +32,8 @@ class CreateSubscriber(CreateAPIView):
 
         if serializer.validated_data['email']:
             newsletter_subscribe.delay(
-                first_name, last_name, serializer.validated_data['email'])
+                first_name, last_name, serializer.validated_data['email'],
+                tags=['angular'])
 
 
 class VideoViewSet(ModelViewSet):
