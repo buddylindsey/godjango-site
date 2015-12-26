@@ -22,6 +22,7 @@ from braces.views import LoginRequiredMixin
 
 from payments.signals import WEBHOOK_SIGNALS
 from payments.settings import INVOICE_FROM_EMAIL
+from newsletter.models import Subscriber
 from newsletter.tasks import newsletter_subscribe
 
 from .mixins import NextUrlMixin, StripeContenxtMixin, LastAccessMixin
@@ -70,6 +71,7 @@ class AccountRegistrationView(NextUrlMixin, CreateView):
         if form.cleaned_data['subscribe']:
             newsletter_subscribe.delay(
                 '', '', saved_user.email, tags=['account creation'])
+            Subscriber.objects.create(first_name='', last_name='', email=saved_user.email)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):

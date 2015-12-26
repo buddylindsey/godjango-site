@@ -5,7 +5,7 @@ from rest_framework.authentication import (
     SessionAuthentication
 )
 
-from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.viewsets import ModelViewSet
 
 from rest_framework.mixins import (
     CreateModelMixin,
@@ -25,8 +25,6 @@ class CreateSubscriber(CreateAPIView):
 
 
     def perform_create(self, serializer):
-        serializer.save()
-
         first_name = serializer.validated_data.get('first_name', '')
         last_name = serializer.validated_data.get('last_name', '')
 
@@ -35,6 +33,7 @@ class CreateSubscriber(CreateAPIView):
                 first_name, last_name, serializer.validated_data['email'],
                 tags=['angular'])
 
+        serializer.save()
 
 class VideoViewSet(ModelViewSet):
     authentication_classes = (TokenAuthentication, SessionAuthentication)
