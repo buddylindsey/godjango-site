@@ -9,7 +9,6 @@ from braces.views import SuperuserRequiredMixin
 
 from accounts.models import Profile
 from payments.models import CurrentSubscription, Transfer, Charge
-from newsletter.models import Subscriber
 
 
 class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
@@ -20,7 +19,6 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
         context['active_subscribers'] = self.active_subscribers()
         context['thirty_day_new'] = self.thirty_day_new()
         context['thirty_day_registrations'] = self.thirty_day_registrations()
-        context['newsletter_subscribers'] = self.newsletter_subscribers()
         context['total_transfer_this_month'] = self.total_transfer_this_month()
         context['monthly_subscribers'] = self.monthly_subscribers()
         context['yearly_subscribers'] = self.yearly_subscribers()
@@ -29,16 +27,13 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
         context['total_subscribers_by_amount'] = self.subscribers_by_amount()
         return context
 
-    def newsletter_subscribers(self):
-        return Subscriber.objects.filter(active=True).count()
-
     def active_subscribers(self):
-        return CurrentSubscription.objects.filter(status='active').count() - 5
+        return CurrentSubscription.objects.filter(status='active').count() - 6
 
     def monthly_subscribers(self):
         return CurrentSubscription.objects.filter(
             status='active').filter(
-                Q(plan='monthly') | Q(plan='monthly-first')).count() - 5
+                Q(plan='monthly') | Q(plan='monthly-first')).count() - 6
 
     def yearly_subscribers(self):
         return CurrentSubscription.objects.filter(
@@ -76,9 +71,11 @@ class AnalyticsIndexView(SuperuserRequiredMixin, TemplateView):
             last_access__gte=today.floor('day').datetime).count()
 
     def total_charges_this_month(self):
-        return sum(
-            [c.amount for c in Charge.objects.filter(
-                charge_created__gt=arrow.now().floor('month').datetime)])
+        now = arrow.utcnow()
+        transfers = Transfer.objects.filter(
+            created_at__gt=now.floor('month').datetime).values_list(
+                'charge_gross', flat=True)
+        return sum(transfers)
 
     def subscribers_by_amount(self):
         amounts = CurrentSubscription.objects.filter(
