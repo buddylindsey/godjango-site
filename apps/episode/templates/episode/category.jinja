@@ -19,6 +19,11 @@
         <div class="total-header">
             {{ total_videos }} <span class="name">{{ category }}</span> videos
         </div>
+        {% if category.description and category.series %}
+        <div>
+        {{ category.description }}
+        </div>
+        {% endif %}
         {% for video in videos %}
         {% include 'episode/_video.jinja' %}
         {% else %}
