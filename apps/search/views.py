@@ -10,6 +10,15 @@ class SearchView(ListView):
     paginate_by = 10
     template_name = 'episode/browse.jinja'
 
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
+
+        q = self.request.GET.get('q')
+        if q:
+            context['query'] = q
+        return context
+
+
     def get_queryset(self):
         queryset = super(SearchView, self).get_queryset()
 
