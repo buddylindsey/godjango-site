@@ -11,9 +11,6 @@ MAIN_DRIP_CAMPAIGN = '2042936'
 
 @app.task
 def newsletter_subscribe(first_name, last_name, email, tags=None):
-    if Subscriber.objects.filter(email=email).exists():
-        return
-
     if not tags:
         tags = ['celery-api']
 
