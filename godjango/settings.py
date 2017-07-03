@@ -150,6 +150,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'podcasts',
+    'raven.contrib.django.raven_compat',
 )
 
 # Django Social Auth settings
