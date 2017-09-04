@@ -24,17 +24,6 @@ class CreateSubscriber(CreateAPIView):
     authentication_classes = (SessionAuthentication,)
 
 
-    def perform_create(self, serializer):
-        first_name = serializer.validated_data.get('first_name', '')
-        last_name = serializer.validated_data.get('last_name', '')
-
-        if serializer.validated_data['email']:
-            newsletter_subscribe.delay(
-                first_name, last_name, serializer.validated_data['email'],
-                tags=['angular'])
-
-        serializer.save()
-
 class VideoViewSet(ModelViewSet):
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)
