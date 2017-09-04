@@ -14,7 +14,6 @@ from rest_framework.mixins import (
 )
 
 from .serializers import SubscriberSerializer, VideoSerializer
-from newsletter.tasks import newsletter_subscribe
 from episode.models import Video
 
 
