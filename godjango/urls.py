@@ -65,8 +65,6 @@ urlpatterns = patterns(
     url(r'^subscribe/confirmation/$',
         SubscriptionConfirmationView.as_view(), name='order_confirmation'),
 
-    url(r'^newsletter/', include('newsletter.urls')),
-
     # Download
     url(r'^file/$', FileView.as_view(), name="download"),
 
