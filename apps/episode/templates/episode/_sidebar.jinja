@@ -1,27 +1,3 @@
-<div class="widget" ng-controller="NewsletterForm">
-  <strong>Subscribe to our Newsletter</strong>
-  <form class="form newsletter" ng-submit="save(user)">
-    <div class="form-group">
-      <label for="email" class="control-label">Email</label>
-      <input type="email" value="" name="email" class="form-control" ng-model="user.email" required />
-      <div class="newsletter-email-message"></div>
-    </div>
-    <div class="form-group">
-      <label for="first_name" class="control-label">First Name</label>
-      <input type="text" value="" name="first_name" class="form-control" ng-model="user.first_name" />
-    </div>
-    <div class="form-group">
-      <label for="last_name" class="control-label">Last Name</label>
-      <input type="text" value="" name="last_name" class="form-control" ng-model="user.last_name" />
-    </div>
-    <div id="newsletter-message">
-    </div>
-    <div class="form-group">
-      <input type="submit" value="Subscribe" class="btn btn-primary" />
-    </div>
-  </form>
-</div>
-
 <div class="list-group sidebar-list-group">
     <a class="list-group-item" href="{{ url("category", "basics") }}">Basics</a>
     <a class="list-group-item" href="{{ url("category", "advanced") }}">Advanced</a>
