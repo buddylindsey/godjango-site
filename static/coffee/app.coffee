@@ -21,10 +21,3 @@ FavoriteView = Backbone.View.extend
     return
 
 new FavoriteView()
-
-Email = Backbone.Model.extend
-  urlRoot: '/newsletter/email/'
-  defaults:
-    first_name: ''
-    last_name: ''
-    email: ''
