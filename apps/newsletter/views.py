@@ -8,7 +8,6 @@ from braces.views import CsrfExemptMixin
 from .mixins import MailchimpMixin
 from .forms import NewsletterSubscribeForm
 from .models import Event, Subscriber
-from .tasks import newsletter_subscribe
 
 
 class WebhookView(CsrfExemptMixin, View):
@@ -26,7 +25,6 @@ class EmailView(View):
     def form_valid(self, form):
         subscriber = Subscriber.objects.create(
             active=False, **form.cleaned_data)
-        newsletter_subscribe.delay(**form.cleaned_data)
 
         final_data = {
             'id': subscriber.id, 'first_name': subscriber.first_name,
